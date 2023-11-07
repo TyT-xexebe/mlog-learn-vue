@@ -1,16 +1,16 @@
 <template>
   <div class="nav-bar" ref="nav">
     <div class="left">
-      <my-button to="/about" :class="{ active: $route.path === '/about' }">About</my-button>
-      <my-button to="/basic" :class="{ active: $route.path === '/basic' }">Basic</my-button>
+      <my-button @click="$router.push('/about')" :class="{ active: $route.path === '/about' }">About</my-button>
+      <my-button @click="$router.push('/basic')" :class="{ active: $route.path === '/basic' }">Basic</my-button>
     </div>
 
     
       <div class="right" ref="navRight">
-        <my-button to="/commands" :class="{ active: $route.path === '/commands' }">Commands</my-button>
-        <my-button to="/examples" :class="{ active: $route.path === '/examples' }">Code Examples</my-button>
-        <my-button to="/debugger" :class="{ active: $route.path === '/debugger' }">Debugger</my-button>
-        <my-button to="/login" :class="{ active: $route.path === '/login' }">Log In</my-button>
+        <my-button @click="$router.push('/commands')" :class="{ active: $route.path === '/commands' }">Commands</my-button>
+        <my-button @click="$router.push('/examples')" :class="{ active: $route.path === '/examples' }">Code Examples</my-button>
+        <my-button @click="$router.push('/debugger')" :class="{ active: $route.path === '/debugger' }">Debugger</my-button>
+        <my-button @click="$router.push('/login')" :class="{ active: $route.path === '/login' }">Log In</my-button>
       </div>
     
     <div class="menu-btn-container" @click="openFullNav">
