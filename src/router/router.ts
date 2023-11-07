@@ -3,7 +3,7 @@ import About from '@/views/About.vue';
 
 
 const router = createRouter({
-  history: createWebHistory(),
+  history: createWebHistory('/mlog-learn-vue/'),
   routes: [
     {
       path: '/about', component: About
