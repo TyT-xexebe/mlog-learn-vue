@@ -81,16 +81,17 @@ export default {
       cursor: pointer;
       padding: 9px;
       display: none;
-        .menu-btn {
-        transition: 0.3s;
-        background-color: rgb(255, 255, 255);
-        &:hover {
+      &:hover {
+        .menu-btn{
           background-color: #45c9c4;
           &::before,
           &::after {
             background-color: #45c9c4;
-          }
+          }}
         }
+        .menu-btn {
+        transition: 0.3s;
+        background-color: rgb(255, 255, 255);
         height: 3px;
         width: 25px;
         position: relative;

@@ -67,10 +67,10 @@ export default {
       h2 {
         @media (max-width: 900px){
           font-weight: 600;
-          font-size: 19px;
+          font-size: 17px;
           padding-bottom: 5px;
           span.bolt {
-            font-size: 18px;
+            font-size: 16px;
             font-weight: 700;
           }
         }
