@@ -49,7 +49,9 @@ export default {
     flex-direction: column;
     align-items: center;
     justify-content: left;
+    min-height: 100vh;
     .main {
+      flex: 1;
       hr {
         color: rgb(212, 212, 212);
         font-weight: 900;

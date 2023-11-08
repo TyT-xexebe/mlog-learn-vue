@@ -26,9 +26,6 @@ export default {
 <style lang="scss" scoped>
   .footer {
     display: block;
-    position: absolute;
-    bottom: 0;
-    left: 0;
     width: 100%;
     min-height: 10vh;
     height: fit-content;
