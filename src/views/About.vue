@@ -65,7 +65,7 @@ export default {
         color: rgb(245, 209, 8);
       }
       h2 {
-        @media (max-width: 900){
+        @media (max-width: 900px){
           font-weight: 600;
           font-size: 19px;
           padding-bottom: 5px;
@@ -74,7 +74,7 @@ export default {
             font-weight: 700;
           }
         }
-        @media (min-width: 900){
+        @media (min-width: 900px){
           font-weight: 700;
           font-size: 20px;
           padding-bottom: 5px;
@@ -85,7 +85,7 @@ export default {
         }
       }
       h3 {
-        @media (max-width: 900){
+        @media (max-width: 900px){
           font-weight: 600;
           font-size: 14.5px;
           padding-bottom: 5px;
@@ -93,7 +93,7 @@ export default {
             font-size: 15.5px;
             font-weight: 600;
           }}
-        @media (min-width: 900){
+        @media (min-width: 900px){
           font-weight: 600;
           font-size: 16px;
           padding-bottom: 5px;
