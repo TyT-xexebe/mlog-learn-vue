@@ -1,23 +1,29 @@
 # остановить публикацию при ошибках
 set -e
 
-# сборка
+folder="./../dist"
+
+if [ -d "$folder" ]; then
+  find $folder -type f -exec rm {} \;
+  echo ">> old files in folder '$folder' deleted."
+else
+  echo ">> folder '$folder' not found."
+fi
+
+echo ">> sterted building.."
 npm run build
-
-# переход в каталог сборки
+echo ">> build ended"
 cd ./../dist
-
-# если вы публикуете на пользовательский домен
-# echo 'www.example.com' > CNAME
-
+echo ">> init git repo.."
 git init
+echo ">> adding files in index.."
 git add -A
+echo ">> commiting changes.."
 git commit -m 'deploy'
 
-# если вы публикуете по адресу https://<USERNAME>.github.io
-# git push -f git@github.com:<USERNAME>/<USERNAME>.github.io.git master
-
-# если вы публикуете по адресу https://<USERNAME>.github.io/<REPO>
-git push -f git@github.com:tyt-xexebe/mlog-learn-vue.git master:gh-pages
-
+git remote add origin git@github.com:TyT-xexebe/mlog-learn-vue.git
+echo ">> pushing changes.."
+git push -f origin master:gh-pages
+echo ">> removing repo & exit from dist"
+rm -rf .git
 cd -
