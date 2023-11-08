@@ -5,7 +5,6 @@
       <my-button @click="$router.push('/basic')" :class="{ active: $route.path === '/basic' }">Basic</my-button>
     </div>
 
-    
       <div class="right" ref="navRight">
         <my-button @click="$router.push('/commands')" :class="{ active: $route.path === '/commands' }">Commands</my-button>
         <my-button @click="$router.push('/examples')" :class="{ active: $route.path === '/examples' }">Code Examples</my-button>
@@ -19,44 +18,54 @@
   </div>
 </template>
 <script>
+import { ref } from 'vue'
 export default {
   name: 'nav-bar',
-
   created() {
-    window.addEventListener("resize", this.openFullNav);
+    window.addEventListener("resize", () => {
+      console.log(this.showBar)
+      if(window.innerWidth > 600) {if(this.showBar) this.openFullNav();}else{if(!this.showBar) this.openFullNav();}
+    });
   },
 
   beforeDestroy() {
-    window.removeEventListener("resize", this.openFullNav);
+    window.removeEventListener("resize", () => {
+      if(window.innerWidth > 600) {if(this.showBar) this.openFullNav();}else{if(!this.showBar) this.openFullNav();}
+    });
   },
 
-  data() {
-    return {
-      showBar: true
-    };
+  setup() {
+    const showBar = ref(false);
+    const nav = ref(false);
+    const navRight = ref(false);
+        return {
+      showBar,
+      nav,
+      navRight
+    }
   },
+
 
   methods: {
     openFullNav() {
-      const navRight = this.$refs.navRight;
-      const nav = this.$refs.nav;
-      
-      if (!navRight && !nav) return
-      if (window.innerWidth <= 500){
+      console.log(this.nav.style);
+      console.log(this.navRight.style);
+      if (window.innerWidth <= 600){
           if (this.showBar) {
-            navRight.style.paddingTop = `${nav.getBoundingClientRect().height}px`;
-            navRight.style.transform = 'translateY(0px)';
-            navRight.style.opacity = '1.0';
+            this.navRight.style.paddingTop = `${this.nav.getBoundingClientRect().height}px`;
+            this.navRight.style.transform = 'translateY(0px)';
+            this.navRight.style.opacity = '1.0';
             this.showBar = false;
           }else{
-            navRight.style.transform = 'translateY(-100px)';
-            navRight.style.opacity = '0';
+            this.navRight.style.transform = 'translateY(-100px)';
+            this.navRight.style.opacity = '0';
             this.showBar = true;
           }
-          navRight.style.display = 'flex';
+          this.navRight.style.display = 'flex';
       }else{
-        navRight.style.display = 'block';
-        navRight.style.paddingTop = '0px';
+        this.showBar = false;
+        this.navRight.style.display = 'block';
+        this.navRight.style.paddingTop = '0px';
       }
     }
   }
@@ -113,7 +122,7 @@ export default {
         }
       }
     }
-    @media (min-width: 500px){
+    @media (min-width: 600px){
       .right {
         display: block;
         padding: 0px;
@@ -123,11 +132,10 @@ export default {
         cursor: pointer;
       }
     }
-    @media (max-width: 500px){
+    @media (max-width: 600px){
       .right {
         transition: 0.5s;
         background-color: rgb(36, 36, 36);
-        display: none;
         flex-direction: column;
         position: absolute;
         top: 0;

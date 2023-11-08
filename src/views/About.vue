@@ -38,7 +38,6 @@ export default {
     'nav-bar': navBar,
     'footer-bar': footerBar,
   }
-
 }
 </script>
 <style lang="scss" scoped>
@@ -47,7 +46,7 @@ export default {
     background-color: transparent;
     display: flex;
     flex-direction: column;
-    min-height: 60vh;
+    min-height: 100vh;
     .main {
       margin-top: 15vh;
       margin-bottom: 5vh;
@@ -67,10 +66,10 @@ export default {
       h2 {
         @media (max-width: 900px){
           font-weight: 600;
-          font-size: 17px;
+          font-size: 17.5px;
           padding-bottom: 5px;
           span.bolt {
-            font-size: 16px;
+            font-size: 16.5px;
             font-weight: 700;
           }
         }
@@ -87,10 +86,10 @@ export default {
       h3 {
         @media (max-width: 900px){
           font-weight: 600;
-          font-size: 14.5px;
+          font-size: 15px;
           padding-bottom: 5px;
           span.bolt {
-            font-size: 15.5px;
+            font-size: 16px;
             font-weight: 600;
           }}
         @media (min-width: 900px){
