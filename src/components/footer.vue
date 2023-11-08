@@ -25,8 +25,6 @@ export default {
 </script>
 <style lang="scss" scoped>
   .footer {
-    display: block;
-    width: 100%;
     min-height: 10vh;
     height: fit-content;
     background-color: rgb(36, 36, 36);

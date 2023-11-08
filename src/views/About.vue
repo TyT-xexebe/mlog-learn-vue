@@ -27,8 +27,8 @@
       <h3>In addition, we are always ready to welcome <span class="yellow">new ideas and suggestions from our users</span>. If you want to contribute to the development of our website, you can <span class="yellow">contact us</span></h3>
       <p>We appreciate your participation and are ready to consider any suggestions <span class="yellow">to improve our resource</span>.</p>
     </div>
-    <footer-bar></footer-bar>
   </div>
+    <footer-bar></footer-bar>
 </template>
 <script>
 import navBar from '@/components/nav-bar.vue'
@@ -43,14 +43,14 @@ export default {
 </script>
 <style lang="scss" scoped>
   .container {
-    margin: 10vh 4.5vw 10vh 4.5vw;
+    padding: 0 5vw 0 5vw;
     background-color: transparent;
     display: flex;
     flex-direction: column;
-    align-items: center;
-    justify-content: left;
-    min-height: 100vh;
+    min-height: 60vh;
     .main {
+      margin-top: 15vh;
+      margin-bottom: 5vh;
       flex: 1;
       hr {
         color: rgb(212, 212, 212);

@@ -1,7 +1,5 @@
 <template>
   <router-view></router-view>
-  <nav-bar></nav-bar>
-  <footer-bar></footer-bar>
 </template>
 <script>
 import navBar from '@/components/nav-bar.vue'
