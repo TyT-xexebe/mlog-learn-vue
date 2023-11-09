@@ -4,7 +4,7 @@ set -e
 folder="./../dist"
 
 if [ -d "$folder" ]; then
-    find $folder -type f -exec rm -f {} \;
+  find $folder -type f -exec rm -f {} \;
   echo ">> old files in folder '$folder' deleted."
 else
   echo ">> folder '$folder' not found."
@@ -26,4 +26,13 @@ echo ">> pushing changes.."
 git push -f origin master:gh-pages
 echo ">> removing repo & exit from dist"
 rm -rf .git
-cd -
+cd ./..
+ 
+echo ">> adding new files in main git repo.."
+git add .
+read -p "write text for commit: " msg
+echo ">> commiting changes.."
+git commit -m "$msg"
+echo ">> pushing changes.."
+git push origin
+cd ./bin
