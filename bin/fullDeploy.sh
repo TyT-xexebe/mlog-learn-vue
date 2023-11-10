@@ -30,7 +30,8 @@ cd ./..
  
 echo ">> adding new files in main git repo.."
 git add .
-read -p "write text for commit: " msg
+echo ">> write text for commit: " 
+read msg
 echo ">> commiting changes.."
 git commit -m "$msg"
 echo ">> pushing changes.."
