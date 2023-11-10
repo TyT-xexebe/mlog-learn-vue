@@ -1,3 +1,4 @@
+#!/bin/bash
 # -*- coding: utf-8 -*-
 # остановить публикацию при ошибках
 set -e
@@ -33,7 +34,7 @@ echo ">> adding new files in main git repo.."
 git add .
 echo -n ">> write text for commit: " 
 read -r msg
-echo ">> commiting changes.."
+echo ">> commiting changes.. $msg"
 git commit -m "$msg"
 echo ">> pushing changes.."
 git push origin
