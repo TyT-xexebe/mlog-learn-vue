@@ -75,10 +75,10 @@ export default {
         }
         @media (min-width: 900px){
           font-weight: 700;
-          font-size: 20px;
+          font-size: 21.5px;
           padding-bottom: 5px;
           span.bolt {
-            font-size: 17.5px;
+            font-size: 18.5px;
             font-weight: 800;
           }
         }
@@ -94,18 +94,18 @@ export default {
           }}
         @media (min-width: 900px){
           font-weight: 600;
-          font-size: 16px;
+          font-size: 17.5px;
           padding-bottom: 5px;
           span.bolt {
-            font-size: 16px;
+            font-size: 17px;
             font-weight: 700;
           }}
       }
       p {
         font-weight: 500;
-        font-size: 15.2px;
+        font-size: 15.8px;
         span.bolt {
-          font-size: 16.2px;
+          font-size: 16.8px;
           font-weight: 600;
         }
       }
@@ -114,7 +114,7 @@ export default {
         padding-left: 10px;
         span.yellow {
           font-weight: 600;
-          font-size: 15px;
+          font-size: 16px;
         }
       }
       color: white;

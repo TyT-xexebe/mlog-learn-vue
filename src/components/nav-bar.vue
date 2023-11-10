@@ -34,6 +34,10 @@ export default {
     });
   },
 
+  mounted() {
+    this.openFullNav();
+  },
+
   setup() {
     const showBar = ref(false);
     const nav = ref(false);
@@ -64,6 +68,8 @@ export default {
           this.navRight.style.display = 'flex';
       }else{
         this.showBar = false;
+        this.navRight.style.transform = 'translateY(0px)';
+        this.navRight.style.opacity = '1.0';
         this.navRight.style.display = 'block';
         this.navRight.style.paddingTop = '0px';
       }
