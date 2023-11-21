@@ -8,7 +8,7 @@ const write = {
     [
       '{1} to {2} at {3}',
       { input: range.variable, type: 'input' },
-      { input: [range.variable, range.block], type: 'input' },
+      { input: [range.variable, range.blocks], type: 'input' },
       { input: [range.variable, range.positiveInt], type: 'input' },
     ],
   ],
@@ -21,8 +21,8 @@ const read = {
   commands: [
     [
       '{1} = {2} at {3}',
-      { input: range.variable, type: 'output' },
-      { input: [range.variable, range.block], type: 'input' },
+      { input: [range.variable], type: 'output' },
+      { input: [range.variable, range.blocks], type: 'input' },
       { input: [range.variable, range.positiveInt], type: 'input' },
     ],
   ],
@@ -139,7 +139,7 @@ const printFlush = {
   select: false,
   type: 'Block Control',
   commands: [
-    ['to {1}', { input: [range.variable, range.block], type: 'input' }],
+    ['to {1}', { input: [range.variable, range.blocks], type: 'input' }],
   ],
 }
 
@@ -148,7 +148,7 @@ const drawFlush = {
   select: false,
   type: 'Block Control',
   commands: [
-    ['to {1}', { input: [range.variable, range.block], type: 'input' }],
+    ['to {1}', { input: [range.variable, range.blocks], type: 'input' }],
   ],
 }
 
@@ -159,7 +159,7 @@ const getLink = {
   commands: [
     [
       '{1} = link# {2}',
-      { input: range.variable, type: 'output' },
+      { input: [range.variable], type: 'output' },
       { input: [range.variable, range.positiveInt], type: 'input' },
     ],
   ],
@@ -173,13 +173,13 @@ const control = {
     [
       'set enabled of {1} to {2}',
       { subcommand: 'enabled', type: 'setable', canWrite: false },
-      { input: range.variable, type: 'input' },
+      { input: [range.variable, range.blocks], type: 'input' },
       { input: [range.variable, range.boolean], type: 'input' },
     ],
     [
       'set shoot of {1} x {2} y {3} shoot {4}',
       { subcommand: 'shoot', type: 'setable', canWrite: false },
-      { input: range.variable, type: 'input' },
+      { input: [range.variable], type: 'input' },
       { input: [range.variable, range.positiveInt], type: 'input' },
       { input: [range.variable, range.positiveInt], type: 'input' },
       { input: [range.variable, range.boolean], type: 'input' },
@@ -187,21 +187,53 @@ const control = {
     [
       'set shootp of {1} unit {2} shoot {3}',
       { subcommand: 'shootp', type: 'setable', canWrite: false },
-      { input: range.variable, type: 'input' },
-      { input: range.variable, type: 'input' },
+      { input: [range.variable], type: 'input' },
+      { input: [range.variable], type: 'input' },
       { input: [range.variable, range.boolean], type: 'input' },
     ],
     [
       'set config of {1} to {2}',
       { subcommand: 'config', type: 'setable', canWrite: false },
-      { input: range.variable, type: 'input' },
-      { input: range.config, type: 'input' },
+      { input: [range.variable, range.config], type: 'input' },
+      { input: [range.configObj], type: 'input' },
     ],
     [
       'set color of {1} to {2}',
       { subcommand: 'color', type: 'setable', canWrite: false },
-      { input: range.variable, type: 'input' },
-      { input: range.variable, type: 'input' },
+      { input: [range.variable], type: 'input' },
+      { input: [range.variable, range.hex], type: 'input' },
+    ],
+  ],
+}
+
+const radar = {
+  name: 'Radar',
+  select: false,
+  type: 'Block Control',
+  commands: [
+    [
+      'from {1} target {2} and {3} and {4} order {5} sort {6} output {7}',
+      { input: [range.turret, range.variable], type: 'input' },
+      { input: [range.radarUnit], type: 'input' },
+      { input: [range.radarUnit], type: 'input' },
+      { input: [range.radarUnit], type: 'input' },
+      { input: [range.boolean, range.variable], type: 'input' },
+      { input: [range.radarSort], type: 'input' },
+      { input: [range.variable], type: 'output' },
+    ],
+  ],
+}
+
+const sensor = {
+  name: 'Sensor',
+  select: false,
+  type: 'Block Control',
+  commands: [
+    [
+      '{1} = {2} in {3}',
+      { input: [range.variable], type: 'output' },
+      { input: [range.sensor, range.items, range.liquids], type: 'input' },
+      { input: [range.variable, range.blocks, range.units], type: 'input' },
     ],
   ],
 }
@@ -213,6 +245,9 @@ const commands = {
   print: print,
   printFlush: printFlush,
   drawFlush: drawFlush,
+  control: control,
+  radar: radar,
+  sensor: sensor,
 }
 
 for (const key in commands) {
