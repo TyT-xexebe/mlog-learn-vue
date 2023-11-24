@@ -238,6 +238,20 @@ const sensor = {
   ],
 }
 
+const set = {
+  name: 'Set',
+  select: 'func',
+  type: 'Operations',
+  func: (variable, value, arr) => {
+    arr.push([variable, value]);
+  },
+  commands: [
+    '{1} to {2}',
+    { input: [range.variable], type: 'output' },
+    { input: [range.variable, range.int, range.float, range.text, range.hex,], type: 'input' },
+  ]
+}
+
 const commands = {
   write: write,
   read: read,
@@ -248,6 +262,7 @@ const commands = {
   control: control,
   radar: radar,
   sensor: sensor,
+  set: set,
 }
 
 for (const key in commands) {
