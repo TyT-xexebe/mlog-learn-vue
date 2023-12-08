@@ -24,14 +24,14 @@ export default {
       color: #45c9c4;
     }
 
-    @media (max-width: 900px) {
+    @media (max-width: 950px) {
       padding: 5px 10px 5px 10px;
       margin-left: 5px;
       margin-right: 5px;
       font-size: 15.5px;
       font-weight: 400;
     }
-    @media (min-width: 900px) {
+    @media (min-width: 950px) {
       padding: 9px 15px 9px 15px;
       margin-left: 15px;
       margin-right: 15px;

@@ -2,27 +2,27 @@
   <div class="footer">
     <div class="footer-container">
       <div class="left">
-        <h4>M-Log Learn Site</h4>
+        <h4>{{ $t('footer.mlogLearnSite') }}</h4>
       </div>
       <div class="center">
-        <h4>CodeSpace (Debugger)</h4>
-        <my-link>Codes Vault</my-link>
-        <my-link>Privacy Policy</my-link>
+        <h4>{{ $t('footer.codeSpaceDebugger') }}</h4>
+        <my-link>{{ $t('footer.codesVault') }}</my-link>
+        <my-link>{{ $t('footer.privacyPolicy') }}</my-link>
       </div>
       <div class="right">
-        <h4>Contacts</h4>
-        <my-link>Discord</my-link>
-        <my-link>Telegram</my-link>
-        <my-link>Email</my-link>
+        <h4>{{ $t('footer.contacts') }}</h4>
+        <my-link>{{ $t('footer.discord') }}</my-link>
+        <my-link>{{ $t('footer.telegram') }}</my-link>
+        <my-link>{{ $t('footer.email') }}</my-link>
       </div>
     </div>
   </div>
 </template>
+
 <script>
-export default {
-  
-}
+export default {}
 </script>
+
 <style lang="scss" scoped>
   .footer {
     min-height: 10vh;

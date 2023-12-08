@@ -1,0 +1,52 @@
+{
+  "navbar": {
+    "about": "About",
+    "basic": "Basic",
+    "commands": "Commands",
+    "codeExamples": "Code Examples",
+    "debugger": "Debugger",
+    "logIn": "Log In",
+    "language": "Language",
+    "languages": {
+      "english": "English",
+      "russian": "Russian",
+      "ukrainian": "Ukrainian"
+    }
+  },
+  "footer": {
+    "mlogLearnSite": "M-Log Learn Site",
+    "codeSpaceDebugger": "CodeSpace (Debugger)",
+    "codesVault": "Codes Vault",
+    "privacyPolicy": "Privacy Policy",
+    "contacts": "Contacts",
+    "discord": "Discord",
+    "telegram": "Telegram",
+    "email": "Email"
+  },
+  "about": {
+    "pageTitle": "About Site",
+    "purpose": "The website is created for the purpose of educating users M-log (Mindustry - logic). Here you will find extensive materials to help you learn M-log.",
+    "informationAvailable": "In particular, the following information is available on the website:",
+    "basicConcepts": {
+      "title": "Basic concepts of M-log:",
+      "description": "We provide a detailed description of basic concepts to help you understand how everything works."
+    },
+    "commands": {
+      "title": "Commands and their application:",
+      "description": "You will find information about various M-log commands and how to use them to achieve specific goals."
+    },
+    "codeExamples": {
+      "title": "Code examples:",
+      "description": "We offer extensive code examples with detailed explanations to make it easier for you."
+    },
+    "debugger": {
+      "title": "Debugger:",
+      "description": "Our debugger allows you to check and improve your code by detecting and fixing errors."
+    },
+    "contribute": {
+      "title": "In addition, we are always ready to welcome new ideas and suggestions from our users.",
+      "contactUs": "If you want to contribute to the development of our website, you can contact us."
+    },
+    "appreciateParticipation": "We appreciate your participation and are ready to consider any suggestions to improve our resource."
+  }
+}
