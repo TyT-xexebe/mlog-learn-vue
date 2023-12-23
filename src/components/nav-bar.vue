@@ -3,7 +3,7 @@
     <div class="left">
       <my-button
         @click="$router.push('/about')"
-        :class="{ active: $route.path === '/about' }"
+        :class="{ active: $route.path === '/about'}"
         >{{ $t("navbar.about") }}</my-button
       >
       <my-button
@@ -254,6 +254,10 @@ export default {
       right: 0;
       border-bottom-left-radius: 5px;
       border-bottom: 3.5px solid #3c8888;
+      padding: 6px;
+      button {
+        padding: 8px;
+      }
     }
     .menu-btn-container {
       display: block;

@@ -1,6 +1,5 @@
 <template>
   <div class="container">
-    <nav-bar></nav-bar>
     <div class="main">
       <h2 class="yellow">{{ $t('about.pageTitle') }}</h2>
       <h3>{{ $t('about.purpose') }}</h3>
@@ -30,22 +29,13 @@
       <p>{{ $t('about.appreciateParticipation') }}</p>
     </div>
   </div>
-  <footer-bar></footer-bar>
 </template>
 
 <script>
-import navBar from '@/components/nav-bar.vue'
-import footerBar from '@/components/footer.vue'
-export default {
-  components: {
-    'nav-bar': navBar,
-    'footer-bar': footerBar,
-  }
-}
 </script>
 <style lang="scss" scoped>
   .container {
-    padding: 0 5vw 0 5vw;
+    padding: 0 5vw 0 2vw;
     background-color: transparent;
     display: flex;
     flex-direction: column;

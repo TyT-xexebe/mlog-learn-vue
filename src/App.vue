@@ -1,5 +1,7 @@
 <template>
-  <router-view></router-view>
+  <nav-bar />
+  <router-view />
+  <footer-bar />
 </template>
 <script>
 import navBar from '@/components/nav-bar.vue'
@@ -12,6 +14,30 @@ export default {
 }
 </script>
 <style lang="scss">
+.underlined {
+      position: relative;
+    }
+
+    .underlined:after {
+      content: "";
+      display: block;
+      position: absolute;
+      bottom: -3px;
+      left: 0;
+      width: 0;
+      height: 2px;
+      background-color: #3194ff88;
+      border-radius: 1px;
+      transition: width 0.3s ease-in-out, opacity 0.3s ease-in-out;
+      transform-origin: bottom center;
+      opacity: 0;
+    }
+
+    .underlined:hover:after {
+      width: 100%;
+      opacity: 1;
+      transition-delay: 0.1s;
+    }
   // default styles reset
 *,*::before,*::after {margin: 0;padding: 0;font-family: Arial, Helvetica, sans-serif;}
 html {font-size: 62.5%;}

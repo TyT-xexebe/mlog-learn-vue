@@ -1,5 +1,5 @@
 <template>
-  <button class="mainBtn"><slot></slot></button>
+  <button class="mainBtn underlined"><slot></slot></button>
 </template>
 <script>
 export default {
@@ -16,14 +16,11 @@ export default {
     border-radius: 4px;
     transition: 0.45s;
     &:hover {
-      background-color: rgba(0, 0, 0, 0.1);
-      border-radius: 6px;
       color: #45c9c4;
     }
     &.active {
       color: #45c9c4;
     }
-
     @media (max-width: 950px) {
       padding: 5px 10px 5px 10px;
       margin-left: 5px;
