@@ -9,14 +9,14 @@
 
       <span class="bolt yellow hr"><span>{{ $t('basic.understandingLogic.specialValuesTitle') }}</span></span>
       <ul>
-        <li v-for="value in this.$tm('basic.understandingLogic.specialValues')">
+        <li v-for="value in this.$t('basic.understandingLogic.specialValues')">
           <strong class="bolt yellow">{{ value.name }}</strong>: {{ value.description }}<br>
         </li>
       </ul>
 
       <span class="bolt yellow hr"><span>{{ $t('basic.understandingLogic.basicProcessorInfoTitle') }}</span></span>
       <ul>
-        <li v-for="info in this.$tm('basic.understandingLogic.basicProcessorInfo')">{{ info }}<br></li>
+        <li v-for="info in this.$t('basic.understandingLogic.basicProcessorInfo')">{{ info }}<br></li>
       </ul>
 
       <p class="bolt yellow">{{ $t('basic.understandingLogic.jumpLabelsTitle') }}</p>
