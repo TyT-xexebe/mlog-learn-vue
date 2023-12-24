@@ -25,6 +25,10 @@ export default {}
 
 <style lang="scss" scoped>
   .footer {
+    position: absolute;
+    left: 0;
+    margin-top: auto;
+    width: 100vw;
     min-height: 10vh;
     height: fit-content;
     background-color: rgb(36, 36, 36);

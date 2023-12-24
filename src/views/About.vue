@@ -3,7 +3,7 @@
     <div class="main">
       <h2 class="yellow">{{ $t('about.pageTitle') }}</h2>
       <h3>{{ $t('about.purpose') }}</h3>
-      <hr>
+      <span class="hr bold yellow"><span>{{ $t('about.infoTitle') }}</span></span>
       <h3>{{ $t('about.informationAvailable') }}</h3>
       <ul>
         <li>
@@ -23,7 +23,7 @@
           <p>{{ $t('about.debugger.description') }}</p>
         </li>
       </ul>
-      <hr>
+      <span class="hr bold yellow"><span>{{ $t('about.contribute.main') }}</span></span>
       <h3>{{ $t('about.contribute.title') }}</h3>
       <p>{{ $t('about.contribute.contactUs') }}</p>
       <p>{{ $t('about.appreciateParticipation') }}</p>
@@ -35,81 +35,14 @@
 </script>
 <style lang="scss" scoped>
   .container {
-    padding: 0 5vw 0 2vw;
     background-color: transparent;
     display: flex;
     flex-direction: column;
-    min-height: 100vh;
+    min-height: 95vh;
     .main {
-      margin-top: 15vh;
+      margin-top: 10vh;
       margin-bottom: 5vh;
       flex: 1;
-      hr {
-        color: rgb(212, 212, 212);
-        font-weight: 900;
-        margin-top: 5px;
-        margin-bottom: 5px;
-      }
-      br {
-        margin-bottom: 5px;
-      }
-      .yellow {
-        color: rgb(245, 209, 8);
-      }
-      h2 {
-        @media (max-width: 900px){
-          font-weight: 600;
-          font-size: 17.5px;
-          padding-bottom: 5px;
-          span.bolt {
-            font-size: 16.5px;
-            font-weight: 700;
-          }
-        }
-        @media (min-width: 900px){
-          font-weight: 700;
-          font-size: 21.5px;
-          padding-bottom: 5px;
-          span.bolt {
-            font-size: 18.5px;
-            font-weight: 800;
-          }
-        }
-      }
-      h3 {
-        @media (max-width: 900px){
-          font-weight: 600;
-          font-size: 15px;
-          padding-bottom: 5px;
-          span.bolt {
-            font-size: 16px;
-            font-weight: 600;
-          }}
-        @media (min-width: 900px){
-          font-weight: 600;
-          font-size: 17.5px;
-          padding-bottom: 5px;
-          span.bolt {
-            font-size: 17px;
-            font-weight: 700;
-          }}
-      }
-      p {
-        font-weight: 500;
-        font-size: 15.8px;
-        span.bolt {
-          font-size: 16.8px;
-          font-weight: 600;
-        }
-      }
-      ul li {
-        padding-bottom: 5px;
-        padding-left: 10px;
-        span.yellow {
-          font-weight: 600;
-          font-size: 16px;
-        }
-      }
       color: white;
     }
   }

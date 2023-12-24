@@ -1,9 +1,13 @@
 import { createRouter, createWebHashHistory } from 'vue-router'
 import About from '@/views/About.vue';
+import Basic from '@/views/Basic.vue';
 
 const routes = [
   {
     path: '/about', name: 'About', component: About
+  },
+  {
+    path: '/basic', name: 'Basic', component: Basic
   },
 ]
 
