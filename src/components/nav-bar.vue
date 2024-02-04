@@ -4,7 +4,7 @@
       <my-button
         class="underlined"
         @click="$router.push('/about')"
-        :class="{ active: $route.path === '/about'}"
+        :class="{ active: $route.path === '/about' }"
         >{{ $t("navbar.about") }}</my-button
       >
       <my-button
@@ -17,7 +17,7 @@
 
     <div class="right" ref="navRight">
       <my-button
-        class="underlined"
+        class="underlined commands"
         @click="this.$router.push('/commands')"
         :class="{ active: $route.path === '/commands' }"
         @mouseover="showCommands = true"
@@ -65,14 +65,17 @@
     <div class="menu-btn-container" @click="openFullNav">
       <div class="menu-btn"></div>
     </div>
-    <div class="commandList" ref="commandsList" @mouseleave="showCommands = false">
+    <div
+      class="commandList"
+      ref="commandsList"
+      @mouseleave="showCommands = false">
       <div id="params1">
         <span>Input & Output</span>
         <my-button>read</my-button>
         <my-button>write</my-button>
         <my-button>draw</my-button>
         <my-button>print</my-button>
-        <hr>
+        <hr />
       </div>
       <div id="params2">
         <span>Block Control</span>
@@ -82,7 +85,7 @@
         <my-button>control</my-button>
         <my-button>radar</my-button>
         <my-button>sensor</my-button>
-        <hr>
+        <hr />
       </div>
       <div id="params3">
         <span>Operations</span>
@@ -90,7 +93,7 @@
         <my-button>operation</my-button>
         <my-button>lookup</my-button>
         <my-button>packcolor</my-button>
-        <hr>
+        <hr />
       </div>
       <div id="params4">
         <span>Flow Control</span>
@@ -98,7 +101,7 @@
         <my-button>stop</my-button>
         <my-button>end</my-button>
         <my-button>jump</my-button>
-        <hr>
+        <hr />
       </div>
       <div id="params5">
         <span>Unit Control</span>
@@ -106,35 +109,37 @@
         <my-button>ucontrol</my-button>
         <my-button>uradar</my-button>
         <my-button>ulocate</my-button>
-        <hr>
+        <hr />
       </div>
       <div id="params6">
         <span>World</span>
-        <my-button >get block</my-button>
-        <my-button >set block</my-button>
-        <my-button >spawn unit</my-button>
-        <my-button >apply status</my-button>
-        <my-button >spawn wave</my-button>
-        <my-button >set rule</my-button>
-        <my-button >flush message</my-button>
-        <my-button >cutscene</my-button>
-        <my-button >effect</my-button>
-        <my-button >explosion</my-button>
-        <my-button >set_rate</my-button>
-        <my-button >fetch</my-button>
-        <my-button >set flag</my-button>
-        <my-button >get flag</my-button>
-        <my-button >set prop</my-button>
+        <my-button>get block</my-button>
+        <my-button>set block</my-button>
+        <my-button>spawn unit</my-button>
+        <my-button>apply status</my-button>
+        <my-button>spawn wave</my-button>
+        <my-button>set rule</my-button>
+        <my-button>flush message</my-button>
+        <my-button>cutscene</my-button>
+        <my-button>effect</my-button>
+        <my-button>explosion</my-button>
+        <my-button>set_rate</my-button>
+        <my-button>fetch</my-button>
+        <my-button>set flag</my-button>
+        <my-button>get flag</my-button>
+        <my-button>set prop</my-button>
       </div>
     </div>
   </div>
 </template>
+
 <script>
 import { ref } from "vue";
 export default {
   name: "nav-bar",
-
   mounted() {
+    const navBtns = this.nav.querySelectorAll('button');
+    navBtns.forEach(btn => {btn.addEventListener('click', (event) => {this.reload(event)})});
     this.openFullNav();
     this.positionedLangMenu();
     this.openLangMenu();
@@ -170,7 +175,9 @@ export default {
     };
   },
   watch: {
-      showCommands(nv) {this.openCommandsMenu()}
+    showCommands(nv) {
+      this.openCommandsMenu();
+    },
   },
 
   methods: {
@@ -206,30 +213,38 @@ export default {
       const rect = langBtn.getBoundingClientRect();
       if (window.innerWidth < 800) {
         this.languageMenu.style.top = "5.5vh";
-        this.languageMenu.style.left = this.navRight.getBoundingClientRect().left - this.languageMenu.getBoundingClientRect().width + 1 + 'px';
+        this.languageMenu.style.left =
+          this.navRight.getBoundingClientRect().left -
+          this.languageMenu.getBoundingClientRect().width +
+          1 +
+          "px";
         this.languageMenu.style.width = "fit-content";
       } else {
         this.languageMenu.style.top = rect.bottom + "px";
         this.languageMenu.style.width = rect.width;
         if (window.innerWidth < 950) {
-          if(this.$i18n.locale === 'ru' || this.$i18n.locale === 'uk'){
-            const newCoords = (this.languageMenu.getBoundingClientRect().width - rect.width) / 2
+          if (this.$i18n.locale === "ru" || this.$i18n.locale === "uk") {
+            const newCoords =
+              (this.languageMenu.getBoundingClientRect().width - rect.width) /
+              2;
             this.languageMenu.style.left = rect.left - newCoords + "px";
-          }else{
+          } else {
             this.languageMenu.style.left = rect.left - 10 + "px";
           }
         } else {
-          if(this.$i18n.locale === 'ru' || this.$i18n.locale === 'uk'){
-            const newCoords = (this.languageMenu.getBoundingClientRect().width - rect.width) / 2
+          if (this.$i18n.locale === "ru" || this.$i18n.locale === "uk") {
+            const newCoords =
+              (this.languageMenu.getBoundingClientRect().width - rect.width) /
+              2;
             this.languageMenu.style.left = rect.left - newCoords + "px";
-          }else{
+          } else {
             this.languageMenu.style.left = rect.left - 15 - 8 + "px";
           }
         }
       }
     },
     openLangMenu() {
-      this.positionedLangMenu()
+      this.positionedLangMenu();
       if (this.showLang) {
         this.languageMenu.style.transform = "translateY(0px)";
         this.languageMenu.style.opacity = "1.0";
@@ -241,8 +256,8 @@ export default {
       }
     },
     openCommandsMenu() {
-      const commandBtn = this.navRight.querySelectorAll('button')[0]
-      if(!commandBtn.classList.contains('active')) this.showCommands = false
+      const commandBtn = this.navRight.querySelectorAll("button")[0];
+      if (!commandBtn.classList.contains("active")) this.showCommands = false;
       if (this.showCommands) {
         this.commandsList.style.transform = "translateY(0px)";
         this.commandsList.style.opacity = "1.0";
@@ -251,8 +266,11 @@ export default {
         this.commandsList.style.opacity = "0";
       }
     },
+    reload(event) {
+      const btn = event.target;
+      btn.classList.contains('commands') ? this.showCommands = true : this.showCommands = false
+    }
   },
-
 };
 </script>
 <style lang="scss" scoped>
@@ -271,7 +289,8 @@ export default {
   flex-direction: row;
   align-items: center;
   justify-content: space-between;
-  div.left > my-button, div.right > my-button {
+  div.left > my-button,
+  div.right > my-button {
     z-index: 3;
   }
   .menu-btn-container {
@@ -312,7 +331,8 @@ export default {
       }
     }
   }
-  .language-menu, .commandList{
+  .language-menu,
+  .commandList {
     z-index: 1;
     transition: 0.6s;
     height: auto;
