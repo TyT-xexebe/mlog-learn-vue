@@ -1,0 +1,45 @@
+{
+  "name": "vue-site",
+  "version": "0.1.0",
+  "private": true,
+  "scripts": {
+    "serve": "vue-cli-service serve",
+    "build": "vue-cli-service build",
+    "start": "echo 'hello'",
+    "deploy": "gh-pages -d dist",
+    "lint": "vue-cli-service lint"
+  },
+  "dependencies": {
+    "@vitejs/plugin-vue": "^4.4.0",
+    "@vue/compiler-sfc": "^3.3.7",
+    "core-js": "^3.8.3",
+    "express": "^4.18.2",
+    "path": "^0.12.7",
+    "petite-vue-i18n": "^9.8.0",
+    "vue": "^3.2.26",
+    "vue-class-component": "^8.0.0-0",
+    "vue-i18n": "^9.8.0",
+    "vue-i18n-bridge": "^9.8.0",
+    "vue-router": "^4.0.3",
+    "vuex": "^4.0.0",
+    "webpack": "^5.89.0"
+  },
+  "devDependencies": {
+    "@intlify/unplugin-vue-i18n": "^2.0.0",
+    "@vue/cli-plugin-babel": "~5.0.0",
+    "@vue/cli-plugin-router": "~5.0.0",
+    "@vue/cli-plugin-typescript": "~5.0.0",
+    "@vue/cli-plugin-vuex": "~5.0.0",
+    "@vue/cli-service": "~5.0.0",
+    "gh-pages": "^6.0.0",
+    "sass": "^1.32.7",
+    "sass-loader": "^12.0.0",
+    "typescript": "~4.5.5"
+  },
+  "browserslist": [
+    "> 1%",
+    "last 2 versions",
+    "not dead",
+    "not ie 11"
+  ]
+}

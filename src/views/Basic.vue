@@ -1,0 +1,62 @@
+<template>
+  <div class="container">
+    <div class="main">
+      <h2 class="yellow">{{ $t('basic.understandingLogic.title') }}</h2>
+      <p>{{ $t('basic.understandingLogic.intro') }}</p><br>
+      <p>{{ $t('basic.understandingLogic.processorDescription') }}</p><br>
+      <p>{{ $t('basic.understandingLogic.processorUsage') }}</p><br>
+      <p>{{ $t('basic.understandingLogic.connectingBlocks') }}</p><br>
+
+      <span class="bolt yellow hr"><span>{{ $t('basic.understandingLogic.specialValuesTitle') }}</span></span>
+      <ul>
+        <li v-for="value in this.$tm('basic.understandingLogic.specialValues')">
+          <strong class="bolt yellow">{{ value.name }}</strong>: {{ value.description }}<br>
+        </li>
+      </ul>
+
+      <span class="bolt yellow hr"><span>{{ $t('basic.understandingLogic.basicProcessorInfoTitle') }}</span></span>
+      <ul>
+        <li v-for="info in this.$tm('basic.understandingLogic.basicProcessorInfo')">{{ info }}<br></li>
+      </ul>
+
+      <p class="bolt yellow">{{ $t('basic.understandingLogic.jumpLabelsTitle') }}</p>
+      <p>{{ $t('basic.understandingLogic.jumpLabelsIntro') }}</p>
+      <h5>
+        jump 2 always 0 0<br />
+        end<br />
+        print "hello"<br />
+      </h5>
+      <p>{{ $t('basic.understandingLogic.jumpMethods') }}</p>
+      <p class="bolt yellow">{{ $t('basic.understandingLogic.jumpLabelMethodsTitle') }}</p>
+      <h5>
+        jump label always 0 0<br />
+        end<br />
+        label:<br />
+        print "hello"<br />
+      </h5>
+      <p>{{ $t('basic.understandingLogic.jumpLabelMethods') }}</p>
+
+      <span class="bolt yellow hr"><span>{{ $t('basic.understandingLogic.otherLogicBlocksTitle') }}</span></span>
+      <p>{{ $t('basic.understandingLogic.otherLogicBlocksIntro') }}</p>
+    </div>
+  </div>
+</template>
+
+<script>
+export default {
+  data() {
+    return {}
+  }
+};
+</script>
+<style lang="scss">
+.container {
+  background-color: transparent;
+  display: flex;
+  flex-direction: column;
+  margin-top: 10vh;
+  margin-bottom: 5vh;
+  flex: 1;
+  color: white;
+}
+</style>
