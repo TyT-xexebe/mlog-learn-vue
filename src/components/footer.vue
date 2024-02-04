@@ -25,6 +25,7 @@ export default {}
 
 <style lang="scss" scoped>
   .footer {
+    z-index: 3;
     opacity: 0.85;
     position: absolute;
     left: 0;

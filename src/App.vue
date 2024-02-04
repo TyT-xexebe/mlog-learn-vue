@@ -29,7 +29,6 @@ body {
   padding-bottom: 50px;
   min-height: 95vh;
   width: 85vw;
-  overflow-x: hidden;
 }
 .yellow {
   color: rgb(245, 209, 8);
@@ -165,15 +164,15 @@ hr {
     }
   }
   h5 {
-    margin: 20px;
-    min-width: 300px;
+    margin: 20px 0 20px 0;
+    min-width: calc(100%);
     height: fit-content;
-    width: fit-content;
-    padding: 10px;
-    background-color: rgba(0, 0, 0, 0.25);
-    border: 1px solid rgba(0, 0, 0, 0.2);
-    border-radius: 5px;
+    padding: 20px 10% 20px 10%;
+    background-color: rgba(32, 31, 31, 0.562);
+    border-radius: 0.5px;
     font-size: 12.5px;
+    margin-left: -10%;
+    margin-right: -10%;
     br {
       margin: 1px;
     }
