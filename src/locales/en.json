@@ -61,65 +61,66 @@
       "specialValuesTitle": "Special Values",
       "specialValues": [
         {
-          "name": "links",
+          "name": "&commat;links",
           "description": "displays the number of blocks connected to the processor."
         },
         {
-          "name": "thisx",
+          "name": "&commat;thisx",
           "description": "displays the coordinates along the x-axis of this processor."
         },
         {
-          "name": "thisy",
+          "name": "&commat;thisy",
           "description": "displays the coordinates along the y-axis of this processor."
         },
-        { "name": "this", "description": "displays the processor object." },
+        { "name": "&commat;this", "description": "displays the processor object." },
         {
-          "name": "time",
+          "name": "&commat;time",
           "description": "displays the time in milliseconds, which began counting from the creation of the world. It does not count when the game is paused or you exit the world."
         },
         {
-          "name": "tick",
+          "name": "&commat;tick",
           "description": "is the same as time but in ticks instead of milliseconds."
         },
-        { "name": "unit", "description": "displays the unit object." },
+        { "name": "&commat;unit", "description": "displays the unit object." },
         {
-          "name": "counter",
+          "name": "&commat;counter",
           "description": "displays the line of code that the processor is currently reading. You can set it manually."
         },
         {
-          "name": "maph",
+          "name": "&commat;maph",
           "description": "displays the map's height in tiles."
         },
         {
-          "name": "mapw",
+          "name": "&commat;mapw",
           "description": "displays the map's width in tiles."
         },
         {
-          "name": "ips",
+          "name": "&commat;ipt",
           "description": "displays the processor's read speed in lines per tick."
         },
         {
-          "name": "itemCount , liquidCount , unitCount , blockCount",
+          "name": "&commat;itemCount , &commat;liquidCount , &commat;unitCount , &commat;blockCount",
           "description": "displays the number of objects of a particular type in the game (displays both types of serpulo and erekir)."
         },
         {
-          "name": "air",
+          "name": "&commat;air",
           "description": "represents plain air. With it, you can eject resources from a unit into oblivion."
         },
-        { "name": "server", "description": "displays the server." },
+        { "name": "&commat;server", "description": "displays the server." },
         {
-          "name": "crux , sharded , derelict , malis , blue , green",
+          "name": "&commat;crux , &commat;sharded , &commat;derelict , &commat;malis , &commat;blue , &commat;green",
           "description": "represents command objects."
         },
-        { "name": "pi", "description": "represents the number π." },
+        { "name": "&commat;pi", "description": "represents the number π." },
+        { "name": "&commat;e", "description": "represents the number e." },
         {
-          "name": "minute",
+          "name": "&commat;minute",
           "description": "displays the time spent in the world, in minutes."
         },
-        { "name": "waveNumber", "description": "displays the wave number." },
-        { "name": "waveTime", "description": "displays the wave time." },
+        { "name": "&commat;waveNumber", "description": "displays the wave number." },
+        { "name": "&commat;waveTime", "description": "displays the wave time." },
         {
-          "name": "degToRad , radToDeg , ctrlProcessor , ctrlPlayer , ctrlCommands",
+          "name": "&commat;degToRad , &commat;radToDeg , &commat;ctrlProcessor , &commat;ctrlPlayer , &commat;ctrlCommands",
           "description": "are rarely used."
         }
       ],
@@ -138,11 +139,11 @@
         "Numbers can store only 52 bits of information (+1 sign bit) and represent 53 because there is an implicit 1 before the fractional mantissa (part of 3.1415926e+0 in floating-point numbers) due to how binary scientific notation works. This means that the largest \"safe\" number is 2^53 (9,007,199,254,740,992.0 or 0x20 00 00 00 00 00 00).",
         "Ubind loads units in the order they are loaded in Groups.unit (an array that stores all units), in a loop. This is not accidental. However, saving reloads shuffle the order of units for unknown reasons.",
         "The packcolor working principle is that it takes the color components and converts them into a floating-point number that the display can process. It will display as if it were 0, but divide it by 2^-1074 to get the color.",
-        "When the code reaches the last line, it starts executing from the first line again (or from the value of counter).",
-        "Each type of processor has a different processing speed (you can read this from ipt): microprocessor (2 ipt or 120 lines/second at 60 FPS), logic processor (480/second), hyper-processor (1500/second).",
+        "When the code reaches the last line, it starts executing from the first line again (or from the value of &commat;counter).",
+        "Each type of processor has a different processing speed (you can read this from &commat;ipt): microprocessor (2 ipt or 120 lines/second at 60 FPS), logic processor (480/second), hyper-processor (1500/second).",
         "A memory cell can store a limited number of numbers (double or float32).",
         "A memory cell stores 64 numbers, and a memory bank stores 512 numbers.",
-        "All commands and words are case-sensitive, for example, 'firstItem', not 'firstitem'. Most comparisons are coercive - 'true' and 'false' will also be equal to 1 and 0, respectively. Be careful, null will also be converted to 0. To avoid this, use strict comparison with ===."
+        "All commands and words are case-sensitive, for example, '&commat;firstItem', not '&commat;firstitem'. Most comparisons are coercive - 'true' and 'false' will also be equal to 1 and 0, respectively. Be careful, null will also be converted to 0. To avoid this, use strict comparison with ===."
       ],
       "jumpLabelsTitle": "Using Jump Labels",
       "jumpLabelsIntro": "If you're writing code outside of Mindustry (for example, on a website or in VScode), you can use jump labels (absolute) instead of jump numbers (relative) to avoid having to maintain jumps. Jump method:",
@@ -150,7 +151,7 @@
       "jumpLabelMethodsTitle": "Jump Label Methods",
       "jumpLabelMethods": "With the jump label method, you just need to specify the label name followed by a colon, and 'label:' is not counted as a line. When you paste the code into the game, the label will disappear, and the jump will be set accordingly.",
       "otherLogicBlocksTitle": "Other Logic Blocks",
-      "otherLogicBlocksIntro": "Now let's move on to other blocks in logic. A button, as you can understand, can be on or off. In the processor, you can check this using the sensor command and its enabled method. Displays can show different pixel patterns. The display has its size in pixels, and you can display images on it using the draw and drawflush display commands."
+      "otherLogicBlocksIntro": "Now let's move on to other blocks in logic. A button, as you can understand, can be on or off. In the processor, you can check this using the sensor command and its &commat;enabled method. Displays can show different pixel patterns. The display has its size in pixels, and you can display images on it using the draw and drawflush display commands."
     }
   }
 }

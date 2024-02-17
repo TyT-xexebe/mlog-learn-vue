@@ -8,16 +8,17 @@
       <p>{{ $t('basic.understandingLogic.connectingBlocks') }}</p><br>
 
       <span class="bolt yellow hr"><span>{{ $t('basic.understandingLogic.specialValuesTitle') }}</span></span>
-      <ul>
-        <li v-for="value in this.$tm('basic.understandingLogic.specialValues')">
-          <strong class="bolt yellow">{{ value.name }}</strong>: {{ value.description }}<br>
-        </li>
-      </ul>
+<ul>
+  <li v-for="value in this.$tm('basic.understandingLogic.specialValues')">
+    <strong class="bolt yellow"  v-html="decodeHTMLEntities(value.name)"></strong>: <span>{{ value.description }}</span><br>
+  </li>
+</ul>
 
-      <span class="bolt yellow hr"><span>{{ $t('basic.understandingLogic.basicProcessorInfoTitle') }}</span></span>
-      <ul>
-        <li v-for="info in this.$tm('basic.understandingLogic.basicProcessorInfo')">{{ info }}<br></li>
-      </ul>
+<span class="bolt yellow hr"><span>{{ $t('basic.understandingLogic.basicProcessorInfoTitle') }}</span></span>
+<ul>
+  <li v-for="info in this.$tm('basic.understandingLogic.basicProcessorInfo')"><span v-html="decodeHTMLEntities(info)"></span><br></li>
+</ul>
+
 
       <p class="bolt yellow">{{ $t('basic.understandingLogic.jumpLabelsTitle') }}</p>
       <p>{{ $t('basic.understandingLogic.jumpLabelsIntro') }}</p>
@@ -26,8 +27,8 @@
         end<br />
         print "hello"<br />
       </h5>
-      <p>{{ $t('basic.understandingLogic.jumpMethods') }}</p>
       <p class="bolt yellow">{{ $t('basic.understandingLogic.jumpLabelMethodsTitle') }}</p>
+      <p>{{ $t('basic.understandingLogic.jumpMethods') }}</p>
       <h5>
         jump label always 0 0<br />
         end<br />
@@ -44,10 +45,15 @@
 
 <script>
 export default {
-  data() {
-    return {}
+  methods: {
+    decodeHTMLEntities: function(html) {
+      var txt = document.createElement('textarea');
+      txt.innerHTML = html;
+      return txt.value;
+    }
   }
 };
+
 </script>
 <style lang="scss">
 .container {

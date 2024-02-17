@@ -137,25 +137,7 @@
 import { ref } from "vue";
 export default {
   name: "nav-bar",
-  mounted() {
-    const navBtns = this.nav.querySelectorAll('button');
-    navBtns.forEach(btn => {btn.addEventListener('click', (event) => {this.reload(event)})});
-    this.openFullNav();
-    this.positionedLangMenu();
-    this.openLangMenu();
-    this.openCommandsMenu();
-    window.addEventListener("resize", () => {
-      this.positionedLangMenu();
-      this.showLang = false;
-      this.openLangMenu();
-      if (window.innerWidth > 800) {
-        if (this.showBar) this.openFullNav();
-      } else {
-        if (!this.showBar) this.openFullNav();
-      }
-    });
-  },
-
+  
   setup() {
     const showBar = ref(false);
     const showCommands = ref(false);
@@ -164,6 +146,13 @@ export default {
     const navRight = ref(null);
     const languageMenu = ref(null);
     const commandsList = ref(null);
+    document.addEventListener('click', function(event) {
+      const commandBtn = navRight._value.querySelectorAll("button")[0];
+      if (!commandsList._value.contains(event.target) && event.target !== commandBtn) {
+        commandsList._value.style.transform = "translateY(300px)";
+        commandsList._value.style.opacity = "0";
+      }
+    });
     return {
       showBar,
       showCommands,
@@ -179,6 +168,27 @@ export default {
       this.openCommandsMenu();
     },
   },
+  
+  mounted() {
+    this.openFullNav();
+    this.positionedLangMenu();
+    this.openLangMenu();
+    this.openCommandsMenu();
+    window.addEventListener("resize", () => {
+      this.positionedLangMenu();
+      this.showLang = false;
+      this.openLangMenu();
+      if (window.innerWidth > 800) {
+        if (this.showBar) this.openFullNav();
+      } else {
+        if (!this.showBar) this.openFullNav();
+      }
+    });
+    const navBtns = this.nav.querySelectorAll('button');
+    navBtns.forEach(btn => {btn.addEventListener('click', (event) => {this.reload(event)})});
+  },
+
+  
 
   methods: {
     changeLanguage(language) {
