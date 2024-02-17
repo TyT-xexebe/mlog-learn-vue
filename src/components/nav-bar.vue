@@ -1,6 +1,6 @@
 <template>
   <div class="nav-bar" ref="nav">
-    <div class="left">
+    <div class="left navComponent">
       <my-button
         class="underlined"
         @click="$router.push('/about')"
@@ -15,7 +15,7 @@
       >
     </div>
 
-    <div class="right" ref="navRight">
+    <div class="right navComponent" ref="navRight">
       <my-button
         class="underlined commands"
         @click="this.$router.push('/commands')"
@@ -186,6 +186,8 @@ export default {
     });
     const navBtns = this.nav.querySelectorAll('button');
     navBtns.forEach(btn => {btn.addEventListener('click', (event) => {this.reload(event)})});
+    const navBtns2 = this.nav.querySelectorAll('.navComponent button');
+    navBtns2.forEach(btn => {btn.addEventListener('click', () => window.scrollTo({top: 0,left: 0,behavoir: "smooth"}))})
   },
 
   

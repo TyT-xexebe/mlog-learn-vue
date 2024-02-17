@@ -27,8 +27,8 @@ body {
 .mainContainer {
   flex: 1;
   padding-bottom: 50px;
-  min-height: 95vh;
-  width: 85vw;
+  min-height: 90vh;
+  width: 90vw;
 }
 .yellow {
   color: rgb(245, 209, 8);

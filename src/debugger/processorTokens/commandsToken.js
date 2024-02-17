@@ -248,7 +248,18 @@ const set = {
   commands: [
     '{1} to {2}',
     { input: [range.variable], type: 'output' },
-    { input: [range.variable, range.int, range.float, range.text, range.hex,], type: 'input' },
+    { input: [range.variable, range.int, range.float, range.text, range.hex, range.blocks, range.items, range.liquids, range.units, range.buildings, range.special, range.teams], type: 'input' },
+  ]
+}
+
+const op = {
+  name: 'Op',
+  select: true,
+  type: 'Operations',
+  commands: [
+    [
+      
+    ]
   ]
 }
 
@@ -260,6 +271,7 @@ const commands = {
   printFlush: printFlush,
   drawFlush: drawFlush,
   control: control,
+  getLink: getLink,
   radar: radar,
   sensor: sensor,
   set: set,
