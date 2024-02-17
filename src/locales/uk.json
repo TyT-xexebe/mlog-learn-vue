@@ -79,7 +79,7 @@
         },
         {
           "name": "&commat;tick",
-          "description": "теж саме, що й &commat;time, але в тіках замість мілісекунд."
+          "description": "теж саме, що й &commat;time, але в тіках."
         },
         { "name": "&commat;unit", "description": "об'єкт юніта." },
         {

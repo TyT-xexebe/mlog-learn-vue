@@ -79,7 +79,7 @@
         },
         {
           "name": "&commat;tick",
-          "description": "is the same as time but in ticks instead of milliseconds."
+          "description": "is the same as &commat;time but in ticks."
         },
         { "name": "&commat;unit", "description": "displays the unit object." },
         {

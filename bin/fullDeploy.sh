@@ -37,6 +37,5 @@ read -r msg
 echo ">> commiting changes.. $msg"
 git commit -m "$msg"
 echo ">> pushing changes.."
-git remote add origin git@github.com:TyT-xexebe/mlog-learn-vue.git
 git push origin
 cd ./bin

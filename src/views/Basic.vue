@@ -10,7 +10,7 @@
       <span class="bolt yellow hr"><span>{{ $t('basic.understandingLogic.specialValuesTitle') }}</span></span>
 <ul>
   <li v-for="value in this.$tm('basic.understandingLogic.specialValues')">
-    <strong class="bolt yellow"  v-html="decodeHTMLEntities(value.name)"></strong>: <span>{{ value.description }}</span><br>
+    <strong class="bolt yellow"  v-html="decodeHTMLEntities(value.name)"></strong>: <span v-html="decodeHTMLEntities(value.description)"></span><br>
   </li>
 </ul>
 
@@ -38,7 +38,7 @@
       <p>{{ $t('basic.understandingLogic.jumpLabelMethods') }}</p>
 
       <span class="bolt yellow hr"><span>{{ $t('basic.understandingLogic.otherLogicBlocksTitle') }}</span></span>
-      <p>{{ $t('basic.understandingLogic.otherLogicBlocksIntro') }}</p>
+      <p v-html="decodeHTMLEntities($t('basic.understandingLogic.otherLogicBlocksIntro'))"></p>
     </div>
   </div>
 </template>
