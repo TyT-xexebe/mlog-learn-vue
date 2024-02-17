@@ -179,7 +179,7 @@ const control = {
     [
       'set shoot of {1} x {2} y {3} shoot {4}',
       { subcommand: 'shoot', type: 'setable', canWrite: false },
-      { input: [range.variable], type: 'input' },
+      { input: [range.variable, range.turret], type: 'input' },
       { input: [range.variable, range.positiveInt], type: 'input' },
       { input: [range.variable, range.positiveInt], type: 'input' },
       { input: [range.variable, range.boolean], type: 'input' },
@@ -187,7 +187,7 @@ const control = {
     [
       'set shootp of {1} unit {2} shoot {3}',
       { subcommand: 'shootp', type: 'setable', canWrite: false },
-      { input: [range.variable], type: 'input' },
+      { input: [range.variable, range.turret], type: 'input' },
       { input: [range.variable], type: 'input' },
       { input: [range.variable, range.boolean], type: 'input' },
     ],
@@ -252,14 +252,425 @@ const set = {
   ]
 }
 
-const op = {
-  name: 'Op',
+const operation = {
+  name: 'Operation',
   select: true,
   type: 'Operations',
   commands: [
     [
-      
-    ]
+      '{1} = {2} + {3}',
+      { subcommand: 'add', type: 'setable', canWrite: false },
+      { input: [range.variable], type: 'output' },
+      { input: [range.variable, range.int, range.float, range.hex, range.specia], type: 'input' },
+      { input: [range.variable, range.int, range.float, range.hex, range.specia], type: 'input' },
+    ],
+    [
+      '{1} = {2} - {3}',
+      { subcommand: 'sub', type: 'setable', canWrite: false },
+      { input: [range.variable], type: 'output' },
+      { input: [range.variable, range.int, range.float, range.hex, range.specia], type: 'input' },
+      { input: [range.variable, range.int, range.float, range.hex, range.specia], type: 'input' },
+    ],
+    [
+      '{1} = {2} * {3}',
+      { subcommand: 'mul', type: 'setable', canWrite: false },
+      { input: [range.variable], type: 'output' },
+      { input: [range.variable, range.int, range.float, range.hex, range.specia], type: 'input' },
+      { input: [range.variable, range.int, range.float, range.hex, range.specia], type: 'input' },
+    ],
+    [
+      '{1} = {2} / {3}',
+      { subcommand: 'div', type: 'setable', canWrite: false },
+      { input: [range.variable], type: 'output' },
+      { input: [range.variable, range.int, range.float, range.hex, range.specia], type: 'input' },
+      { input: [range.variable, range.int, range.float, range.hex, range.specia], type: 'input' },
+    ],
+    [
+      '{1} = {2} // {3}',
+      { subcommand: 'idiv', type: 'setable', canWrite: false },
+      { input: [range.variable], type: 'output' },
+      { input: [range.variable, range.int, range.float, range.hex, range.specia], type: 'input' },
+      { input: [range.variable, range.int, range.float, range.hex, range.specia], type: 'input' },
+    ],
+    [
+      '{1} = {2} % {3}',
+      { subcommand: 'mod', type: 'setable', canWrite: false },
+      { input: [range.variable], type: 'output' },
+      { input: [range.variable, range.int, range.float, range.hex, range.specia], type: 'input' },
+      { input: [range.variable, range.int, range.float, range.hex, range.specia], type: 'input' },
+    ],
+    [
+      '{1} = {2} ^ {3}',
+      { subcommand: 'pow', type: 'setable', canWrite: false },
+      { input: [range.variable], type: 'output' },
+      { input: [range.variable, range.int, range.float, range.hex, range.specia], type: 'input' },
+      { input: [range.variable, range.int, range.float, range.hex, range.specia], type: 'input' },
+    ],
+    [
+      '{1} = {2} == {3}',
+      { subcommand: 'equal', type: 'setable', canWrite: false },
+      { input: [range.variable], type: 'output' },
+      { input: [range.variable, range.int, range.float, range.hex, range.specia], type: 'input' },
+      { input: [range.variable, range.int, range.float, range.hex, range.specia], type: 'input' },
+    ],
+    [
+      '{1} = {2} not {3}',
+      { subcommand: 'notEqual', type: 'setable', canWrite: false },
+      { input: [range.variable], type: 'output' },
+      { input: [range.variable, range.int, range.float, range.hex, range.specia], type: 'input' },
+      { input: [range.variable, range.int, range.float, range.hex, range.specia], type: 'input' },
+    ],
+    [
+      '{1} = {2} and {3}',
+      { subcommand: 'land', type: 'setable', canWrite: false },
+      { input: [range.variable], type: 'output' },
+      { input: [range.variable, range.int, range.float, range.hex, range.specia], type: 'input' },
+      { input: [range.variable, range.int, range.float, range.hex, range.specia], type: 'input' },
+    ],
+    [
+      '{1} = {2} < {3}',
+      { subcommand: 'lessThan', type: 'setable', canWrite: false },
+      { input: [range.variable], type: 'output' },
+      { input: [range.variable, range.int, range.float, range.hex, range.specia], type: 'input' },
+      { input: [range.variable, range.int, range.float, range.hex, range.specia], type: 'input' },
+    ],
+    [
+      '{1} = {2} <= {3}',
+      { subcommand: 'lessThanEq', type: 'setable', canWrite: false },
+      { input: [range.variable], type: 'output' },
+      { input: [range.variable, range.int, range.float, range.hex, range.specia], type: 'input' },
+      { input: [range.variable, range.int, range.float, range.hex, range.specia], type: 'input' },
+    ],
+    [
+      '{1} = {2} > {3}',
+      { subcommand: 'greaterThan', type: 'setable', canWrite: false },
+      { input: [range.variable], type: 'output' },
+      { input: [range.variable, range.int, range.float, range.hex, range.specia], type: 'input' },
+      { input: [range.variable, range.int, range.float, range.hex, range.specia], type: 'input' },
+    ],
+    [
+      '{1} = {2} >= {3}',
+      { subcommand: 'greaterThanEq', type: 'setable', canWrite: false },
+      { input: [range.variable], type: 'output' },
+      { input: [range.variable, range.int, range.float, range.hex, range.specia], type: 'input' },
+      { input: [range.variable, range.int, range.float, range.hex, range.specia], type: 'input' },
+    ],
+    [
+      '{1} = {2} === {3}',
+      { subcommand: 'strictEqual', type: 'setable', canWrite: false },
+      { input: [range.variable], type: 'output' },
+      { input: [range.variable, range.int, range.float, range.hex, range.specia], type: 'input' },
+      { input: [range.variable, range.int, range.float, range.hex, range.specia], type: 'input' },
+    ],
+    [
+      '{1} = {2} << {3}',
+      { subcommand: 'shl', type: 'setable', canWrite: false },
+      { input: [range.variable], type: 'output' },
+      { input: [range.variable, range.int, range.float, range.hex, range.specia], type: 'input' },
+      { input: [range.variable, range.int, range.float, range.hex, range.specia], type: 'input' },
+    ],
+    [
+      '{1} = {2} >> {3}',
+      { subcommand: 'shr', type: 'setable', canWrite: false },
+      { input: [range.variable], type: 'output' },
+      { input: [range.variable, range.int, range.float, range.hex, range.specia], type: 'input' },
+      { input: [range.variable, range.int, range.float, range.hex, range.specia], type: 'input' },
+    ],
+    [
+      '{1} = {2} or {3}',
+      { subcommand: 'or', type: 'setable', canWrite: false },
+      { input: [range.variable], type: 'output' },
+      { input: [range.variable, range.int, range.float, range.hex, range.specia], type: 'input' },
+      { input: [range.variable, range.int, range.float, range.hex, range.specia], type: 'input' },
+    ],
+    [
+      '{1} = {2} b-and {3}',
+      { subcommand: 'and', type: 'setable', canWrite: false },
+      { input: [range.variable], type: 'output' },
+      { input: [range.variable, range.int, range.float, range.hex, range.specia], type: 'input' },
+      { input: [range.variable, range.int, range.float, range.hex, range.specia], type: 'input' },
+    ],
+    [
+      '{1} = {2} xor {3}',
+      { subcommand: 'xor', type: 'setable', canWrite: false },
+      { input: [range.variable], type: 'output' },
+      { input: [range.variable, range.int, range.float, range.hex, range.specia], type: 'input' },
+      { input: [range.variable, range.int, range.float, range.hex, range.specia], type: 'input' },
+    ],
+    [
+      '{1} = {2} flip {3}',
+      { subcommand: 'not', type: 'setable', canWrite: false },
+      { input: [range.variable], type: 'output' },
+      { input: [range.variable, range.int, range.float, range.hex, range.specia], type: 'input' },
+      { input: [range.variable, range.int, range.float, range.hex, range.specia], type: 'input' },
+    ],
+    [
+      '{1} = {2} max {3}',
+      { subcommand: 'max', type: 'setable', canWrite: false },
+      { input: [range.variable], type: 'output' },
+      { input: [range.variable, range.int, range.float, range.hex, range.specia], type: 'input' },
+      { input: [range.variable, range.int, range.float, range.hex, range.specia], type: 'input' },
+    ],
+    [
+      '{1} = {2} min {3}',
+      { subcommand: 'min', type: 'setable', canWrite: false },
+      { input: [range.variable], type: 'output' },
+      { input: [range.variable, range.int, range.float, range.hex, range.specia], type: 'input' },
+      { input: [range.variable, range.int, range.float, range.hex, range.specia], type: 'input' },
+    ],
+    [
+      '{1} = {2} angle {3}',
+      { subcommand: 'angle', type: 'setable', canWrite: false },
+      { input: [range.variable], type: 'output' },
+      { input: [range.variable, range.int, range.float, range.hex, range.specia], type: 'input' },
+      { input: [range.variable, range.int, range.float, range.hex, range.specia], type: 'input' },
+    ],
+    [
+      '{1} = {2} angle diff {3}',
+      { subcommand: 'angleDiff', type: 'setable', canWrite: false },
+      { input: [range.variable], type: 'output' },
+      { input: [range.variable, range.int, range.float, range.hex, range.specia], type: 'input' },
+      { input: [range.variable, range.int, range.float, range.hex, range.specia], type: 'input' },
+    ],
+    [
+      '{1} = {2} len {3}',
+      { subcommand: 'len', type: 'setable', canWrite: false },
+      { input: [range.variable], type: 'output' },
+      { input: [range.variable, range.int, range.float, range.hex, range.specia], type: 'input' },
+      { input: [range.variable, range.int, range.float, range.hex, range.specia], type: 'input' },
+    ],
+    [
+      '{1} = {2} noise {3}',
+      { subcommand: 'noise', type: 'setable', canWrite: false },
+      { input: [range.variable], type: 'output' },
+      { input: [range.variable, range.int, range.float, range.hex, range.specia], type: 'input' },
+      { input: [range.variable, range.int, range.float, range.hex, range.specia], type: 'input' },
+    ],
+    [
+      '{1} = {2} abs {3}',
+      { subcommand: 'abs', type: 'setable', canWrite: false },
+      { input: [range.variable], type: 'output' },
+      { input: [range.variable, range.int, range.float, range.hex, range.specia], type: 'input' },
+      { input: [range.variable, range.int, range.float, range.hex, range.specia], type: 'input' },
+    ],
+    [
+      '{1} = {2} log {3}',
+      { subcommand: 'log', type: 'setable', canWrite: false },
+      { input: [range.variable], type: 'output' },
+      { input: [range.variable, range.int, range.float, range.hex, range.specia], type: 'input' },
+      { input: [range.variable, range.int, range.float, range.hex, range.specia], type: 'input' },
+    ],
+    [
+      '{1} = {2} log10 {3}',
+      { subcommand: 'log10', type: 'setable', canWrite: false },
+      { input: [range.variable], type: 'output' },
+      { input: [range.variable, range.int, range.float, range.hex, range.specia], type: 'input' },
+      { input: [range.variable, range.int, range.float, range.hex, range.specia], type: 'input' },
+    ],
+    [
+      '{1} = {2} floor {3}',
+      { subcommand: 'floor', type: 'setable', canWrite: false },
+      { input: [range.variable], type: 'output' },
+      { input: [range.variable, range.int, range.float, range.hex, range.specia], type: 'input' },
+      { input: [range.variable, range.int, range.float, range.hex, range.specia], type: 'input' },
+    ],
+    [
+      '{1} = {2} ceil {3}',
+      { subcommand: 'ceil', type: 'setable', canWrite: false },
+      { input: [range.variable], type: 'output' },
+      { input: [range.variable, range.int, range.float, range.hex, range.specia], type: 'input' },
+      { input: [range.variable, range.int, range.float, range.hex, range.specia], type: 'input' },
+    ],
+    [
+      '{1} = {2} sqrt {3}',
+      { subcommand: 'sqrt', type: 'setable', canWrite: false },
+      { input: [range.variable], type: 'output' },
+      { input: [range.variable, range.int, range.float, range.hex, range.specia], type: 'input' },
+      { input: [range.variable, range.int, range.float, range.hex, range.specia], type: 'input' },
+    ],
+    [
+      '{1} = {2} rand {3}',
+      { subcommand: 'rand', type: 'setable', canWrite: false },
+      { input: [range.variable], type: 'output' },
+      { input: [range.variable, range.int, range.float, range.hex, range.specia], type: 'input' },
+      { input: [range.variable, range.int, range.float, range.hex, range.specia], type: 'input' },
+    ],
+    [
+      '{1} = {2} sin {3}',
+      { subcommand: 'sin', type: 'setable', canWrite: false },
+      { input: [range.variable], type: 'output' },
+      { input: [range.variable, range.int, range.float, range.hex, range.specia], type: 'input' },
+      { input: [range.variable, range.int, range.float, range.hex, range.specia], type: 'input' },
+    ],
+    [
+      '{1} = {2} cos {3}',
+      { subcommand: 'cos', type: 'setable', canWrite: false },
+      { input: [range.variable], type: 'output' },
+      { input: [range.variable, range.int, range.float, range.hex, range.specia], type: 'input' },
+      { input: [range.variable, range.int, range.float, range.hex, range.specia], type: 'input' },
+    ],
+    [
+      '{1} = {2} tan {3}',
+      { subcommand: 'tan', type: 'setable', canWrite: false },
+      { input: [range.variable], type: 'output' },
+      { input: [range.variable, range.int, range.float, range.hex, range.specia], type: 'input' },
+      { input: [range.variable, range.int, range.float, range.hex, range.specia], type: 'input' },
+    ],
+    [
+      '{1} = {2} asin {3}',
+      { subcommand: 'asin', type: 'setable', canWrite: false },
+      { input: [range.variable], type: 'output' },
+      { input: [range.variable, range.int, range.float, range.hex, range.specia], type: 'input' },
+      { input: [range.variable, range.int, range.float, range.hex, range.specia], type: 'input' },
+    ],
+    [
+      '{1} = {2} acos {3}',
+      { subcommand: 'acos', type: 'setable', canWrite: false },
+      { input: [range.variable], type: 'output' },
+      { input: [range.variable, range.int, range.float, range.hex, range.special], type: 'input' },
+      { input: [range.variable, range.int, range.float, range.hex, range.specia], type: 'input' },
+    ],
+    [
+      '{1} = {2} atan {3}',
+      { subcommand: 'atan', type: 'setable', canWrite: false },
+      { input: [range.variable], type: 'output' },
+      { input: [range.variable, range.int, range.float, range.hex, range.specia], type: 'input' },
+      { input: [range.variable, range.int, range.float, range.hex, range.specia], type: 'input' },
+    ],
+  ]
+}
+
+const lookup = {
+  name: 'Lookup',
+  select: true,
+  type: 'Operations',
+  commands: [
+    [
+      '{1} = lookup item # {2}',
+      { subcommand: 'item', type: 'setable', canWrite: false },
+      { input: [range.variable], type: 'output' },
+      { input: [range.variable, range.positiveInt], type: 'input' },
+    ],
+    [
+      '{1} = lookup unit # {2}',
+      { subcommand: 'unit', type: 'setable', canWrite: false },
+      { input: [range.variable], type: 'output' },
+      { input: [range.variable, range.positiveInt], type: 'input' },
+    ],
+    [
+      '{1} = lookup liquid # {2}',
+      { subcommand: 'liquid', type: 'setable', canWrite: false },
+      { input: [range.variable], type: 'output' },
+      { input: [range.variable, range.positiveInt], type: 'input' },
+    ],
+    [
+      '{1} = lookup block # {2}',
+      { subcommand: 'block', type: 'setable', canWrite: false },
+      { input: [range.variable], type: 'output' },
+      { input: [range.variable, range.positiveInt], type: 'input' },
+    ],
+  ]
+}
+
+const packcolor = {
+  name: 'PackColor',
+  select: false,
+  type: 'Operations',
+  commands: [
+    '{1} = pack {2} {3} {4} {5}',
+    { input: [range.variable], type: 'output' },
+    { input: [range.variable, range.boolean], type: 'input' },
+    { input: [range.variable, range.boolean], type: 'input' },
+    { input: [range.variable, range.boolean], type: 'input' },
+    { input: [range.variable, range.boolean], type: 'input' },
+  ]
+}
+
+const wait = {
+  name: 'Wait',
+  select: false,
+  type: 'Flow Control',
+  commands: [
+    '{1} sec',
+    { input: [range.variable, range.positiveInt, range.float, range.specia], type: 'input' },
+  ]
+}
+
+const stop = {
+  name: 'Wait',
+  select: 'end',
+  type: 'Flow Control'
+}
+
+const end = {
+  name: 'Wait',
+  select: 'end',
+  type: 'Flow Control'
+}
+
+const jump = {
+  name: 'Jump',
+  select: true,
+  type: 'Flow Control',
+  commands: [
+    [
+      'if {1} == {2}',
+      { subcommand: 'equal', type: 'setable', canWrite: false },
+      { input: [range.variable, range.boolean, range.int, range.float, range.special, range.teams, range.hex], type: 'input' },
+      { input: [range.variable, range.boolean, range.int, range.float, range.special, range.teams, range.hex], type: 'input' },
+    ],
+    [
+      'if {1} not {2}',
+      { subcommand: 'notEqual', type: 'setable', canWrite: false },
+      { input: [range.variable, range.boolean, range.int, range.float, range.special, range.teams, range.hex], type: 'input' },
+      { input: [range.variable, range.boolean, range.int, range.float, range.special, range.teams, range.hex], type: 'input' },
+    ],
+    [
+      'if {1} < {2}',
+      { subcommand: 'lessThan', type: 'setable', canWrite: false },
+      { input: [range.variable, range.boolean, range.int, range.float, range.special, range.teams, range.hex], type: 'input' },
+      { input: [range.variable, range.boolean, range.int, range.float, range.special, range.teams, range.hex], type: 'input' },
+    ],
+    [
+      'if {1} <= {2}',
+      { subcommand: 'lessThanEq', type: 'setable', canWrite: false },
+      { input: [range.variable, range.boolean, range.int, range.float, range.special, range.teams, range.hex], type: 'input' },
+      { input: [range.variable, range.boolean, range.int, range.float, range.special, range.teams, range.hex], type: 'input' },
+    ],
+    [
+      'if {1} > {2}',
+      { subcommand: 'greaterThan', type: 'setable', canWrite: false },
+      { input: [range.variable, range.boolean, range.int, range.float, range.special, range.teams, range.hex], type: 'input' },
+      { input: [range.variable, range.boolean, range.int, range.float, range.special, range.teams, range.hex], type: 'input' },
+    ],
+    [
+      'if {1} >= {2}',
+      { subcommand: 'greaterThanEq', type: 'setable', canWrite: false },
+      { input: [range.variable, range.boolean, range.int, range.float, range.special, range.teams, range.hex], type: 'input' },
+      { input: [range.variable, range.boolean, range.int, range.float, range.special, range.teams, range.hex], type: 'input' },
+    ],
+    [
+      'if {1} === {2}',
+      { subcommand: 'strictEqual', type: 'setable', canWrite: false },
+      { input: [range.variable, range.boolean, range.int, range.float, range.special, range.teams, range.hex], type: 'input' },
+      { input: [range.variable, range.boolean, range.int, range.float, range.special, range.teams, range.hex], type: 'input' },
+    ],
+    [
+      'if always',
+      { subcommand: 'always', type: 'setable', canWrite: false },
+      { input: [range.variable, range.boolean, range.int, range.float, range.special, range.teams, range.hex], type: 'input' },
+      { input: [range.variable, range.boolean, range.int, range.float, range.special, range.teams, range.hex], type: 'input' },
+    ],
+  ]
+}
+
+const ubind = {
+  name: 'Ubind',
+  select: false,
+  type: 'Unit Control',
+  commands: [
+    '{1}',
+    { input: [range.units], type: 'input' },
   ]
 }
 
@@ -275,6 +686,14 @@ const commands = {
   radar: radar,
   sensor: sensor,
   set: set,
+  operation: operation,
+  lookup: lookup,
+  packcolor: packcolor,
+  wait: wait,
+  stop: stop,
+  end: end,
+  jump: jump,
+  ubind: ubind,
 }
 
 for (const key in commands) {
