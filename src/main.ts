@@ -1,8 +1,9 @@
-import App from "@/App.vue"
-import components from "./components/UI/template-assembly"
-import { createApp } from 'vue'
-import router from './router/router'
+import App from "@/App.vue";
+import components from "./components/UI/template-assembly";
+import { createApp, ComponentPublicInstance } from 'vue';
+import router from './router/router';
 import { createI18n } from 'vue-i18n';
+import { vm } from './debugger/parser'
 
 const i18n = createI18n({
   locale: 'en', 
@@ -12,12 +13,17 @@ const i18n = createI18n({
     uk: require('./locales/uk.json')
   }
 });
+
 const app = createApp(App);
 
 components.forEach(component => {
   app.component(component.name, component);
 });
 
+const consoleOutput = (data: any) => console.log(data);
+
 app.use(i18n)
 app.use(router);
 app.mount('#app');
+
+export { consoleOutput }

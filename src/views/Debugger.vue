@@ -1,7 +1,6 @@
 <template>
   <div id="container">
     <div id="input" ref="input" contenteditable="true" spellcheck="false" @scroll="updateScroll">
-      {{ inputData }}
     </div>
     <div id="output" ref="output">
       {{ inputData }}
@@ -20,7 +19,7 @@ export default {
 
   mounted() {
     console.log(this.input)
-    this.input.addEventListener('input', () => this.updateData());
+    this.input.addEventListener('input', () => {this.updateData();});
   },
 
   setup() {
@@ -40,7 +39,7 @@ export default {
       outputDiv.scrollLeft = inputDiv.scrollLeft;
     },
     updateData() {
-      this.output.textContent = this.input.textContent;
+      this.inputData = this.input.textContent;
     },
   }
 };

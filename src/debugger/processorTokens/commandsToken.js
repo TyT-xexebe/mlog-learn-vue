@@ -1,4 +1,4 @@
-import { range, pallete } from './mainProccesor'
+import { range, pallete } from './mainProcessor'
 
 const write = {
   name: 'Write',

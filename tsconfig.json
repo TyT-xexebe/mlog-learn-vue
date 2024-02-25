@@ -30,13 +30,13 @@
   },
   "include": [
     "src/**/*.ts",
+    "src/**/*.js",
     "src/**/*.tsx",
     "src/**/*.vue",
     "*.vue",
-    "tests/**/*.ts",
-    "tests/**/*.tsx"
+    "src/debugger/processorTokens/*.d.ts"
   ],
   "exclude": [
-    "node_modules"
+    "node_modules",
   ]
 }
