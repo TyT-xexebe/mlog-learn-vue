@@ -1,9 +1,10 @@
 import App from "@/App.vue";
 import components from "./components/UI/template-assembly";
-import { createApp, ComponentPublicInstance } from 'vue';
+import { createApp } from 'vue';
 import router from './router/router';
 import { createI18n } from 'vue-i18n';
-import { vm } from './debugger/parser'
+import { outputData, vm } from './debugger/parser'
+import { hightlighting } from './debugger/hightlighting'
 
 const i18n = createI18n({
   locale: 'en', 
@@ -21,9 +22,16 @@ components.forEach(component => {
 });
 
 const consoleOutput = (data: any) => console.log(data);
-
 app.use(i18n)
 app.use(router);
 app.mount('#app');
+
+// @ts-ignore
+app.config.globalProperties.handleInput = (event) => {
+  console.log('handle input');
+  outputData();
+  hightlighting();
+  console.log(vm)
+}
 
 export { consoleOutput }

@@ -1,6 +1,6 @@
 <template>
   <div id="container">
-    <div id="input" ref="input" contenteditable="true" spellcheck="false" @scroll="updateScroll">
+    <div id="input" ref="input" contenteditable="true" spellcheck="false" @scroll="updateScroll" v-on:input="$root.handleInput(event)">
     </div>
     <div id="output" ref="output">
       {{ inputData }}
@@ -23,8 +23,8 @@ export default {
   },
 
   setup() {
-    const input = ref(false);
-    const output = ref(false);
+    const input = ref(null);
+    const output = ref(null);
     return {
       input,
       output,

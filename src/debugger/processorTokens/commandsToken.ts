@@ -1,7 +1,7 @@
 import { range, pallete } from './mainProcessor'
 
 const write = {
-  name: 'Write',
+  name: ['Write', 'write'],
   select: false,
   type: 'Input & Output',
   commands: [
@@ -15,7 +15,7 @@ const write = {
 }
 
 const read = {
-  name: 'Read',
+  name: ['Read', 'read'],
   select: false,
   type: 'Input & Output',
   commands: [
@@ -29,7 +29,7 @@ const read = {
 }
 
 const draw = {
-  name: 'Draw',
+  name: ['Draw', 'draw'],
   select: true,
   type: 'Input & Output',
   commands: [
@@ -128,14 +128,14 @@ const draw = {
 }
 
 const print = {
-  name: 'Print',
+  name: ['Print', 'print'],
   select: false,
   type: 'Input & Output',
   commands: [['{1}', { input: [range.variable, range.text], type: 'input' }]],
 }
 
 const printFlush = {
-  name: 'Print Flush',
+  name: ['Print Flush', 'printflush'],
   select: false,
   type: 'Block Control',
   commands: [
@@ -144,7 +144,7 @@ const printFlush = {
 }
 
 const drawFlush = {
-  name: 'Draw Flush',
+  name: ['Draw Flush', 'drawflush'],
   select: false,
   type: 'Block Control',
   commands: [
@@ -153,7 +153,7 @@ const drawFlush = {
 }
 
 const getLink = {
-  name: 'Get Link',
+  name: ['Get Link',  'getlink'],
   select: false,
   type: 'Block Control',
   commands: [
@@ -166,7 +166,7 @@ const getLink = {
 }
 
 const control = {
-  name: 'Control',
+  name: ['Control', 'control'],
   select: true,
   type: 'Block Control',
   commands: [
@@ -207,7 +207,7 @@ const control = {
 }
 
 const radar = {
-  name: 'Radar',
+  name: ['Radar', 'radar'],
   select: false,
   type: 'Block Control',
   commands: [
@@ -225,7 +225,7 @@ const radar = {
 }
 
 const sensor = {
-  name: 'Sensor',
+  name: ['Sensor', 'sensor'],
   select: false,
   type: 'Block Control',
   commands: [
@@ -239,12 +239,9 @@ const sensor = {
 }
 
 const set = {
-  name: 'Set',
+  name: ['Set','set'],
   select: 'func',
   type: 'Operations',
-  func: (variable, value, arr) => {
-    arr.push([variable, value]);
-  },
   commands: [
     '{1} to {2}',
     { input: [range.variable], type: 'output' },
@@ -253,7 +250,7 @@ const set = {
 }
 
 const operation = {
-  name: 'Operation',
+  name: ['Operation', 'op'],
   select: true,
   type: 'Operations',
   commands: [
@@ -541,7 +538,7 @@ const operation = {
 }
 
 const lookup = {
-  name: 'Lookup',
+  name: ['Lookup', 'lookup'],
   select: true,
   type: 'Operations',
   commands: [
@@ -573,7 +570,7 @@ const lookup = {
 }
 
 const packcolor = {
-  name: 'PackColor',
+  name: ['PackColor', 'packcolor'],
   select: false,
   type: 'Operations',
   commands: [
@@ -587,7 +584,7 @@ const packcolor = {
 }
 
 const wait = {
-  name: 'Wait',
+  name: ['Wait', 'wait'],
   select: false,
   type: 'Flow Control',
   commands: [
@@ -597,19 +594,19 @@ const wait = {
 }
 
 const stop = {
-  name: 'Wait',
+  name: ['Stop', 'stop'],
   select: 'end',
   type: 'Flow Control'
 }
 
 const end = {
-  name: 'Wait',
+  name: ['End', 'end'],
   select: 'end',
   type: 'Flow Control'
 }
 
 const jump = {
-  name: 'Jump',
+  name: ['Jump', 'jump'],
   select: true,
   type: 'Flow Control',
   commands: [
@@ -665,7 +662,7 @@ const jump = {
 }
 
 const ubind = {
-  name: 'Unit Bind',
+  name: ['Unit Bind', 'ubind'],
   select: false,
   type: 'Unit Control',
   commands: [
@@ -675,7 +672,7 @@ const ubind = {
 }
 
 const ucontrol = {
-  name: 'Unit Control',
+  name: ['Unit Control', 'ucontrol'],
   select: true,
   type: 'Unit Control',
   commands: [
@@ -772,7 +769,7 @@ const ucontrol = {
       { input: [range.variable, range.positiveInt, range.special], type: 'input' },
       { input: [range.variable, range.blocks], type: 'input' },
       { input: [range.variable, range.rotate3], type: 'input' },
-      { input: [range.variable, configObj], type: 'input' },
+      { input: [range.variable, range.configObj], type: 'input' },
     ],
     [
       'getBlock x {1} y {2} type {3} bilding {4} floor {5}',
@@ -799,7 +796,7 @@ const ucontrol = {
 }
 
 const uradar = {
-  name: 'Unit Radar',
+  name: ['Unit Radar', 'uradar'],
   select: false,
   type: 'Unit Control',
   commands: [
@@ -814,7 +811,7 @@ const uradar = {
 }
 
 const ulocate = {
-  name: 'Unit Locate',
+  name: ['Unit Locate', 'ulocate'],
   select: true,
   type: 'Unit Control',
   commands: [
@@ -881,8 +878,10 @@ const commands = {
 }
 
 for (const key in commands) {
-  pallete.forEach((element) => {
+  pallete.forEach((element: any) => {
+    // @ts-ignore
     if (element.name == commands[key].type) {
+      // @ts-ignore
       commands[key].pallete = element
     }
   })

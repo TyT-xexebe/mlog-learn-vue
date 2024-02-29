@@ -1,35 +1,52 @@
-const hasIssue = (issue) => {
+interface Issue {
+  answer: boolean;
+  issue: string | boolean;
+}
+
+const hasIssue = (issue: string | boolean): Issue => {
   return {
     answer: false,
     issue: issue,
-  }
-}
+  };
+};
 
-const noIssue = () => {
+const noIssue = (): Issue => {
   return {
     answer: true,
     issue: false,
-  }
-}
+  };
+};
 
-const rangeChecker = (range, n, float) => {
-  if(!float){
-    if (Number(n) === n && n % 1 !== 0) return hasIssue(`the ${n} is float`)
+const rangeChecker = (range: [number, number], n: number, float: boolean): Issue | undefined => {
+  if (!float) {
+    if (Number(n) === n && n % 1 !== 0) return hasIssue(`the ${n} is float`);
   }
   if (n < range[0]) {
-    return hasIssue(`the ${n} is less then min range (${range[0]}:${range[1]})`)
+    return hasIssue(`the ${n} is less then min range (${range[0]}:${range[1]})`);
   }
   if (n > range[1]) {
-    return hasIssue(
-      `the ${n} is greater then max range (${range[0]}:${range[1]})`
-    )
+    return hasIssue(`the ${n} is greater then max range (${range[0]}:${range[1]})`);
   }
   if (n >= range[0] && n <= range[1]) {
-    return noIssue()
+    return noIssue();
   }
+};
+
+interface RangeObject {
+  range: RegExp | ((n: any) => Issue | undefined);
+  type: 'regexp' | 'func';
 }
 
-const range = {
+interface ConfigObjItem {
+  blocks: string[];
+  type: string | string[];
+}
+
+interface RangeMap {
+  [key: string]: RangeObject | string[] | ConfigObjItem[];
+}
+
+const range: RangeMap = {
   // for text in print/other
   text: {
     range: /"([^"]*)"/,
@@ -44,11 +61,11 @@ const range = {
 
   // boolean checking
   boolean: {
-    range: (n) => {
+    range: (n: any) => {
       if (n === 0 || n === 1 || n === 'true' || n === 'false') {
-        return noIssue()
+        return noIssue();
       } else {
-        return hasIssue(`${n} must be Boolean`)
+        return hasIssue(`${n} must be Boolean`);
       }
     },
     type: 'func',
@@ -56,29 +73,29 @@ const range = {
 
   // number checker, float numbers not allowed, can be positive or negative
   int: {
-    range: (n) => {
-      const range = [-Infinity, Infinity]
-      return rangeChecker(range, n, false)
+    range: (n: any) => {
+      const range: [number, number] = [-Infinity, Infinity];
+      return rangeChecker(range, n, false);
     },
     type: 'func',
   },
 
   // number cant be float, only positive number
   positiveInt: {
-    range: (n) => {
-      const range = [0, Infinity]
-      return rangeChecker(range, n, false)
+    range: (n: any) => {
+      const range: [number, number] = [0, Infinity];
+      return rangeChecker(range, n, false);
     },
     type: 'func',
   },
 
   // only float number can be positive or negative
   float: {
-    range: (n) => {
+    range: (n: any) => {
       if (Number(n) === n && n % 1 !== 0) {
-        return noIssue()
+        return noIssue();
       } else {
-        return hasIssue(`the "${n}" is not a float`)
+        return hasIssue(`the "${n}" is not a float`);
       }
     },
     type: 'func',
@@ -86,52 +103,53 @@ const range = {
 
   // block side rotate, only positive and not float
   rotate3: {
-    range: (n) => {
-      const range = [0, 3]
-      return rangeChecker(range, n, false)
+    range: (n: any) => {
+      const range: [number, number] = [0, 3];
+      return rangeChecker(range, n, false);
     },
     type: 'func',
   },
 
   // unit rotate in deegres, only positive, can be float
   rotate360: {
-    range: (n) => {
-      const range = [0, 360]
-      return rangeChecker(range, n, true)
+    range: (n: any) => {
+      const range: [number, number] = [0, 360];
+      return rangeChecker(range, n, true);
     },
     type: 'func',
   },
 
   // color set 0-255
   colorScheme255: {
-    range: (n) => {
-      const range = [0, 255]
-      return rangeChecker(range, n, true)
+    range: (n: any) => {
+      const range: [number, number] = [0, 255];
+      return rangeChecker(range, n, true);
     },
     type: 'func',
   },
 
   // color set 0-1
   colorScheme1: {
-    range: (n) => {
-      const range = [0, 1]
-      return rangeChecker(range, n, true)
+    range: (n: any) => {
+      const range: [number, number] = [0, 1];
+      return rangeChecker(range, n, true);
     },
     type: 'func',
   },
 
   hex: {
-    range: (n) => {
+    range: (n: any) => {
       const range = [0x000000, 0xFFFFFF];
-      if(!n.startsWith('%')) return hasIssue(`${n} is not #HEX`);
-      if(!n.length > 7) return hasIssue(`${n} is not #HEX`);
+      if (!n.startsWith('%')) return hasIssue(`${n} is not #HEX`);
+      // @ts-ignore
+      if (!(n.length > 7)) return hasIssue(`${n} is not #HEX`);
       let hexNum = '0x' + n.slice(1);
-
-      if(range[0] <= hexNum && range[1] >= hexNum) return noIssue();
-      return hasIssue(`${hexNum} is too big and can't be #hex`)
-    }
+      // @ts-ignore
+      if (range[0] <= hexNum && range[1] >= hexNum) return noIssue();
+      return hasIssue(`${hexNum} is too big and can't be #hex`);
+    },
+    type: 'func'
   },
-
   blocks: ["conveyor","juction", "sorter", "router", "distributor", "gate", "driver", "source", "void", "duo", "scatter", "scorch", "hail", "wave", "lancer", "arc", "parallax", "swarmer", "salvo", "segment", "tsunami", "fuse", "ripple", "cyclone", "foreshadow", "spectre", "meltdown", "drill", "extractor", "cultivator", "pump", "conduit", "continer", "tank", "generator", "tower", "node", "diode", "battery", "panel", "reactor", "wall", "door", "thruster", "huge", "gigantic", "press", "smelter", "kiln", "compressator", "weaver", "mixer", "melter", "separator", "disassembler", "purvelizer", "centrifuge", "incinerator", "factory", "reconstructor", "point", "turret", "mender", "projector", "dome", "vault", "unloader", "mine" , "processor", "message", "display", "cell", "bank", "switch", "duct", "bridge", "loader", "breach", "diffuse", "sublimate", "titan", "disperse", "afflict", "lustre", "scathe", "smite", "milign", "crusher", "bore", "chamber", "crusible", "furnace", "electrolyzer", "redirector", "concentrator", "heater", "synthesizer", "fabricator", "refabricator", "assembler", "module", "decontructor", "constructor", "unloader", "nucleus", "foundation", "citadel", "acropolis", "bastion", "shard", "canvas"],
   liquids: ["@water","@slag","@oil","@cryofluid","@neoplasm","@arkycite","@gallium","@ozone","@hydrogen","@nitrogen","@cyanogen"],
   items: ["@copper","@lead","@metaglass","@graphite","@sand","@coal","@titanium","@thorium","@scrap","@silicon","@plastanium","@phase-fabric","@surge-alloy","@spore-pod","@blast-compound","@pyratite","@beryllium","@tungsten","@oxide","@carbide","@fissile-matter","@dormant-cyst"],
@@ -173,15 +191,15 @@ const range = {
   drawImage: [],
   special: ["@e","@pi","@time","@tick","@minute","@waveNumber","@waveTime","@degToRad","@radToDeg","@links","@ctrlProcessor","@ctrlPlayer","@ctrlCommand","@unitCount","@blockCount","@liquidCount","@itemCuont","@this","@thisx","@thisy","@unit","@counter","@maph","@mapw","@air","@ipt","@server",],
   teams: ["@crux","@sharded","@derelict","@malis","@blue","@green"],
-}
+};
 
-const palleteCreator = (name, background, border) => {
+const palleteCreator = (name: string, background: string, border: string) => {
   return {
     name: name,
     background: background,
     border: border,
-  }
-}
+  };
+};
 
 // color pallete's for commands block
 const pallete = [
@@ -192,6 +210,6 @@ const pallete = [
   palleteCreator('Flow Control', '#6BB3B2', '#558C8B'),
   palleteCreator('Unit Control', '#C7B59D', '#A69784'),
   palleteCreator('World', '#6B84D4', '#4E6099'),
-]
+];
 
-export default { range, pallete }
+export { range, pallete };
