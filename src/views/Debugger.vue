@@ -34,7 +34,6 @@ const updateData = () => {
 
 <style scoped>
 
-
 #container {
   position: absolute;
   top: 0;
