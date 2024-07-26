@@ -1,0 +1,157 @@
+{
+  "navbar": {
+    "about": "About",
+    "basic": "Basic",
+    "commands": "Commands",
+    "codeExamples": "Code Examples",
+    "debugger": "Debugger",
+    "logIn": "Log In",
+    "language": "Language",
+    "languages": {
+      "english": "English",
+      "russian": "Russian",
+      "ukrainian": "Ukrainian"
+    }
+  },
+  "footer": {
+    "mlogLearnSite": "M-Log Learn Site",
+    "codeSpaceDebugger": "CodeSpace (Debugger)",
+    "codesVault": "Codes Vault",
+    "privacyPolicy": "Privacy Policy",
+    "contacts": "Contacts",
+    "discord": "Discord",
+    "telegram": "Telegram",
+    "email": "Email"
+  },
+  "about": {
+    "pageTitle": "About Site",
+    "purpose": "The website is created for the purpose of educating users M-log (Mindustry - logic). Here you will find extensive materials to help you learn M-log.",
+    "informationAvailable": "In particular, the following information is available on the website:",
+    "infoTitle": "Site Information",
+    "basicConcepts": {
+      "title": "Basic concepts of M-log:",
+      "description": "We provide a detailed description of basic concepts to help you understand how everything works."
+    },
+    "commands": {
+      "title": "Commands and their application:",
+      "description": "You will find information about various M-log commands and how to use them to achieve specific goals."
+    },
+    "codeExamples": {
+      "title": "Code examples:",
+      "description": "We offer extensive code examples with detailed explanations to make it easier for you."
+    },
+    "debugger": {
+      "title": "Debugger:",
+      "description": "Our debugger allows you to check and improve your code by detecting and fixing errors."
+    },
+    "contribute": {
+      "main": "Suggest Your Feature",
+      "title": "In addition, we are always ready to welcome new ideas and suggestions from our users.",
+      "contactUs": "If you want to contribute to the development of our website, you can contact us."
+    },
+    "appreciateParticipation": "We appreciate your participation and are ready to consider any suggestions to improve our resource."
+  },
+  "basic": {
+    "understandingLogic": {
+      "title": "Understanding Logic in Mindustry",
+      "intro": "Here, we explain and show the most basic knowledge of logic that you need to know before delving into various commands and codes. Let's start by understanding what a processor is.",
+      "processorDescription": "In short, a processor is a block where you can write various commands, and the processor will execute them at a certain speed (each processor has its own code reading speed, but we won't focus on that now). The processor can perform various commands, such as controlling units, blocks, determining their location, or resources within them. In short, with a processor, you can do a lot and a lot of different things.",
+      "processorUsage": "In the processor, there are commands that take their values or, conversely, give them. There are also special values that you cannot see in the processor itself but can use. We'll talk more about this later. The processor reads the code line by line, starting with the 0th line. Also, you can copy the code from the processor, and there you will see its syntax, how different commands are written. You can write the code outside of the game and then simply paste it into the processor. It sounds easy, and it is, but you'll need to remember how to write a particular command, where you can use a certain value, and where you cannot.",
+      "connectingBlocks": "As you've already understood, you can connect blocks to the processor. Each processor has its own radius, and you can connect the processor to any block within this radius. If a block is connected, then when you click on the processor, there will be a purple rhombus around that block. Also, if the processor controls a unit, there will be a yellow rhombus around it.",
+      "specialValuesTitle": "Special Values",
+      "specialValues": [
+        {
+          "name": "&commat;links",
+          "description": "displays the number of blocks connected to the processor."
+        },
+        {
+          "name": "&commat;thisx",
+          "description": "displays the coordinates along the x-axis of this processor."
+        },
+        {
+          "name": "&commat;thisy",
+          "description": "displays the coordinates along the y-axis of this processor."
+        },
+        { "name": "&commat;this", "description": "displays the processor object." },
+        {
+          "name": "&commat;time",
+          "description": "displays the time in milliseconds, which began counting from the creation of the world. It does not count when the game is paused or you exit the world."
+        },
+        {
+          "name": "&commat;tick",
+          "description": "is the same as &commat;time but in ticks."
+        },
+        { "name": "&commat;unit", "description": "displays the unit object." },
+        {
+          "name": "&commat;counter",
+          "description": "displays the line of code that the processor is currently reading. You can set it manually."
+        },
+        {
+          "name": "&commat;maph",
+          "description": "displays the map's height in tiles."
+        },
+        {
+          "name": "&commat;mapw",
+          "description": "displays the map's width in tiles."
+        },
+        {
+          "name": "&commat;ipt",
+          "description": "displays the processor's read speed in lines per tick."
+        },
+        {
+          "name": "&commat;itemCount , &commat;liquidCount , &commat;unitCount , &commat;blockCount",
+          "description": "displays the number of objects of a particular type in the game (displays both types of serpulo and erekir)."
+        },
+        {
+          "name": "&commat;air",
+          "description": "represents plain air. With it, you can eject resources from a unit into oblivion."
+        },
+        { "name": "&commat;server", "description": "displays the server." },
+        {
+          "name": "&commat;crux , &commat;sharded , &commat;derelict , &commat;malis , &commat;blue , &commat;green",
+          "description": "represents command objects."
+        },
+        { "name": "&commat;pi", "description": "represents the number π." },
+        { "name": "&commat;e", "description": "represents the number e." },
+        {
+          "name": "&commat;minute",
+          "description": "displays the time spent in the world, in minutes."
+        },
+        { "name": "&commat;waveNumber", "description": "displays the wave number." },
+        { "name": "&commat;waveTime", "description": "displays the wave time." },
+        {
+          "name": "&commat;degToRad , &commat;radToDeg , &commat;ctrlProcessor , &commat;ctrlPlayer , &commat;ctrlCommands",
+          "description": "are rarely used."
+        }
+      ],
+      "basicProcessorInfoTitle": "Basic Processor Information",
+      "basicProcessorInfo": [
+        "You can change the behavior of the sorter by disabling it. The same applies to the inverted sorter.",
+        "Uradar scans radars from every unit of the same type.",
+        "You can add comments to the code using the # symbol, and if you paste code with comments, they will disappear.",
+        "With the introduction of logic, waiting periods and delays have been added for many operations:",
+        "Resource retrieval and unit lifting (2 seconds on v6, 1.5 seconds on v7);",
+        "Taking control away from units (10 seconds on v7);",
+        "Enabling blocks after disabling them with logic (only on v6, 6 seconds);",
+        "Interacting with doors (1 second manually, 1.33 seconds with logic).",
+        "You cannot control many blocks that you would consider controllable. For example, mass drivers, power nodes, accumulators, message blocks.",
+        "Logic may fail during map reload. We're not entirely sure what breaks and what doesn't.",
+        "Numbers can store only 52 bits of information (+1 sign bit) and represent 53 because there is an implicit 1 before the fractional mantissa (part of 3.1415926e+0 in floating-point numbers) due to how binary scientific notation works. This means that the largest \"safe\" number is 2^53 (9,007,199,254,740,992.0 or 0x20 00 00 00 00 00 00).",
+        "Ubind loads units in the order they are loaded in Groups.unit (an array that stores all units), in a loop. This is not accidental. However, saving reloads shuffle the order of units for unknown reasons.",
+        "The packcolor working principle is that it takes the color components and converts them into a floating-point number that the display can process. It will display as if it were 0, but divide it by 2^-1074 to get the color.",
+        "When the code reaches the last line, it starts executing from the first line again (or from the value of &commat;counter).",
+        "Each type of processor has a different processing speed (you can read this from &commat;ipt): microprocessor (2 ipt or 120 lines/second at 60 FPS), logic processor (480/second), hyper-processor (1500/second).",
+        "A memory cell can store a limited number of numbers (double or float32).",
+        "A memory cell stores 64 numbers, and a memory bank stores 512 numbers.",
+        "All commands and words are case-sensitive, for example, '&commat;firstItem', not '&commat;firstitem'. Most comparisons are coercive - 'true' and 'false' will also be equal to 1 and 0, respectively. Be careful, null will also be converted to 0. To avoid this, use strict comparison with ===."
+      ],
+      "jumpLabelsTitle": "Using Jump Labels",
+      "jumpLabelsIntro": "If you're writing code outside of Mindustry (for example, on a website or in VScode), you can use jump labels (absolute) instead of jump numbers (relative) to avoid having to maintain jumps. Jump method:",
+      "jumpMethods": "With the jump method, you need to write the line number you want to jump to. In large codes, this can be problematic, and if you delete or add lines, you'll have to change the jump numbers.",
+      "jumpLabelMethodsTitle": "Jump Label Methods",
+      "jumpLabelMethods": "With the jump label method, you just need to specify the label name followed by a colon, and 'label:' is not counted as a line. When you paste the code into the game, the label will disappear, and the jump will be set accordingly.",
+      "otherLogicBlocksTitle": "Other Logic Blocks",
+      "otherLogicBlocksIntro": "Now let's move on to other blocks in logic. A button, as you can understand, can be on or off. In the processor, you can check this using the sensor command and its &commat;enabled method. Displays can show different pixel patterns. The display has its size in pixels, and you can display images on it using the draw and drawflush display commands."
+    }
+  }
+}
