@@ -274,12 +274,14 @@ sensor: {
 
 set: {
   name: ['Set','set'],
-  select: 'func',
+  select: false,
   type: 'Operations',
   commands: [
-    '{1} to {2}',
-    { input: [range.variable], type: 'output' },
-    { input: [range.variable, range.int, range.float, range.text, range.hex, range.blocks, range.items, range.liquids, range.units, range.buildings, range.special, range.teams], type: 'input' },
+    [
+      '{1} to {2}',
+      { input: [range.variable], type: 'output' },
+      { input: [range.variable, range.int, range.float, range.text, range.hex, range.blocks, range.items, range.liquids, range.units, range.buildings, range.special, range.teams], type: 'input' },
+    ]
   ]
 },
 
@@ -646,51 +648,59 @@ jump: {
   commands: [
     [
       'if {1} == {2}',
+      { input: [range.variable, range.positiveInt], type: 'input' },
       { subcommand: 'equal', type: 'setable', canWrite: false },
-      { input: [range.variable, range.boolean, range.int, range.float, range.special, range.teams, range.hex], type: 'input' },
-      { input: [range.variable, range.boolean, range.int, range.float, range.special, range.teams, range.hex], type: 'input' },
+      { input: [range.variable, range.int, range.float, range.special, range.teams, range.hex], type: 'input' },
+      { input: [range.variable, range.int, range.float, range.special, range.teams, range.hex], type: 'input' },
     ],
     [
       'if {1} not {2}',
+      { input: [range.variable, range.positiveInt], type: 'input' },
       { subcommand: 'notEqual', type: 'setable', canWrite: false },
-      { input: [range.variable, range.boolean, range.int, range.float, range.special, range.teams, range.hex], type: 'input' },
-      { input: [range.variable, range.boolean, range.int, range.float, range.special, range.teams, range.hex], type: 'input' },
+      { input: [range.variable, range.int, range.float, range.special, range.teams, range.hex], type: 'input' },
+      { input: [range.variable, range.int, range.float, range.special, range.teams, range.hex], type: 'input' },
     ],
     [
       'if {1} < {2}',
+      { input: [range.variable, range.positiveInt], type: 'input' },
       { subcommand: 'lessThan', type: 'setable', canWrite: false },
-      { input: [range.variable, range.boolean, range.int, range.float, range.special, range.teams, range.hex], type: 'input' },
-      { input: [range.variable, range.boolean, range.int, range.float, range.special, range.teams, range.hex], type: 'input' },
+      { input: [range.variable, range.int, range.float, range.special, range.teams, range.hex], type: 'input' },
+      { input: [range.variable, range.int, range.float, range.special, range.teams, range.hex], type: 'input' },
     ],
     [
       'if {1} <= {2}',
+      { input: [range.variable, range.positiveInt], type: 'input' },
       { subcommand: 'lessThanEq', type: 'setable', canWrite: false },
-      { input: [range.variable, range.boolean, range.int, range.float, range.special, range.teams, range.hex], type: 'input' },
-      { input: [range.variable, range.boolean, range.int, range.float, range.special, range.teams, range.hex], type: 'input' },
+      { input: [range.variable, range.int, range.float, range.special, range.teams, range.hex], type: 'input' },
+      { input: [range.variable, range.int, range.float, range.special, range.teams, range.hex], type: 'input' },
     ],
     [
       'if {1} > {2}',
+      { input: [range.variable, range.positiveInt], type: 'input' },
       { subcommand: 'greaterThan', type: 'setable', canWrite: false },
-      { input: [range.variable, range.boolean, range.int, range.float, range.special, range.teams, range.hex], type: 'input' },
-      { input: [range.variable, range.boolean, range.int, range.float, range.special, range.teams, range.hex], type: 'input' },
+      { input: [range.variable, range.int, range.float, range.special, range.teams, range.hex], type: 'input' },
+      { input: [range.variable, range.int, range.float, range.special, range.teams, range.hex], type: 'input' },
     ],
     [
       'if {1} >= {2}',
+      { input: [range.variable, range.positiveInt], type: 'input' },
       { subcommand: 'greaterThanEq', type: 'setable', canWrite: false },
-      { input: [range.variable, range.boolean, range.int, range.float, range.special, range.teams, range.hex], type: 'input' },
-      { input: [range.variable, range.boolean, range.int, range.float, range.special, range.teams, range.hex], type: 'input' },
+      { input: [range.variable, range.int, range.float, range.special, range.teams, range.hex], type: 'input' },
+      { input: [range.variable, range.int, range.float, range.special, range.teams, range.hex], type: 'input' },
     ],
     [
       'if {1} === {2}',
+      { input: [range.variable, range.positiveInt], type: 'input' },
       { subcommand: 'strictEqual', type: 'setable', canWrite: false },
-      { input: [range.variable, range.boolean, range.int, range.float, range.special, range.teams, range.hex], type: 'input' },
-      { input: [range.variable, range.boolean, range.int, range.float, range.special, range.teams, range.hex], type: 'input' },
+      { input: [range.variable, range.int, range.float, range.special, range.teams, range.hex], type: 'input' },
+      { input: [range.variable, range.int, range.float, range.special, range.teams, range.hex], type: 'input' },
     ],
     [
       'if always',
+      { input: [range.variable, range.positiveInt], type: 'input' },
       { subcommand: 'always', type: 'setable', canWrite: false },
-      { input: [range.variable, range.boolean, range.int, range.float, range.special, range.teams, range.hex], type: 'input' },
-      { input: [range.variable, range.boolean, range.int, range.float, range.special, range.teams, range.hex], type: 'input' },
+      { input: [range.variable, range.int, range.float, range.special, range.teams, range.hex], type: 'input' },
+      { input: [range.variable, range.int, range.float, range.special, range.teams, range.hex], type: 'input' },
     ],
   ]
 },

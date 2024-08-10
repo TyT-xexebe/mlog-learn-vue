@@ -7,6 +7,7 @@ import { consoleOutput } from './../main';
 let codeArea: string[] = [];
 const commandsList = commands.commands;
 
+// hightlighting colors map
 const colorMap: { [key: string]: string } = {
   input: 'yellow',
   output: 'green',
@@ -14,10 +15,12 @@ const colorMap: { [key: string]: string } = {
   default: 'default'
 };
 
+// add hightlighted words to code
 const addCodeArea = (color: string, text: any) => {
   codeArea.push(`<span class="${color}">${text}</span>`);
 };
 
+// checking type of command input
 const IandO = (line: number, word: number, color: string = 'null') => {
   const entries = Object.entries(commandsList);
   let foundEntry: any = entries.find(([key, { name }]) => name[1] === list2D[line][0]);
@@ -27,12 +30,12 @@ const IandO = (line: number, word: number, color: string = 'null') => {
   else {addCodeArea(colorMap[color], list2D[line][word]);}
 };
 
-const selectFalseOut = (foundEntry: any, word: number, line: number) => {
-  let zipC = foundEntry[1].commands[0][word].input;
+// main 
+const zipCheckType = (zipC: any, line: number, word: number) => {
   let validInput = false;
-
+  let codeAreaUpdated = false;
   for (let check = 0; check < zipC.length; check++) {
-
+    
     if (Array.isArray(zipC[check])) {
       if (zipC[check].includes(list2D[line][word])) {
         IandO(line, word);
@@ -48,7 +51,10 @@ const selectFalseOut = (foundEntry: any, word: number, line: number) => {
         break;
       } else {
         getError(returnedData.issue, line, word, list2D[line][word]);
-        addCodeArea("red", list2D[line][word]);
+        if (!codeAreaUpdated) {
+          addCodeArea("red", list2D[line][word]);
+          codeAreaUpdated = true;
+        }
         validInput = true;
       }
 
@@ -70,16 +76,70 @@ const selectFalseOut = (foundEntry: any, word: number, line: number) => {
   }
 }
 
+// checker for non select commands
+const selectFalseOut = (foundEntry: any, word: number, line: number) => {
+  let zipC = foundEntry[1].commands[0][word].input;
+  zipCheckType(zipC, line, word);
+}
+
+// checker for select commands
+const selectTrueOut = (foundEntry: any, word: number, line: number) => {
+  let commandEntry: any = false;
+  let subCommandNum: any = false;
+  
+  foundEntry[1].commands.forEach(
+    (command: any, index1: number) => {
+      command.forEach((element: any, index2: number) => {
+        if(index2 != 0) {
+          if('subcommand' in element) {
+            subCommandNum = index2;
+          }
+        }
+      });
+    }
+  )
+
+  consoleOutput(`subCommandNum ${subCommandNum}`);
+  const subCommand = list2D[line][subCommandNum]; 
+  consoleOutput(`subCommand ${subCommand}`);
+  
+  foundEntry[1].commands.forEach(
+    (command: any) => {
+        if(command[subCommandNum].subcommand == subCommand){
+          commandEntry = command;
+        }
+    }
+  )
+
+  if (word == subCommandNum){
+    if(commandEntry == false || commandEntry == null) {
+      getError('Incorrect input subcommand', line, word, list2D[line][subCommandNum]);
+      addCodeArea("red", list2D[line][subCommandNum]);
+    } else {
+      addCodeArea("purple", list2D[line][subCommandNum]);
+    }
+    return;
+  }
+
+  if (commandEntry == false || commandEntry == null) {
+    addCodeArea("red", list2D[line][word]);
+  } else {
+    let zipC = commandEntry[word].input;
+    zipCheckType(zipC, line, word);
+  }
+}
+
+// code parser & hightlighting chain
 const hightlighting = (outputHtml: any) => {
   codeArea = [];
   for (let line = 0; line < list2D.length; line++) {
-
+    let notExist = false;
     const entries = Object.entries(commandsList);
     let foundEntry: any = entries.find(([key, { name }]) => name[1] === list2D[line][0]);
-
     if (list2D[line].length === 0 || !(foundEntry)) {
       getError('This command not exist', line, 0, list2D[line][0]);
       addCodeArea("red", list2D[line][0]);
+      notExist = true;
     } else {
       addCodeArea("purple", list2D[line][0]);
     }
@@ -88,7 +148,7 @@ const hightlighting = (outputHtml: any) => {
 
       if (!list2D[line][word]) continue;
 
-      if (word == foundEntry[1].commands[0].length) {
+      if (notExist == true || word == foundEntry[1].commands[0].length) {
         addCodeArea("red", list2D[line][word]);
         getError('Incorrect input', line, word, list2D[line][word]);
         continue;
@@ -96,6 +156,7 @@ const hightlighting = (outputHtml: any) => {
 
       switch(foundEntry[1].select) {
         case true:
+          selectTrueOut(foundEntry, word, line);
           break;
         case false:
           selectFalseOut(foundEntry, word, line);

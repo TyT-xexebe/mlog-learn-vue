@@ -65,7 +65,7 @@ const range: RangeMap = {
   // boolean checking
   boolean: {
     range: (n: any) => {
-      if (n === 0 || n === 1 || n === 'true' || n === 'false') {
+      if (n == 0 || n == 1 || n === 'true' || n === 'false') {
         return noIssue();
       } else {
         return hasIssue(`${n} must be Boolean`);
