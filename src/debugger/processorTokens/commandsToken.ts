@@ -610,12 +610,14 @@ packcolor: {
   select: false,
   type: 'Operations',
   commands: [
-    '{1} = pack {2} {3} {4} {5}',
-    { input: [range.variable], type: 'output' },
-    { input: [range.variable, range.boolean], type: 'input' },
-    { input: [range.variable, range.boolean], type: 'input' },
-    { input: [range.variable, range.boolean], type: 'input' },
-    { input: [range.variable, range.boolean], type: 'input' },
+    [
+      '{1} = pack {2} {3} {4} {5}',
+      { input: [range.variable], type: 'output' },
+      { input: [range.variable, range.boolean], type: 'input' },
+      { input: [range.variable, range.boolean], type: 'input' },
+      { input: [range.variable, range.boolean], type: 'input' },
+      { input: [range.variable, range.boolean], type: 'input' },
+    ]
   ]
 },
 
@@ -624,8 +626,10 @@ wait: {
   select: false,
   type: 'Flow Control',
   commands: [
-    '{1} sec',
-    { input: [range.variable, range.positiveInt, range.float, range.special], type: 'input' },
+    [
+      '{1} sec',
+      { input: [range.variable, range.positiveInt, range.float, range.special], type: 'input' },
+    ]
   ]
 },
 
@@ -846,6 +850,7 @@ uradar: {
   select: false,
   type: 'Unit Control',
   commands: [
+    [
       'target {1} and {2} and {3} order {4} sort {5} output {6}',
       { input: [range.radarUnit], type: 'input' },
       { input: [range.radarUnit], type: 'input' },
@@ -853,6 +858,7 @@ uradar: {
       { input: [range.boolean, range.variable], type: 'input' },
       { input: [range.radarSort], type: 'input' },
       { input: [range.variable], type: 'output' },
+    ]
   ],
 },
 

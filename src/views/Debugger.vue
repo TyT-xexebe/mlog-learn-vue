@@ -116,6 +116,7 @@ const updateMenu = () => {
     opacity: 0.5;
   }
 .hotbar {
+  overflow-y: scroll;
   transition: 0.3s;
   left: 0;
   width: 96vw;
@@ -144,6 +145,7 @@ const updateMenu = () => {
       flex-direction: column;
       span {
         padding: 5px;
+        font-size: medium;
       }
     }
   }
