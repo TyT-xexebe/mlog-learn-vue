@@ -1,7 +1,7 @@
 import {/* lines, words, */list2D } from './parser';
 import commands from './processorTokens/commandsToken';
 // import { range, pallete } from './processorTokens/mainProcessor';
-import { getError } from './errorHandler';
+import { getError, reload } from './errorHandler';
 import { consoleOutput } from './../main';
 
 let codeArea: string[] = [];
@@ -99,9 +99,7 @@ const selectTrueOut = (foundEntry: any, word: number, line: number) => {
     }
   )
 
-  consoleOutput(`subCommandNum ${subCommandNum}`);
   const subCommand = list2D[line][subCommandNum]; 
-  consoleOutput(`subCommand ${subCommand}`);
   
   foundEntry[1].commands.forEach(
     (command: any) => {
@@ -132,10 +130,25 @@ const selectTrueOut = (foundEntry: any, word: number, line: number) => {
 // code parser & hightlighting chain
 const hightlighting = (outputHtml: any) => {
   codeArea = [];
+  reload();
+  
   for (let line = 0; line < list2D.length; line++) {
     let notExist = false;
     const entries = Object.entries(commandsList);
     let foundEntry: any = entries.find(([key, { name }]) => name[1] === list2D[line][0]);
+
+    // labels:
+    if (list2D[line][0].endsWith(':')) {
+      addCodeArea("default", list2D[line][0]);
+      for (let word = 1; word < list2D[line].length; word++) {
+        addCodeArea("red", list2D[line][word]);
+        getError('Incorrect input', line, word, list2D[line][word]);
+      }
+      codeArea.push('<br>');
+      continue;
+    }
+
+    // default commands
     if (list2D[line].length === 0 || !(foundEntry)) {
       getError('This command not exist', line, 0, list2D[line][0]);
       addCodeArea("red", list2D[line][0]);

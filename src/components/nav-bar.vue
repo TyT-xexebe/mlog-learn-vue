@@ -286,7 +286,7 @@ export default {
   padding: 8px 0px 8px 0px;
   width: 100%;
   left: 0;
-  z-index: 2;
+  z-index: 3;
   background-color: rgb(36, 36, 36);
   opacity: 0.85;
   display: flex;

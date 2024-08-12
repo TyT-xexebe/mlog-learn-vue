@@ -1,4 +1,21 @@
 <template>
+  <my-button @click="updateMenu">menu</my-button>
+  <div class="hotbar" ref="hotbar">
+    
+    <div class="container-errors">
+      <h2>Errors</h2>
+      <div class="errors" ref="errorList">
+
+      </div>
+    </div>
+
+    <div class="container-settings">
+      <h2>Settings</h2>
+      <div class="settings">
+
+      </div>
+    </div>
+  </div>
   <div id="container">
     <div id="input" ref="input" contenteditable="true" spellcheck="false" @scroll="updateScroll" @input="updateData" v-on:input="$root.handleInput(event)">
     </div>
@@ -10,9 +27,12 @@
 import { ref } from 'vue';
 import { outputData } from './../debugger/parser.ts';
 import { hightlighting } from './../debugger/hightlighting';
+import { updateErrorList } from './../debugger/errorHandler'
 
 const input = ref(null);
 const output = ref(null);
+const hotbar = ref(null);
+const errorList = ref(null);
 const outputHtml = ref('');
 
 const updateScroll = () => {
@@ -25,14 +45,21 @@ const updateScroll = () => {
 const updateData = () => {
   const textContent = input.value.innerText || '';
   const outputDiv = output.value || '';
+  const errorContainer = errorList.value || '';
   outputData(textContent, outputDiv);
   hightlighting(outputHtml);
+  errorContainer.innerHTML = updateErrorList();
 };
+
+const updateMenu = () => {
+
+  hotbar.value.style.zIndex == 0 ? hotbar.value.style.zIndex = 2 : hotbar.value.style.zIndex = 0;
+}
 </script>
 
 
 
-<style scoped>
+<style scoped lang="scss">
 
 #container {
   position: absolute;
@@ -78,5 +105,47 @@ const updateData = () => {
   font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
   z-index: 0;
   font-size: 11.5px;
+}
+  .mainBtn {
+    position: absolute;
+    top: 8.5vh;
+    right: 1vw;
+    border: 1px solid #CCCCCC;
+    padding: 3.5px;
+    z-index: 3;
+    opacity: 0.5;
+  }
+.hotbar {
+  transition: 0.3s;
+  left: 0;
+  width: 96vw;
+  height: 81vh;
+  padding: 2vh 2vw 2vh 2vw;
+  margin-top: 7.5vh;
+  z-index: 0;
+  background-color: rgb(45, 44, 53);
+  color: #CCCCCC;
+  opacity: 0.5;
+  position: absolute;
+  display: flex;
+  flex-direction: row;
+  flex-wrap: nowrap;
+
+  div.container-settings {
+    width: 50%;
+    height: 100%;
+  }
+  .container-errors {
+    width: 50%;
+    height: 100%;
+    .errors {
+      color: #CCCCCC;
+      display: flex;
+      flex-direction: column;
+      span {
+        padding: 5px;
+      }
+    }
+  }
 }
 </style>
