@@ -21,24 +21,33 @@ const addCodeArea = (color: string, text: any) => {
 };
 
 // checking type of command input
-const IandO = (line: number, word: number, color: string = 'null') => {
+const IandO = (line: number, word: number, color: string = 'null', inputType: any = false) => {
   const entries = Object.entries(commandsList);
   let foundEntry: any = entries.find(([key, { name }]) => name[1] === list2D[line][0]);
-  const type: string = foundEntry[1].commands[0][word].type;
+
+  let type: string;
+  if(inputType == false){
+    type = foundEntry[1].commands[0][word].type;
+  }else{
+    consoleOutput(inputType);
+    type = inputType[word].type;
+  }
+
 
   if (color === 'null') {addCodeArea(colorMap[type], list2D[line][word]);}
   else {addCodeArea(colorMap[color], list2D[line][word]);}
 };
 
+
 // main 
-const zipCheckType = (zipC: any, line: number, word: number) => {
+const zipCheckType = (zipC: any, line: number, word: number, inputType: boolean = false) => {
   let validInput = false;
   let codeAreaUpdated = false;
   for (let check = 0; check < zipC.length; check++) {
     
     if (Array.isArray(zipC[check])) {
       if (zipC[check].includes(list2D[line][word])) {
-        IandO(line, word);
+        IandO(line, word, 'null', inputType);
         validInput = true;
         break;
       }
@@ -46,7 +55,7 @@ const zipCheckType = (zipC: any, line: number, word: number) => {
     } else if (zipC[check].type === 'func') {
       let returnedData = zipC[check].range(list2D[line][word]);
       if (returnedData.answer) {
-        IandO(line, word, 'default');
+        IandO(line, word, 'default', inputType);
         validInput = true;
         break;
       } else {
@@ -61,7 +70,7 @@ const zipCheckType = (zipC: any, line: number, word: number) => {
     } else if (zipC[check].type === 'regexp') {
       let regexTest = zipC[check].range;
       if (regexTest.test(list2D[line][word])) {
-        IandO(line, word);
+        IandO(line, word, 'null', inputType);
         validInput = true;
         break;
       } else {
@@ -76,10 +85,45 @@ const zipCheckType = (zipC: any, line: number, word: number) => {
   }
 }
 
+// print checker
+const printCmd = (foundEntry: any, word: number, line: number) => {
+  const last = list2D[line].length - 1;
+  consoleOutput(last)
+  const hasMatchingQuotes = 
+    (list2D[line][1].startsWith("'") && list2D[line][last].endsWith("'")) ||
+    (list2D[line][1].startsWith('"') && list2D[line][last].endsWith('"'));
+
+  if (hasMatchingQuotes) {
+    consoleOutput('default')
+    addCodeArea("default", list2D[line][word]);
+
+  } else if (!hasMatchingQuotes) {
+    if(word < 2) {
+      let zipC = foundEntry[1].commands[0][word].input;
+      zipCheckType(zipC, line, word);
+    }else{
+      getError('Incorrect input1', line, word, list2D[line][word]);
+      addCodeArea("red", list2D[line][word]);
+    }
+  } else {
+    getError('Incorrect input2', line, word, list2D[line][word]);
+    addCodeArea("red", list2D[line][word]);
+  }
+}
+
 // checker for non select commands
 const selectFalseOut = (foundEntry: any, word: number, line: number) => {
-  let zipC = foundEntry[1].commands[0][word].input;
-  zipCheckType(zipC, line, word);
+  if (foundEntry[0] == 'print') {
+    printCmd(foundEntry, word, line);
+  }else{
+    if(foundEntry[1].commands[0][word] == undefined) {
+      addCodeArea("red", list2D[line][word]);
+      getError('Incorrect input', line, word, list2D[line][word]);
+    }else{
+      let zipC = foundEntry[1].commands[0][word].input;
+      zipCheckType(zipC, line, word);
+    }
+  }
 }
 
 // checker for select commands
@@ -121,9 +165,16 @@ const selectTrueOut = (foundEntry: any, word: number, line: number) => {
 
   if (commandEntry == false || commandEntry == null) {
     addCodeArea("red", list2D[line][word]);
+    getError('Incorrect input', line, word, list2D[line][word]);
   } else {
-    let zipC = commandEntry[word].input;
-    zipCheckType(zipC, line, word);
+    if(commandEntry[word] == undefined) {
+      addCodeArea("red", list2D[line][word]);
+      getError('Incorrect input', line, word, list2D[line][word]);
+    }else{
+      let zipC = commandEntry[word].input;
+      zipCheckType(zipC, line, word, commandEntry);
+    }
+
   }
 }
 
@@ -161,7 +212,7 @@ const hightlighting = (outputHtml: any) => {
 
       if (!list2D[line][word]) continue;
 
-      if (notExist == true || word == foundEntry[1].commands[0].length) {
+      if (notExist == true) {
         addCodeArea("red", list2D[line][word]);
         getError('Incorrect input', line, word, list2D[line][word]);
         continue;

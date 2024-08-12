@@ -266,8 +266,8 @@ sensor: {
     [
       '{1} = {2} in {3}',
       { input: [range.variable], type: 'output' },
-      { input: [range.sensor, range.items, range.liquids], type: 'input' },
       { input: [range.variable, range.blocks, range.units], type: 'input' },
+      { input: [range.sensor, range.items, range.liquids], type: 'input' },
     ],
   ],
 },
@@ -710,8 +710,10 @@ ubind: {
   select: false,
   type: 'Unit Control',
   commands: [
-    '{1}',
-    { input: [range.units], type: 'input' },
+    [
+      '{1}',
+      { input: [range.units], type: 'input' },
+    ]
   ]
 },
 

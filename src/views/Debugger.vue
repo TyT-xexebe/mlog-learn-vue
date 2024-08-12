@@ -84,9 +84,9 @@ const updateMenu = () => {
   height: 85vh;
   width: 98vw;
   padding: 0 1vw 0 1vw;
-  font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
   font-size: 11.5px;
   z-index: 1;
+  line-height: normal;
 }
 
 #output {
@@ -102,9 +102,9 @@ const updateMenu = () => {
   height: 85vh;
   width: 98vw;
   padding: 0 1vw 0 1vw;
-  font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
   z-index: 0;
   font-size: 11.5px;
+  line-height: normal;
 }
   .mainBtn {
     position: absolute;
@@ -125,7 +125,7 @@ const updateMenu = () => {
   z-index: 0;
   background-color: rgb(45, 44, 53);
   color: #CCCCCC;
-  opacity: 0.5;
+  opacity: 0.8;
   position: absolute;
   display: flex;
   flex-direction: row;

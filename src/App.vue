@@ -208,7 +208,7 @@ table {
   border-spacing: 0;
 }
 
-#output br {
+#output br, #input br {
   margin-bottom: 0 !important;
   padding: 0;
   line-height: 0;
