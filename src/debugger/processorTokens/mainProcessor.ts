@@ -1,3 +1,5 @@
+import { consoleOutput } from "@/main";
+
 interface Issue {
   answer: boolean;
   issue: string | boolean;
@@ -95,10 +97,11 @@ const range: RangeMap = {
   // only float number can be positive or negative
   float: {
     range: (n: any) => {
-      if (Number(n) === n && n % 1 !== 0) {
+      consoleOutput(n);
+      if (Number(n) && !Number.isInteger(n)) {
         return noIssue();
       } else {
-        return hasIssue(`the "${n}" is not a float`);
+        return hasIssue(`the ${n} is not a float`);
       }
     },
     type: 'func',

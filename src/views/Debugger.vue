@@ -1,6 +1,13 @@
 <template>
-  <my-button @click="updateMenu">menu</my-button>
+  <div class="main">
+    <div class="container-syntax">
+      <span id="syntaxHelper" ref="syntaxHelper" v-html="syntaxOutput"></span>
+    </div>
+      <my-button @click="updateMenu">menu</my-button>
+  </div>
+
   <div class="hotbar" ref="hotbar">
+
     
     <div class="container-errors">
       <h2>Errors</h2>
@@ -27,13 +34,16 @@
 import { ref } from 'vue';
 import { outputData } from './../debugger/parser.ts';
 import { hightlighting } from './../debugger/hightlighting';
-import { updateErrorList } from './../debugger/errorHandler'
+import { updateErrorList } from './../debugger/errorHandler';
+import { commandSyntaxOutput } from './../debugger/syntaxHelper';
 
 const input = ref(null);
 const output = ref(null);
 const hotbar = ref(null);
 const errorList = ref(null);
+const syntaxHelper = ref(null);
 const outputHtml = ref('');
+const syntaxOutput = ref('Syntax Helper');
 
 const updateScroll = () => {
   const inputDiv = input.value;
@@ -42,13 +52,41 @@ const updateScroll = () => {
   outputDiv.scrollLeft = inputDiv.scrollLeft;
 };
 
+const getCaretPosition = (element) => {
+  var caretOffset = 0;
+    var doc = element.ownerDocument || element.document;
+    var win = doc.defaultView || doc.parentWindow;
+    var sel;
+    if (typeof win.getSelection != "undefined") {
+        sel = win.getSelection();
+        if (sel.rangeCount > 0) {
+            var range = win.getSelection().getRangeAt(0);
+            var preCaretRange = range.cloneRange();
+            preCaretRange.selectNodeContents(element);
+            preCaretRange.setEnd(range.endContainer, range.endOffset);
+            caretOffset = preCaretRange.endContainer.data
+        }
+    } else if ( (sel = doc.selection) && sel.type != "Control") {
+        var textRange = sel.createRange();
+        var preCaretTextRange = doc.body.createTextRange();
+        preCaretTextRange.moveToElementText(element);
+        preCaretTextRange.setEndPoint("EndToEnd", textRange);
+        caretOffset = preCaretTextRange.endContainer.data
+    }
+    return caretOffset;
+}
+
 const updateData = () => {
   const textContent = input.value.innerText || '';
   const outputDiv = output.value || '';
+  const inputDiv = input.value || '';
   const errorContainer = errorList.value || '';
   outputData(textContent, outputDiv);
   hightlighting(outputHtml);
   errorContainer.innerHTML = updateErrorList();
+  if(commandSyntaxOutput(getCaretPosition(inputDiv)) != false) {
+    syntaxOutput.value = commandSyntaxOutput(getCaretPosition(inputDiv));
+  }
 };
 
 const updateMenu = () => {
@@ -106,14 +144,40 @@ const updateMenu = () => {
   font-size: 11.5px;
   line-height: normal;
 }
+
+
+.main {
+  display: flex;
+  position: absolute;
+  top: 8vh;
+  right: 1vw;
+  flex-direction: column;
+  align-items: flex-end;
+  z-index: 3;
+}
   .mainBtn {
-    position: absolute;
-    top: 8.5vh;
-    right: 1vw;
+    margin: 0;
+    height: 28px;
     border: 1px solid #CCCCCC;
-    padding: 3.5px;
-    z-index: 3;
-    opacity: 0.5;
+    border-radius: 3.5px;
+    padding: 3.5px 8px 3.5px 8px;
+    opacity: 0.7;
+  }
+  div.container-syntax {
+    width: auto;
+    height: 28px;
+    margin-bottom: 3px;
+    padding: 0px 5px 0px 5px;
+    border: 1px solid #CCCCCC;
+    border-radius: 3.5px;
+    opacity: 0.7;
+    color: #CCCCCC;
+    span {
+      display: inline-block;
+      height: 28px;
+      margin: 0;
+      padding: 0;
+    }
   }
 .hotbar {
   overflow-y: scroll;
@@ -145,7 +209,7 @@ const updateMenu = () => {
       flex-direction: column;
       span {
         padding: 5px;
-        font-size: medium;
+        font-size: 5px;
       }
     }
   }
