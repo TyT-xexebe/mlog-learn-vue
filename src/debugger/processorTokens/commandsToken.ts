@@ -76,7 +76,7 @@ draw: {
     ],
     [
       'color r {1} g {2} b {3} a {4}',
-      { subcommand: 'clear', type: 'setable', canWrite: false },
+      { subcommand: 'color', type: 'setable', canWrite: false },
       { input: [range.variable, range.colorScheme1], type: 'input' },
       { input: [range.variable, range.colorScheme1], type: 'input' },
       { input: [range.variable, range.colorScheme1], type: 'input' },
@@ -165,7 +165,7 @@ print: {
   name: ['Print', 'print'],
   select: false,
   type: 'Input & Output',
-  commands: [['{1}', { input: [range.variable, range.text], type: 'input' }]],
+  commands: [['{1}', { input: [range.variable], type: 'input' }]],
 },
 
 printFlush: {
@@ -280,7 +280,7 @@ set: {
     [
       '{1} to {2}',
       { input: [range.variable], type: 'output' },
-      { input: [range.variable, range.int, range.float, range.text, range.hex, range.blocks, range.items, range.liquids, range.units, range.buildings, range.special, range.teams], type: 'input' },
+      { input: [range.variable, range.int, range.float, range.hex, range.blocks, range.items, range.liquids, range.units, range.buildings, range.special, range.teams], type: 'input' },
     ]
   ]
 },

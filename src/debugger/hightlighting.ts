@@ -53,22 +53,20 @@ const zipCheckType = (
   word: number,
   inputType: boolean = false
 ) => {
-  let validInput = false;
   let errorArr: [string, number, number, string][] = [];
 
   for (let check = 0; check < zipC.length; check++) {
     if (Array.isArray(zipC[check])) {
       if (zipC[check].includes(list2D[line][word])) {
         IandO(line, word, "null", inputType);
-        validInput = true;
-        break;
+        return;
       }
+      errorArr.push([`not in array of variables`, line, word, list2D[line][word]]);
     } else if (zipC[check].type === "func") {
       let returnedData = zipC[check].range(list2D[line][word]);
 
       if (returnedData.answer) {
         IandO(line, word, "default", inputType);
-        validInput = true;
         return;
       } else {
         errorArr.push([returnedData.issue, line, word, list2D[line][word]]);
@@ -77,22 +75,21 @@ const zipCheckType = (
       let regexTest = zipC[check].range;
       if (regexTest.test(list2D[line][word])) {
         IandO(line, word, "null", inputType);
-        validInput = true;
-        break;
+        return;
       } else {
-        validInput = false;
+        errorArr.push([`return issue [ regexp ]`, line, word, list2D[line][word]]);
       }
     }
   }
 
+  let addVar: boolean = false
   errorArr.forEach((error) => {
     getError(...error);
+    if(!addVar) {
+      addCodeArea("red", list2D[line][word]);
+      addVar = true;
+    }
   });
-
-  if (!validInput) {
-    getError("Incorrect input", line, word, list2D[line][word]);
-    addCodeArea("red", list2D[line][word]);
-  }
 };
 
 // print checker
@@ -195,7 +192,11 @@ const selectTrueOut = (
 const hightlighting = (outputHtml: any) => {
   codeArea = [];
   reload();
+
   for (let line = 0; line < list2D.length; line++) {
+
+    if (list2D[line][0] == undefined) continue;
+
     let notExist = false;
     const entries = Object.entries(commandsList);
     let foundEntry: any = entries.find(

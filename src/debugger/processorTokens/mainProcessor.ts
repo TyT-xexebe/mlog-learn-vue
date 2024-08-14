@@ -20,8 +20,12 @@ const noIssue = (): Issue => {
 };
 
 const rangeChecker = (range: [number, number], n: any, float: boolean): Issue | undefined => {
-  const decimalRegex = float ? /^-?\d+(\.\d+)?$/ : /^-?\d+$/;
+  const decimalRegex = /^-?\d+(\.\d+)?$/;
   if (!decimalRegex.test(n)) return hasIssue(`${n} is not a valid decimal number`);
+
+  if(!float && !Number.isInteger(n)) {
+    return hasIssue(`the ${n} is float`);
+  }
 
   if (isNaN(n)) return hasIssue('input is not a number');
   if (!float) {
@@ -41,6 +45,7 @@ const rangeChecker = (range: [number, number], n: any, float: boolean): Issue | 
 interface RangeObject {
   range: RegExp | ((n: any) => Issue | undefined);
   type: 'regexp' | 'func';
+  rangeS: string;
 }
 interface ConfigObjItem {
   blocks: string[];
@@ -52,16 +57,11 @@ interface RangeMap {
 }
 
 const range: RangeMap = {
-  // for text in print/other
-  text: {
-    range: /"([^"]*)"/,
-    type: 'regexp',
-  },
-
   // variable checker, cant start on number
   variable: {
     range: /^[a-zA-Z][a-zA-Z0-9]*$/,
     type: 'regexp',
+    rangeS: 'variable',
   },
 
   // boolean checking
@@ -74,6 +74,7 @@ const range: RangeMap = {
       }
     },
     type: 'func',
+    rangeS: 'boolean [ 1 , 0 , true, false ]',
   },
 
   // number checker, float numbers not allowed, can be positive or negative
@@ -83,6 +84,7 @@ const range: RangeMap = {
       return rangeChecker(range, n, false);
     },
     type: 'func',
+    rangeS: 'int [ -Infinity - Infinity ]',
   },
 
   // number cant be float, only positive number
@@ -92,6 +94,7 @@ const range: RangeMap = {
       return rangeChecker(range, n, false);
     },
     type: 'func',
+    rangeS: 'positive int [ 0 - Infinity ]',
   },
 
   // only float number can be positive or negative
@@ -105,6 +108,7 @@ const range: RangeMap = {
       }
     },
     type: 'func',
+    rangeS: 'float [ -Infinity.0 - Infinity.0 ]',
   },
 
   // block side rotate, only positive and not float
@@ -114,45 +118,50 @@ const range: RangeMap = {
       return rangeChecker(range, n, false);
     },
     type: 'func',
+    rangeS: 'ratate 3 [ 0 - 3 ]',
   },
 
   // unit rotate in deegres, only positive, can be float
   rotate360: {
     range: (n: any) => {
       const range: [number, number] = [0, 360];
-      return rangeChecker(range, n, true);
+      return rangeChecker(range, n, false);
     },
     type: 'func',
+    rangeS: 'rotate 360 [ 0 - 360 ]',
   },
 
   // color set 0-255
   colorScheme255: {
     range: (n: any) => {
       const range: [number, number] = [0, 255];
-      return rangeChecker(range, n, true);
+      return rangeChecker(range, n, false);
     },
     type: 'func',
+    rangeS: 'color scheme 255 [ 0 - 255 ]',
   },
 
   // color set 0-1
   colorScheme1: {
     range: (n: any) => {
       const range: [number, number] = [0, 1];
-      return rangeChecker(range, n, true);
+      return rangeChecker(range, n, false);
     },
     type: 'func',
+    rangeS: 'color scheme 1 [ 0 - 1 ]',
   },
 
   hex: {
     range: (n: any) => {
-      const range = [0x000000, 0xFFFFFF];
-      if (!n.startsWith('%')) return hasIssue(`${n} is not #HEX`);
-      if (!(n.length > 7)) return hasIssue(`${n} is not #HEX`);
-      let hexNum = parseInt(n.slice(1), 16);
-      if (range[0] <= hexNum && range[1] >= hexNum) return noIssue();
-      return hasIssue(`${n} is too big and can't be #hex`);
+      const range: any = [0x0, 0x1FFFFFFFFFFFFF];
+      if (!n.startsWith('0x')) return hasIssue(`${n} is not a HEX`);
+      if ((n.length > 16)) return hasIssue(`${n} is too big`);
+      let hexNum = parseInt(n, 16);
+      if (hexNum >= range[0] && hexNum <= range[1]) return noIssue();
+      return hasIssue(`${n} is too big`);
     },
-    type: 'func'
+    type: 'func',
+    rangeS: 'HEX [ 0x0 - 0x1FFFFFFFFFFFFF ]',
   },
   blocks: ["conveyor","juction", "sorter", "router", "distributor", "gate", "driver", "source", "void", "duo", "scatter", "scorch", "hail", "wave", "lancer", "arc", "parallax", "swarmer", "salvo", "segment", "tsunami", "fuse", "ripple", "cyclone", "foreshadow", "spectre", "meltdown", "drill", "extractor", "cultivator", "pump", "conduit", "continer", "tank", "generator", "tower", "node", "diode", "battery", "panel", "reactor", "wall", "door", "thruster", "huge", "gigantic", "press", "smelter", "kiln", "compressator", "weaver", "mixer", "melter", "separator", "disassembler", "purvelizer", "centrifuge", "incinerator", "factory", "reconstructor", "point", "turret", "mender", "projector", "dome", "vault", "unloader", "mine" , "processor", "message", "display", "cell", "bank", "switch", "duct", "bridge", "loader", "breach", "diffuse", "sublimate", "titan", "disperse", "afflict", "lustre", "scathe", "smite", "milign", "crusher", "bore", "chamber", "crusible", "furnace", "electrolyzer", "redirector", "concentrator", "heater", "synthesizer", "fabricator", "refabricator", "assembler", "module", "decontructor", "constructor", "unloader", "nucleus", "foundation", "citadel", "acropolis", "bastion", "shard", "canvas"],
   liquids: ["@water","@slag","@oil","@cryofluid","@neoplasm","@arkycite","@gallium","@ozone","@hydrogen","@nitrogen","@cyanogen"],

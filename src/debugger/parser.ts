@@ -12,10 +12,10 @@ const outputData = (text: string, outputDiv: any) => {
     list2D = [];
 
   } else {
-    lines = text.split('\n').map(line => line.trim()).filter(line => line.length > 0);
+    lines = text.split('\n');
     output = outputDiv;
-    words = text.split(/\s+/).filter(word => word.length > 0);
-    list2D = lines.map(line => line.split(/\s+/).filter(word => word.length > 0));
+    words = text.split(/\s+/);
+    list2D = lines.map(line => line.split(/\s+/));
   }
 };
 

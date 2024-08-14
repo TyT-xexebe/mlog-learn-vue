@@ -22,6 +22,7 @@ const commandSyntaxOutput = (cursorPosition: any) => {
 
   const line = list2D[lineNum];
   let output = "";
+  let syntax: any = [];
 
   const entries = Object.entries(commandsObj);
   let foundEntry: any = entries.find(
@@ -31,6 +32,8 @@ const commandSyntaxOutput = (cursorPosition: any) => {
   if (foundEntry) {
     let subcommand = selectTrueOut(foundEntry, 1, cursorPosition, true);
     if (subcommand) {
+      const inputSubList: any = [];
+      foundEntry[1].commands.forEach((element: any) => {inputSubList.push(element[subcommand].subcommand)});
       if (line[subcommand] != undefined) {
         let cmdNum: number = 0;
         foundEntry[1].commands.forEach((command: any, index: number) => {
@@ -44,46 +47,72 @@ const commandSyntaxOutput = (cursorPosition: any) => {
           if (line[0] != "jump") {
             output += line[0];
             output += " subcommand";
-            return output;
+            return {
+              'output': output,
+              'syntax': ['command', inputSubList]
+            }
           } else {
             output += line[0];
             output += " line";
             output += " subcommand";
-            return output;
+            let jumpLine = line[1] ? line[1] : 'jumpLine';
+            return {
+              'output': output,
+              'syntax': ['command', jumpLine, inputSubList]
+            }
           }
         }
 
         output += line[0];
+        syntax.push('command');
 
         for (let inputs = 0; inputs < command.length; inputs++) {
           if (inputs == 0) continue;
           if (inputs == subcommand) {
             output += " subcommand";
+            syntax.push(inputSubList);
             continue;
           }
           output += ` ${command[inputs].type}`;
+          syntax.push(command[inputs].input);
         }
-        return output;
+        return {
+          'output': output,
+          'syntax': syntax
+        };
+
       } else {
         if (line[0] != "jump") {
           output += line[0];
           output += " subcommand";
-          return output;
+          return {
+            'output': output,
+            'syntax': ['command', inputSubList]
+          }
         } else {
           output += line[0];
           output += " line";
           output += " subcommand";
-          return output;
+          let jumpLine = line[1] ? line[1] : 'jumpLine';
+          return {
+            'output': output,
+            'syntax': ['command', jumpLine, inputSubList]
+          }
         }
       }
     } else {
       const command = foundEntry[1].commands[0];
       output += line[0];
-      for (let inputs = 0; inputs < command.length; inputs++) {
+      syntax.push('command');
+        for (let inputs = 0; inputs < command.length; inputs++) {
         if (inputs == 0) continue;
         output += ` ${command[inputs].type}`;
+        syntax.push(command[inputs].input);
       }
-      return output;
+      return {
+        'output': output,
+        'syntax': syntax
+      }
     }
   } else {
     return false;

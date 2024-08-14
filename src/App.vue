@@ -99,6 +99,14 @@ body {
   }
 }
 
+#code-editor {
+  #line-numbers {
+    br {
+      margin-bottom: 0; 
+    }
+  }
+}
+
 hr {
     color: rgb(212, 212, 212);
     font-weight: 900;

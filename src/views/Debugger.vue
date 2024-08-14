@@ -12,7 +12,6 @@
     <div class="container-errors">
       <h2>Errors</h2>
       <div class="errors" ref="errorList">
-
       </div>
     </div>
 
@@ -23,6 +22,11 @@
       </div>
     </div>
   </div>
+
+  <div id="code-editor" >
+    <div id="line-numbers" ref="lineNumbers" ></div>
+  </div>
+
   <div id="container">
     <div id="input" ref="input" contenteditable="true" spellcheck="false" @scroll="updateScroll" @input="updateData" v-on:input="$root.handleInput(event)">
     </div>
@@ -42,6 +46,7 @@ const output = ref(null);
 const hotbar = ref(null);
 const errorList = ref(null);
 const syntaxHelper = ref(null);
+const lineNumbers = ref(null);
 const outputHtml = ref('');
 const syntaxOutput = ref('Syntax Helper');
 
@@ -71,7 +76,7 @@ const getCaretPosition = (element) => {
         var preCaretTextRange = doc.body.createTextRange();
         preCaretTextRange.moveToElementText(element);
         preCaretTextRange.setEndPoint("EndToEnd", textRange);
-        caretOffset = preCaretTextRange.endContainer.data
+        caretOffset = preCaretTextRange.endContainer.data;
     }
     return caretOffset;
 }
@@ -80,17 +85,50 @@ const updateData = () => {
   const textContent = input.value.innerText || '';
   const outputDiv = output.value || '';
   const inputDiv = input.value || '';
-  const errorContainer = errorList.value || '';
+
   outputData(textContent, outputDiv);
   hightlighting(outputHtml);
-  errorContainer.innerHTML = updateErrorList();
-  if(commandSyntaxOutput(getCaretPosition(inputDiv)) != false) {
-    syntaxOutput.value = commandSyntaxOutput(getCaretPosition(inputDiv));
+
+  appendErrorMenu();
+
+  let syntaxO = commandSyntaxOutput(getCaretPosition(inputDiv))
+  if(syntaxO.output != false && syntaxO.output != '' && syntaxO != false) {
+    syntaxOutput.value = syntaxO.output;
   }
+  console.log(syntaxO);
+
+  const lines = inputDiv.innerText.split('\n').length - 1;
+  let lineNumbers2 = [];
+  for(let i = 0; i < lines; i++) {lineNumbers2.push(`${i}`)};
+  lineNumbers.value.innerText = lineNumbers2.join('\n');
 };
 
-const updateMenu = () => {
+const appendErrorMenu = () => {
+  const container = errorList.value || '';
+  container.innerHTML = '';
 
+  const obj = updateErrorList();
+
+  Object.keys(obj).forEach(key => {
+    const array = obj[key];
+
+    const details = document.createElement('details');
+    const summary = document.createElement('summary');
+    summary.textContent = `Line ${key}`; 
+
+    details.appendChild(summary);
+
+    array.forEach(item => {
+      const itemElement = document.createElement('span');
+      itemElement.innerHTML = item;
+      details.appendChild(itemElement);
+    });
+
+    container.appendChild(details);
+  });
+}
+
+const updateMenu = () => {
   hotbar.value.style.zIndex == 0 ? hotbar.value.style.zIndex = 2 : hotbar.value.style.zIndex = 0;
 }
 </script>
@@ -120,8 +158,8 @@ const updateMenu = () => {
   color: transparent;
   border: none;
   height: 85vh;
-  width: 98vw;
-  padding: 0 1vw 0 1vw;
+  width: 97vw;
+  padding: 0 1vw 0 2vw;
   font-size: 11.5px;
   z-index: 1;
   line-height: normal;
@@ -138,8 +176,8 @@ const updateMenu = () => {
   color: #CCCCCC;
   border: none;
   height: 85vh;
-  width: 98vw;
-  padding: 0 1vw 0 1vw;
+  width: 97vw;
+  padding: 0 1vw 0 2vw;
   z-index: 0;
   font-size: 11.5px;
   line-height: normal;
@@ -211,6 +249,26 @@ const updateMenu = () => {
         padding: 5px;
         font-size: 5px;
       }
+    }
+  }
+}
+
+#code-editor {
+  border-right: 1px solid #CCCCCC;
+  color: #CCCCCC;
+  background-color: transparent;
+  display: flex;
+  position: absolute;
+  top: 7.5vh;
+  left: 0;
+  z-index: 1;
+  #line-numbers {
+    display: flex;
+    flex-direction: column;
+    font-size: 11.5px;
+    line-height: normal;
+    br {
+      margin-bottom: 0; 
     }
   }
 }
