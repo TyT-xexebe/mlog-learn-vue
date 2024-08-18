@@ -1,7 +1,12 @@
 <template>
   <div class="main">
     <div class="container-syntax">
-      <span id="syntaxHelper" ref="syntaxHelper" v-html="syntaxOutput"></span>
+      <span id="syntaxHelper" ref="syntaxHelper" 
+        v-for="(item, index) in tooltipItems" 
+        :key="index" 
+        v-tooltip="{ content: item.tooltipContent, placement: 'bottom' }" 
+        class="tooltip-item"
+      >{{ item.item }}</span>
     </div>
       <my-button @click="updateMenu">menu</my-button>
   </div>
@@ -10,7 +15,7 @@
 
     
     <div class="container-errors">
-      <h2>Errors</h2>
+      <h2 v-tooltip = "'hello'">Errors</h2>
       <div class="errors" ref="errorList">
       </div>
     </div>
@@ -39,7 +44,7 @@ import { ref } from 'vue';
 import { outputData } from './../debugger/parser.ts';
 import { hightlighting } from './../debugger/hightlighting';
 import { updateErrorList } from './../debugger/errorHandler';
-import { commandSyntaxOutput } from './../debugger/syntaxHelper';
+import { merge } from './../debugger/syntaxHelper';
 
 const input = ref(null);
 const output = ref(null);
@@ -48,7 +53,7 @@ const errorList = ref(null);
 const syntaxHelper = ref(null);
 const lineNumbers = ref(null);
 const outputHtml = ref('');
-const syntaxOutput = ref('Syntax Helper');
+const tooltipItems = ref([]);
 
 const updateScroll = () => {
   const inputDiv = input.value;
@@ -81,6 +86,14 @@ const getCaretPosition = (element) => {
     return caretOffset;
 }
 
+const fetchTooltipData = () => {
+  const inputDiv = input.value || '';
+  const data = merge(getCaretPosition(inputDiv))
+  if(data){
+    tooltipItems.value = data;
+  }
+};
+
 const updateData = () => {
   const textContent = input.value.innerText || '';
   const outputDiv = output.value || '';
@@ -90,12 +103,7 @@ const updateData = () => {
   hightlighting(outputHtml);
 
   appendErrorMenu();
-
-  let syntaxO = commandSyntaxOutput(getCaretPosition(inputDiv))
-  if(syntaxO.output != false && syntaxO.output != '' && syntaxO != false) {
-    syntaxOutput.value = syntaxO.output;
-  }
-  console.log(syntaxO);
+  fetchTooltipData();
 
   const lines = inputDiv.innerText.split('\n').length - 1;
   let lineNumbers2 = [];
@@ -120,7 +128,7 @@ const appendErrorMenu = () => {
 
     array.forEach(item => {
       const itemElement = document.createElement('span');
-      itemElement.innerHTML = item;
+      itemElement.innerHTML = `${item}<br>`;
       details.appendChild(itemElement);
     });
 
@@ -271,5 +279,9 @@ const updateMenu = () => {
       margin-bottom: 0; 
     }
   }
+}
+
+.tooltip-item {
+  margin-right: 0.5em !important;
 }
 </style>

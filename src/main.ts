@@ -4,6 +4,8 @@ import { createApp } from 'vue';
 import router from './router/router';
 import { createI18n } from 'vue-i18n';
 import { hightlighting } from './debugger/hightlighting'
+import FloatingVue from 'floating-vue'
+import 'floating-vue/dist/style.css'
 
 const i18n = createI18n({
   locale: 'en', 
@@ -20,8 +22,11 @@ components.forEach(component => {
   app.component(component.name, component);
 });
 
+console.log(FloatingVue)
+
 const consoleOutput = (data: any) => console.log(data);
-app.use(i18n)
+app.use(FloatingVue);
+app.use(i18n);
 app.use(router);
 app.mount('#app');
 

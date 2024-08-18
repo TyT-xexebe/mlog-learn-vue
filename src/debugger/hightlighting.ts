@@ -46,51 +46,81 @@ const IandO = (
   }
 };
 
-// main
 const zipCheckType = (
-  zipC: any,
+  zipC: any[],
   line: number,
   word: number,
   inputType: boolean = false
 ) => {
-  let errorArr: [string, number, number, string][] = [];
+  const errorArr: [string, number, number, string][] = [];
 
-  for (let check = 0; check < zipC.length; check++) {
-    if (Array.isArray(zipC[check])) {
-      if (zipC[check].includes(list2D[line][word])) {
-        IandO(line, word, "null", inputType);
-        return;
+  for (const check of zipC) {
+    if (Array.isArray(check)) {
+      const [type, ...rest] = check;
+
+      if (type === "$#$default") {
+        if (rest.includes(list2D[line][word])) {
+          IandO(line, word, "null", inputType);
+          return;
+        }
+        errorArr.push(["not in array of variables", line, word, list2D[line][word]]);
+      } else if (type === "$#$at") {
+        const patterns = rest.map((value: any) => new RegExp(`^${value}[1-9]\\d*$`));
+        if (patterns.some((pattern: RegExp) => pattern.test(list2D[line][word]))) {
+          IandO(line, word, "null", inputType);
+          return;
+        }
+        errorArr.push(["not in array of variables", line, word, list2D[line][word]]);
+      } else if (type === "$#$obj") {
+        const value = list2D[line][word - 1];
+        const match = value.match(/^.*(\d+)$/);
+        const trimmed = value.replace(/(\d+)$/, '');
+        const result = match ? (match[1] === "0" ? "error" : true) : false;
+
+        if (result === "error") {
+          errorArr.push(["Incorrect input", line, word, value]);
+        } else if (result) {
+          const foundConfig = rest.find((item: any) => item.blocks?.includes(trimmed));
+          if (foundConfig?.type.includes(list2D[line][word])) {
+            IandO(line, word, "null", inputType);
+            return;
+          }
+          errorArr.push(["not in array of variables", line, word, list2D[line][word]]);
+        } else {
+          if (rest.slice(1).some((item: any) => item.type.includes(list2D[line][word]))) {
+            IandO(line, word, "null", inputType);
+            return;
+          }
+          errorArr.push(["not in array of variables", line, word, list2D[line][word]]);
+        }
       }
-      errorArr.push([`not in array of variables`, line, word, list2D[line][word]]);
-    } else if (zipC[check].type === "func") {
-      let returnedData = zipC[check].range(list2D[line][word]);
-
+    } else if (check.type === "func") {
+      const returnedData = check.range(list2D[line][word]);
       if (returnedData.answer) {
         IandO(line, word, "default", inputType);
         return;
-      } else {
-        errorArr.push([returnedData.issue, line, word, list2D[line][word]]);
       }
-    } else if (zipC[check].type === "regexp") {
-      let regexTest = zipC[check].range;
-      if (regexTest.test(list2D[line][word])) {
+      errorArr.push([returnedData.issue, line, word, list2D[line][word]]);
+    } else if (check.type === "regexp") {
+      if (check.range.test(list2D[line][word])) {
         IandO(line, word, "null", inputType);
         return;
-      } else {
-        errorArr.push([`return issue [ regexp ]`, line, word, list2D[line][word]]);
       }
+      errorArr.push(["return issue [ regexp ]", line, word, list2D[line][word]]);
     }
   }
 
-  let addVar: boolean = false
+  let added = false;
   errorArr.forEach((error) => {
     getError(...error);
-    if(!addVar) {
+    if (!added) {
       addCodeArea("red", list2D[line][word]);
-      addVar = true;
+      added = true;
     }
   });
 };
+
+
 
 // print checker
 const printCmd = (foundEntry: any, word: number, line: number) => {
@@ -194,7 +224,6 @@ const hightlighting = (outputHtml: any) => {
   reload();
 
   for (let line = 0; line < list2D.length; line++) {
-
     if (list2D[line][0] == undefined) continue;
 
     let notExist = false;

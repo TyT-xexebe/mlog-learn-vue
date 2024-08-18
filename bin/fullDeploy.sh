@@ -32,10 +32,7 @@ cd ./..
  
 echo ">> adding new files in main git repo.."
 git add .
-echo -n ">> write text for commit: " 
-read -r msg
-echo ">> commiting changes.. $msg"
-git commit -m "$msg"
+git commit
 echo ">> pushing changes.."
 git push origin
 cd ./bin
