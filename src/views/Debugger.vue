@@ -4,7 +4,7 @@
       <span id="syntaxHelper" ref="syntaxHelper" 
         v-for="(item, index) in tooltipItems" 
         :key="index" 
-        v-tooltip="{ content: item.tooltipContent, placement: 'bottom' }" 
+        v-tooltip="{ content: item.tooltipContent, placement: 'bottom', html: true }" 
         class="tooltip-item"
       >{{ item.item }}</span>
     </div>
@@ -15,7 +15,7 @@
 
     
     <div class="container-errors">
-      <h2 v-tooltip = "'hello'">Errors</h2>
+      <h2>Errors</h2>
       <div class="errors" ref="errorList">
       </div>
     </div>

@@ -20,8 +20,8 @@ const commandSyntaxOutput = (cursorPosition: any) => {
 
   const [_, entry] = foundEntry;
   const subcommand = selectTrueOut(foundEntry, 1, cursorPosition, true);
-  const inputSubList = entry.commands.map((cmd: any) => cmd[subcommand]?.subcommand).join(" ");
-
+  const brType = "<br style='padding: 0 !important; margin: 0 !important;'>"
+  const inputSubList = entry.commands.map((cmd: any) => cmd[subcommand]?.subcommand).join(brType);
   if (subcommand) {
     const command = entry.commands.find((cmd: any) => cmd[subcommand]?.subcommand === line[subcommand]);
 
@@ -50,7 +50,7 @@ const commandSyntaxOutput = (cursorPosition: any) => {
         syntax.push(inputSubList);
       } else {
         output += ` ${input.type}`;
-        const output2 = input.input.map((cmd: any) => cmd.rangeS || Object.keys(range).find(key => range[key] === cmd) || "ERROR").join(" ");
+        const output2 = input.input.map((cmd: any) => cmd.rangeS || Object.keys(range).find(key => range[key] === cmd) || "ERROR").join(brType);
         syntax.push(output2);
       }
     });
@@ -65,7 +65,7 @@ const commandSyntaxOutput = (cursorPosition: any) => {
   command.forEach((input: any, index: number) => {
     if (index === 0) return;
     output += ` ${input.type}`;
-    const output2 = input.input.map((cmd: any) => cmd.rangeS || Object.keys(range).find(key => range[key] === cmd) || "ERROR").join(" ");
+    const output2 = input.input.map((cmd: any) => cmd.rangeS || Object.keys(range).find(key => range[key] === cmd) || "ERROR").join(brType);
     syntax.push(output2);
   });
 

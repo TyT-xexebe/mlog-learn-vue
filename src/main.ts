@@ -22,8 +22,6 @@ components.forEach(component => {
   app.component(component.name, component);
 });
 
-console.log(FloatingVue)
-
 const consoleOutput = (data: any) => console.log(data);
 app.use(FloatingVue);
 app.use(i18n);

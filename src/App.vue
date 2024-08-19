@@ -223,6 +223,10 @@ table {
   height: 0;
 }
 
+.v-popper--theme-tooltip {
+  font-size: 14px;
+}
+
 .purple {  color: #C792EA;  }
 .green {  color: #A4E57E;  }
 .red {  color: #F07178;  }

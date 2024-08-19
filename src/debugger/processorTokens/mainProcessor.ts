@@ -21,25 +21,26 @@ const noIssue = (): Issue => {
 
 const rangeChecker = (range: [number, number], n: any, float: boolean): Issue | undefined => {
   const decimalRegex = /^-?\d+(\.\d+)?$/;
-  if (!decimalRegex.test(n)) return hasIssue(`${n} is not a valid decimal number`);
 
+
+  if (!decimalRegex.test(n)) return hasIssue(`${n} is not a valid decimal number`);
+  if (/^0[0-9]+/.test(n) && !/^0[xX][0-9a-fA-F]+$/.test(n)) return hasIssue(`${n} is not a valid number`);
+
+  n = Number(n);
+
+  if (isNaN(n)) return hasIssue(`${n} is not a number`);
+
+  consoleOutput(typeof(n))
   if(!float && !Number.isInteger(n)) {
     return hasIssue(`the ${n} is float`);
   }
-
-  if (isNaN(n)) return hasIssue('input is not a number');
-  if (!float) {
-    if (Number(n) === n && n % 1 !== 0) return hasIssue(`the ${n} is float`);
-  }
   if (n < range[0]) {
-    return hasIssue(`the ${n} is less then min range (${range[0]}:${range[1]})`);
+    return hasIssue(`the ${n} is less then min range (${range[0]} : ${range[1]})`);
   }
   if (n > range[1]) {
-    return hasIssue(`the ${n} is greater then max range (${range[0]}:${range[1]})`);
+    return hasIssue(`the ${n} is greater then max range (${range[0]} : ${range[1]})`);
   }
-  if (n >= range[0] && n <= range[1]) {
-    return noIssue();
-  }
+  return noIssue();
 };
 
 interface RangeObject {
@@ -67,7 +68,9 @@ const range: RangeMap = {
   // boolean checking
   boolean: {
     range: (n: any) => {
-      if (n == 0 || n == 1 || n === 'true' || n === 'false') {
+      if (/^0[0-9]+/.test(n) && !/^0[xX][0-9a-fA-F]+$/.test(n)) return hasIssue(`${n} is not a valid number`);
+      
+      if (n == 0 || n == 1 || n == 'true' || n == 'false') {
         return noIssue();
       } else {
         return hasIssue(`${n} must be Boolean`);
@@ -100,12 +103,13 @@ const range: RangeMap = {
   // only float number can be positive or negative
   float: {
     range: (n: any) => {
-      consoleOutput(n);
-      if (Number(n) && !Number.isInteger(n)) {
-        return noIssue();
-      } else {
-        return hasIssue(`the ${n} is not a float`);
-      }
+      if (/^0[0-9]+/.test(n) && !/^0[xX][0-9a-fA-F]+$/.test(n)) return hasIssue(`${n} is not a valid number`);
+
+      n = Number(n);
+      if (isNaN(n)) return hasIssue(`${n} is not a number`);
+
+      if (!Number.isInteger(n)) return noIssue();
+      return hasIssue(`the ${n} is not a float`);
     },
     type: 'func',
     rangeS: 'float [ -Infinity.0 - Infinity.0 ]',
@@ -153,11 +157,12 @@ const range: RangeMap = {
 
   hex: {
     range: (n: any) => {
+      
       const range: any = [0x0, 0x1FFFFFFFFFFFFF];
       if (!n.startsWith('0x')) return hasIssue(`${n} is not a HEX`);
       if ((n.length > 16)) return hasIssue(`${n} is too big`);
       let hexNum = parseInt(n, 16);
-      if (hexNum >= range[0] && hexNum <= range[1]) return noIssue();
+      if (hexNum >= 0 && hexNum <= 9007199254740991) return noIssue();
       return hasIssue(`${n} is too big`);
     },
     type: 'func',
