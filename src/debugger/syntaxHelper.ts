@@ -16,11 +16,16 @@ const commandSyntaxOutput = (cursorPosition: any) => {
   const foundEntry = Object.entries(commandsObj)
     .find(([_, { name }]) => name[1] === line[0]);
 
-  if (!foundEntry) return false;
+  const brType = "<br style='padding: 0 !important; margin: 0 !important;'>"
+  const commandList: any = Object.keys(commandsObj).join(brType);
+
+  if (!foundEntry) return {
+    output: "commands",
+    syntax: [commandList]
+  };
 
   const [_, entry] = foundEntry;
   const subcommand = selectTrueOut(foundEntry, 1, cursorPosition, true);
-  const brType = "<br style='padding: 0 !important; margin: 0 !important;'>"
   const inputSubList = entry.commands.map((cmd: any) => cmd[subcommand]?.subcommand).join(brType);
   if (subcommand) {
     const command = entry.commands.find((cmd: any) => cmd[subcommand]?.subcommand === line[subcommand]);

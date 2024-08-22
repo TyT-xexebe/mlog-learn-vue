@@ -4,7 +4,7 @@
       <span id="syntaxHelper" ref="syntaxHelper" 
         v-for="(item, index) in tooltipItems" 
         :key="index" 
-        v-tooltip="{ content: item.tooltipContent, placement: 'bottom', html: true }" 
+        v-tooltip="{ content: item.tooltipContent, placement: 'bottom', target: ['click', 'hover'], html: true }" 
         class="tooltip-item"
       >{{ item.item }}</span>
     </div>
@@ -137,7 +137,10 @@ const appendErrorMenu = () => {
 }
 
 const updateMenu = () => {
+  const syntaxDiv = document.getElementsByClassName('container-syntax')[0];
   hotbar.value.style.zIndex == 0 ? hotbar.value.style.zIndex = 2 : hotbar.value.style.zIndex = 0;
+  if (syntaxDiv.style.opacity == '') {syntaxDiv.style.opacity = 0.7};
+  syntaxDiv.style.opacity == 0.7 ? syntaxDiv.style.opacity = 0 : syntaxDiv.style.opacity = 0.7;
 }
 </script>
 
