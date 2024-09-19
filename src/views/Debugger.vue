@@ -13,19 +13,27 @@
 
   <div class="hotbar" ref="hotbar">
 
-    
-    <div class="container-errors">
+    <div class="selectDisplay">
+      <button @click="showList('container-errors')">Errors</button>
+      <button @click="showList('container-labels')">Labels</button>
+      <button @click="showList('container-settings')">Settings</button>
+    </div>
+
+    <div class="container-errors hotbarList">
       <h2>Errors</h2>
-      <div class="errors" ref="errorList">
-      </div>
+      <div class="errors" ref="errorList"></div>
     </div>
 
-    <div class="container-settings">
+    <div class="container-labels hotbarList">
+      <h2>Labels</h2>
+      <div class="labels" ref="labelList"></div>
+    </div>
+
+    <div class="container-settings hotbarList">
       <h2>Settings</h2>
-      <div class="settings">
-
-      </div>
+      <div class="settings"></div>
     </div>
+
   </div>
 
   <div id="code-editor" >
@@ -45,11 +53,13 @@ import { outputData } from './../debugger/parser.ts';
 import { hightlighting } from './../debugger/hightlighting';
 import { updateErrorList } from './../debugger/errorHandler';
 import { merge } from './../debugger/syntaxHelper';
+import { mergedLabel } from './../debugger/labelChecker.ts';
 
 const input = ref(null);
 const output = ref(null);
 const hotbar = ref(null);
 const errorList = ref(null);
+const labelList = ref(null);
 const syntaxHelper = ref(null);
 const lineNumbers = ref(null);
 const outputHtml = ref('');
@@ -103,6 +113,7 @@ const updateData = () => {
   hightlighting(outputHtml);
 
   appendErrorMenu();
+  appendLabelMenu();
   fetchTooltipData();
 
   const lines = inputDiv.innerText.split('\n').length - 1;
@@ -136,15 +147,59 @@ const appendErrorMenu = () => {
   });
 }
 
+const appendLabelMenu = () => {
+  const container = labelList.value || '';
+  container.innerHTML = '';
+
+  Object.keys(mergedLabel).forEach(key => {
+    const array = mergedLabel[key];
+
+    const details = document.createElement('details');
+    const summary = document.createElement('summary');
+
+    summary.textContent = `label  ' ${key} ''`;
+
+    details.appendChild(summary);
+
+    array.forEach(item => {
+      const itemElement = document.createElement('span');
+      itemElement.innerHTML = `label ' ${item[0]} ' used at line ${item[1]}<br>`;
+      details.appendChild(itemElement);
+    });
+
+    container.appendChild(details);
+  });
+}
+
 const updateMenu = () => {
   const syntaxDiv = document.getElementsByClassName('container-syntax')[0];
   hotbar.value.style.zIndex == 0 ? hotbar.value.style.zIndex = 2 : hotbar.value.style.zIndex = 0;
   if (syntaxDiv.style.opacity == '') {syntaxDiv.style.opacity = 0.7};
   syntaxDiv.style.opacity == 0.7 ? syntaxDiv.style.opacity = 0 : syntaxDiv.style.opacity = 0.7;
 }
+
+const showList = (element) => {
+  Array.from(document.getElementsByClassName('hotbarList'))
+    .forEach((list) => {
+        list.style.display = 'none';
+    });
+
+  document.getElementsByClassName(element)[0].style.display = 'block';
+}
 </script>
 
+<script>
+export default {
+  name: "nav-bar",
 
+  mounted() {
+    Array.from(document.getElementsByClassName('hotbarList'))
+    .forEach((list) => {
+        list.style.display = 'none';
+    });
+  }
+}
+</script>
 
 <style scoped lang="scss">
 
@@ -232,9 +287,8 @@ const updateMenu = () => {
   overflow-y: scroll;
   transition: 0.3s;
   left: 0;
-  width: 96vw;
-  height: 81vh;
-  padding: 2vh 2vw 2vh 2vw;
+  width: 100vw;
+  height: 85vh;
   margin-top: 7.5vh;
   z-index: 0;
   background-color: rgb(45, 44, 53);
@@ -245,13 +299,13 @@ const updateMenu = () => {
   flex-direction: row;
   flex-wrap: nowrap;
 
-  div.container-settings {
-    width: 50%;
+  .hotbarList {
+    width: 80%;
     height: 100%;
+    padding: 2vh 0vw 2vh 2vw;
+    margin-left: 20%;
   }
   .container-errors {
-    width: 50%;
-    height: 100%;
     .errors {
       color: #CCCCCC;
       display: flex;
@@ -259,6 +313,28 @@ const updateMenu = () => {
       span {
         padding: 5px;
         font-size: 5px;
+      }
+    }
+  }
+
+  .selectDisplay {
+    display: block;
+    position: absolute;
+    width: 20%;
+    height: 100%;
+    background-color: rgb(37, 37, 37);
+    button {
+      font-size: 14px;
+      width: 100%;
+      height: 30px;
+      color: #CCCCCC;
+      border: none;
+      background-color: transparent;
+      transition: 0.3s;
+      &:hover {
+        cursor: pointer;
+        color: rgb(12, 150, 150);
+        border: 1px solid #CCCCCC;
       }
     }
   }

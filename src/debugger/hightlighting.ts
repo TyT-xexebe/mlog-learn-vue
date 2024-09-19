@@ -3,8 +3,11 @@ import commands from "./processorTokens/commandsToken";
 // import { range, pallete } from './processorTokens/mainProcessor';
 import { getError, reload } from "./errorHandler";
 import { consoleOutput } from "./../main";
+import { labelGroupMerge } from './labelChecker';
 
 let codeArea: string[] = [];
+let setLabels: any[] = [];
+let usedLabels: any[] = [];
 const commandsList = commands.commands;
 
 // hightlighting colors map
@@ -221,6 +224,8 @@ const selectTrueOut = (
 // code parser & hightlighting chain
 const hightlighting = (outputHtml: any) => {
   codeArea = [];
+  setLabels = [];
+  usedLabels = [];
   reload();
 
   for (let line = 0; line < list2D.length; line++) {
@@ -235,6 +240,7 @@ const hightlighting = (outputHtml: any) => {
     // labels:
     if (list2D[line][0].endsWith(":")) {
       addCodeArea("default", list2D[line][0]);
+      setLabels.push([list2D[line][0].slice(0, -1), line, 0]);
       for (let word = 1; word < list2D[line].length; word++) {
         addCodeArea("red", list2D[line][word]);
         getError("Incorrect input", line, word, list2D[line][word]);
@@ -250,6 +256,9 @@ const hightlighting = (outputHtml: any) => {
       notExist = true;
     } else {
       addCodeArea("purple", list2D[line][0]);
+      if (list2D[line][0] == "jump" && list2D[line][1] != undefined) {
+        usedLabels.push([list2D[line][1], line, 1]);
+      }
     }
 
     for (let word = 1; word < list2D[line].length; word++) {
@@ -277,6 +286,7 @@ const hightlighting = (outputHtml: any) => {
     codeArea.push("<br>");
   }
   outputHtml.value = codeArea.join(" ");
+  labelGroupMerge(setLabels, usedLabels);
 };
 
 export { hightlighting, selectTrueOut };
