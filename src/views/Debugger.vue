@@ -105,9 +105,9 @@ const fetchTooltipData = () => {
 };
 
 const updateData = () => {
-  const textContent = input.value.innerText || '';
+  const inputDiv = input.value.innerText || '';
+  const textContent = input.value.innerHTML || '';
   const outputDiv = output.value || '';
-  const inputDiv = input.value || '';
 
   outputData(textContent, outputDiv);
   hightlighting(outputHtml);
@@ -116,10 +116,13 @@ const updateData = () => {
   appendLabelMenu();
   fetchTooltipData();
 
-  const lines = inputDiv.innerText.split('\n').length - 1;
-  let lineNumbers2 = [];
-  for(let i = 0; i < lines; i++) {lineNumbers2.push(`${i}`)};
-  lineNumbers.value.innerText = lineNumbers2.join('\n');
+    const lines = textContent.split('</div>').length - 1;
+    let lineNumbers2 = [];
+    for (let i = 0; i < lines; i++) {
+        lineNumbers2.push(`${i + 1}`);
+    }
+    lineNumbers.value.innerText = lineNumbers2.join('\n');
+
 };
 
 const appendErrorMenu = () => {
