@@ -107,6 +107,17 @@ body {
   }
 }
 
+.container-ranges {
+    .ranges {
+      .brDown {
+        margin-bottom: 10px
+      }
+      br {
+        margin-bottom: 0;
+      }
+    }
+  }
+
 hr {
     color: rgb(212, 212, 212);
     font-weight: 900;

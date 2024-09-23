@@ -17,6 +17,7 @@
       <button @click="showList('container-errors')">Errors</button>
       <button @click="showList('container-labels')">Labels</button>
       <button @click="showList('container-settings')">Settings</button>
+      <button @click="showList('container-ranges')">Ranges</button>
     </div>
 
     <div class="container-errors hotbarList">
@@ -32,6 +33,11 @@
     <div class="container-settings hotbarList">
       <h2>Settings</h2>
       <div class="settings"></div>
+    </div>
+
+    <div class="container-ranges hotbarList">
+      <h2>Ranges</h2>
+      <div class="ranges" ref="rangeList"></div>
     </div>
 
   </div>
@@ -53,13 +59,15 @@ import { outputData } from './../debugger/parser.ts';
 import { hightlighting } from './../debugger/hightlighting';
 import { updateErrorList } from './../debugger/errorHandler';
 import { merge } from './../debugger/syntaxHelper';
-import { mergedLabel } from './../debugger/labelChecker.ts';
+import { mergedLabel } from './../debugger/labelChecker';
+import { range } from './../debugger/processorTokens/mainProcessor';
 
 const input = ref(null);
 const output = ref(null);
 const hotbar = ref(null);
 const errorList = ref(null);
 const labelList = ref(null);
+const rangeList = ref(null);
 const syntaxHelper = ref(null);
 const lineNumbers = ref(null);
 const outputHtml = ref('');
@@ -80,10 +88,10 @@ const getCaretPosition = (element) => {
     if (typeof win.getSelection != "undefined") {
         sel = win.getSelection();
         if (sel.rangeCount > 0) {
-            var range = win.getSelection().getRangeAt(0);
-            var preCaretRange = range.cloneRange();
+            var range2 = win.getSelection().getRangeAt(0);
+            var preCaretRange = range2.cloneRange();
             preCaretRange.selectNodeContents(element);
-            preCaretRange.setEnd(range.endContainer, range.endOffset);
+            preCaretRange.setEnd(range2.endContainer, range2.endOffset);
             caretOffset = preCaretRange.endContainer.data
         }
     } else if ( (sel = doc.selection) && sel.type != "Control") {
@@ -114,6 +122,7 @@ const updateData = () => {
 
   appendErrorMenu();
   appendLabelMenu();
+  appendRangeMenu();
   fetchTooltipData();
 
     const lines = textContent.split('</div>').length - 1;
@@ -172,6 +181,31 @@ const appendLabelMenu = () => {
 
     container.appendChild(details);
   });
+}
+
+const appendRangeMenu = () => {
+  const container = rangeList.value || '';
+  let output = '';
+  Object.keys(range).forEach(key => {
+    if (Array.isArray(range[key])) {
+      if (range[key][0] == "$#$default" || range[key][0] == "$#$at") {
+      output += `<details><summary class = "yellow">${key}</summary>${range[key].join(' ')}</details><hr>`;
+      }  else if (range[key][0] == "$#$obj") {
+        output += `<h3>${key}</h3>`
+        for (let i = 1; range[key].length > i; i++) {
+          const index = range[key][i];
+          console.log(i)
+          const entries = Object.entries(index);
+          output += `<span class = "yellow">${entries[0][0]}</span><span> : ${entries[0][1].join(' ')}</span><br>`;
+          output += `<span class = "yellow">${entries[1][0]}</span><span> : ${entries[1][1].join(' ')}</span><br class = "brDown">`;
+        }
+        output += '<hr>';
+      }
+    } else {
+      output += `<h3 class = "yellow">${key}</h3><span>${range[key].rangeS}</span><hr>`;
+    }
+  });
+  container.innerHTML = output;
 }
 
 const updateMenu = () => {

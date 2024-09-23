@@ -23,7 +23,8 @@
     "vue-i18n-bridge": "^9.8.0",
     "vue-router": "^4.0.3",
     "vuex": "^4.0.0",
-    "webpack": "^5.89.0"
+    "webpack": "^5.94.0",
+    "webpack-env": "^0.8.0"
   },
   "devDependencies": {
     "@intlify/unplugin-vue-i18n": "^2.0.0",
