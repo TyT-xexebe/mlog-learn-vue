@@ -1,6 +1,6 @@
 <template>
   <nav-bar />
-  <div class="mainContainer">
+  <div class="mainContainer" ref="container">
     <router-view />
   </div>
   <footer-bar />
@@ -8,11 +8,12 @@
 <script>
 import navBar from "@/components/nav-bar.vue";
 import footerBar from "@/components/footer.vue";
+import { ref } from 'vue';
 export default {
   components: {
     "nav-bar": navBar,
     "footer-bar": footerBar,
-  },
+  }
 };
 </script>
 <style lang="scss">

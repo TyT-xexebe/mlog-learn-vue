@@ -7,7 +7,7 @@ import { selectTrueOut } from "./hightlighting";
 const commandsObj = commands.commands;
 
 const commandSyntaxOutput = (cursorPosition: any) => {
-  if (cursorPosition === undefined) return "Syntax Helper";
+  if (cursorPosition == undefined ) return "Syntax Helper";
 
   const lineNum = list2D.findIndex(line => line.join(" ") === cursorPosition);
   if (lineNum === -1) return false;
@@ -79,6 +79,10 @@ const commandSyntaxOutput = (cursorPosition: any) => {
 
 const merge = (cursor: any) => {
   const data: any = commandSyntaxOutput(cursor);
+  if (typeof(data) == "string") return [{
+    item: data,
+    tooltipContent: ""
+  }];
   if (!data || !data.output) return false;
 
   return data.output.split(" ").map((word: any, index: number) => ({

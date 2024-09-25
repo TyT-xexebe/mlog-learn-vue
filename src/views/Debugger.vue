@@ -13,7 +13,7 @@
 
   <div class="hotbar" ref="hotbar">
 
-    <div class="selectDisplay">
+    <div class="selectDisplay" ref="selectDisplay">
       <button @click="showList('container-errors')">Errors</button>
       <button @click="showList('container-labels')">Labels</button>
       <button @click="showList('container-settings')">Settings</button>
@@ -54,14 +54,13 @@
 </template>
 
 <script setup>
-import { ref } from 'vue';
+import { ref, onMounted } from 'vue';
 import { outputData } from './../debugger/parser.ts';
 import { hightlighting } from './../debugger/hightlighting';
 import { updateErrorList } from './../debugger/errorHandler';
 import { merge } from './../debugger/syntaxHelper';
 import { mergedLabel } from './../debugger/labelChecker';
 import { range } from './../debugger/processorTokens/mainProcessor';
-
 const input = ref(null);
 const output = ref(null);
 const hotbar = ref(null);
@@ -70,6 +69,7 @@ const labelList = ref(null);
 const rangeList = ref(null);
 const syntaxHelper = ref(null);
 const lineNumbers = ref(null);
+const selectDisplay = ref(null);
 const outputHtml = ref('');
 const tooltipItems = ref([]);
 
@@ -104,9 +104,14 @@ const getCaretPosition = (element) => {
     return caretOffset;
 }
 
-const fetchTooltipData = () => {
+const fetchTooltipData = (type = true) => {
   const inputDiv = input.value || '';
-  const data = merge(getCaretPosition(inputDiv))
+  let data;
+  if (type) {
+    data = merge(getCaretPosition(inputDiv))
+  } else {
+    data = merge(undefined);
+  }
   if(data){
     tooltipItems.value = data;
   }
@@ -122,7 +127,6 @@ const updateData = () => {
 
   appendErrorMenu();
   appendLabelMenu();
-  appendRangeMenu();
   fetchTooltipData();
 
     const lines = textContent.split('</div>').length - 1;
@@ -140,47 +144,59 @@ const appendErrorMenu = () => {
 
   const obj = updateErrorList();
 
-  Object.keys(obj).forEach(key => {
-    const array = obj[key];
+  if (Object.keys(obj).length == 0) {
+    const main = document.createElement('h3');
+    main.textContent = 'No errors yet!';
+    container.appendChild(main);
+  } else {
+    Object.keys(obj).forEach(key => {
+      const array = obj[key];
 
-    const details = document.createElement('details');
-    const summary = document.createElement('summary');
-    summary.textContent = `Line ${key}`; 
+      const details = document.createElement('details');
+      const summary = document.createElement('summary');
+      summary.textContent = `Line ${key}`; 
 
-    details.appendChild(summary);
+      details.appendChild(summary);
 
-    array.forEach(item => {
-      const itemElement = document.createElement('span');
-      itemElement.innerHTML = `${item}<br>`;
-      details.appendChild(itemElement);
+      array.forEach(item => {
+        const itemElement = document.createElement('span');
+        itemElement.innerHTML = `${item}<br>`;
+        details.appendChild(itemElement);
+      });
+
+      container.appendChild(details);
     });
-
-    container.appendChild(details);
-  });
+  }
 }
 
 const appendLabelMenu = () => {
   const container = labelList.value || '';
   container.innerHTML = '';
 
-  Object.keys(mergedLabel).forEach(key => {
-    const array = mergedLabel[key];
+  if (Object.keys(mergedLabel).length == 0) {
+    const main = document.createElement('h3');
+    main.textContent = 'No labels yet!';
+    container.appendChild(main);
+  } else {
+    Object.keys(mergedLabel).forEach(key => {
+      const array = mergedLabel[key];
 
-    const details = document.createElement('details');
-    const summary = document.createElement('summary');
+      const details = document.createElement('details');
+      const summary = document.createElement('summary');
 
-    summary.textContent = `label  ' ${key} ''`;
+      summary.textContent = `label  ' ${key} ''`;
 
-    details.appendChild(summary);
+      details.appendChild(summary);
 
-    array.forEach(item => {
-      const itemElement = document.createElement('span');
-      itemElement.innerHTML = `label ' ${item[0]} ' used at line ${item[1]}<br>`;
-      details.appendChild(itemElement);
+      array.forEach(item => {
+        const itemElement = document.createElement('span');
+        itemElement.innerHTML = `label ' ${item[0]} ' used at line ${item[1]}<br>`;
+        details.appendChild(itemElement);
+      });
+
+      container.appendChild(details);
     });
-
-    container.appendChild(details);
-  });
+  }
 }
 
 const appendRangeMenu = () => {
@@ -194,7 +210,6 @@ const appendRangeMenu = () => {
         output += `<h3>${key}</h3>`
         for (let i = 1; range[key].length > i; i++) {
           const index = range[key][i];
-          console.log(i)
           const entries = Object.entries(index);
           output += `<span class = "yellow">${entries[0][0]}</span><span> : ${entries[0][1].join(' ')}</span><br>`;
           output += `<span class = "yellow">${entries[1][0]}</span><span> : ${entries[1][1].join(' ')}</span><br class = "brDown">`;
@@ -210,9 +225,15 @@ const appendRangeMenu = () => {
 
 const updateMenu = () => {
   const syntaxDiv = document.getElementsByClassName('container-syntax')[0];
+  const selectedDisplay = selectDisplay.value || '';
+
   hotbar.value.style.zIndex == 0 ? hotbar.value.style.zIndex = 2 : hotbar.value.style.zIndex = 0;
+
   if (syntaxDiv.style.opacity == '') {syntaxDiv.style.opacity = 0.7};
   syntaxDiv.style.opacity == 0.7 ? syntaxDiv.style.opacity = 0 : syntaxDiv.style.opacity = 0.7;
+
+  if (selectedDisplay.style.display == '') {selectedDisplay.style.display = 'none'};
+  selectedDisplay.style.display == 'block' ? selectedDisplay.style.display = 'none' : selectedDisplay.style.display = 'block';
 }
 
 const showList = (element) => {
@@ -223,19 +244,18 @@ const showList = (element) => {
 
   document.getElementsByClassName(element)[0].style.display = 'block';
 }
-</script>
 
-<script>
-export default {
-  name: "nav-bar",
-
-  mounted() {
-    Array.from(document.getElementsByClassName('hotbarList'))
+onMounted(() => {
+  Array.from(document.getElementsByClassName('hotbarList'))
     .forEach((list) => {
         list.style.display = 'none';
     });
-  }
-}
+
+    fetchTooltipData(false);
+    appendRangeMenu();
+    appendLabelMenu();
+    appendErrorMenu();
+});
 </script>
 
 <style scoped lang="scss">
@@ -355,10 +375,10 @@ export default {
   }
 
   .selectDisplay {
-    display: block;
-    position: absolute;
+    display: none;
+    position:fixed;
     width: 20%;
-    height: 100%;
+    height: 85vh;
     background-color: rgb(37, 37, 37);
     button {
       font-size: 14px;
