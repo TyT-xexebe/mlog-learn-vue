@@ -122,7 +122,7 @@ const updateData = () => {
   const textContent = input.value.innerHTML || '';
   const outputDiv = output.value || '';
 
-  outputData(textContent, outputDiv);
+  outputData(inputDiv, outputDiv, textContent);
   hightlighting(outputHtml);
 
   appendErrorMenu();
