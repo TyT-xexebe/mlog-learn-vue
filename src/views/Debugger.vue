@@ -45,9 +45,9 @@
   <div id="code-editor" >
     <div id="line-numbers" ref="lineNumbers" ></div>
   </div>
-
+  <div class="autocompleteMenu">Автокомплит меню</div>
   <div id="container">
-    <div id="input" ref="input" contenteditable="true" spellcheck="false" @scroll="updateScroll" @input="updateData" v-on:input="$root.handleInput(event)">
+    <div id="input" ref="input" contenteditable="true" spellcheck="false" @scroll="updateScroll" @input="updateData" v-on:input="$root.handleInput(event)" @keyup="moveAutocompleteMenu" @blur="moveAutocompleteMenu">
     </div>
     <div id="output" ref="output" v-html="outputHtml"></div>
   </div>
@@ -227,6 +227,9 @@ const updateMenu = () => {
   const syntaxDiv = document.getElementsByClassName('container-syntax')[0];
   const selectedDisplay = selectDisplay.value || '';
 
+  const autocomplete = document.getElementsByClassName('autocompleteMenu')[0];
+  autocomplete.style.display = 'none';
+
   hotbar.value.style.zIndex == 0 ? hotbar.value.style.zIndex = 2 : hotbar.value.style.zIndex = 0;
 
   if (syntaxDiv.style.opacity == '') {syntaxDiv.style.opacity = 0.7};
@@ -244,6 +247,24 @@ const showList = (element) => {
 
   document.getElementsByClassName(element)[0].style.display = 'block';
 }
+
+const moveAutocompleteMenu = (event) => {
+      const selection = window.getSelection();
+      const autocomplete = document.getElementsByClassName('autocompleteMenu')[0];
+      if (selection.rangeCount > 0) {
+        const range = selection.getRangeAt(0);
+        const rect = range.getBoundingClientRect();
+        if (rect.bottom == 0 && rect.left == 0) {
+          autocomplete.style.display = 'none';
+        } else {
+          autocomplete.style.display = 'flex';
+          autocomplete.style.top = rect.bottom + window.scrollY + 'px';
+          autocomplete.style.left = rect.left + window.scrollX + 'px';
+        }
+      } else {
+        autocomplete.style.display = 'none';
+      }
+    }
 
 onMounted(() => {
   Array.from(document.getElementsByClassName('hotbarList'))
@@ -275,6 +296,7 @@ onMounted(() => {
   top: 0;
   left: 0;
   background-color: transparent;
+  caret-color: rgb(255, 255, 255);
   overflow-y: scroll;
   overflow-x: scroll;
   overflow-wrap: normal;
@@ -419,5 +441,18 @@ onMounted(() => {
 
 .tooltip-item {
   margin-right: 0.5em !important;
+}
+
+.autocompleteMenu {
+  background-color: #BBBBBB;
+  color: #333333;
+  padding: 4px;
+  height: 80px;
+  width: 200px;
+  z-index: 1;
+  position: absolute;
+  display: none;
+  overflow-y: scroll;
+  border-radius: 5px;
 }
 </style>
