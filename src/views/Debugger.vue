@@ -61,7 +61,7 @@ import { updateErrorList } from './../debugger/errorHandler';
 import { mergeT } from './../debugger/syntaxHelper';
 import { mergedLabel } from './../debugger/labelChecker';
 import { range } from './../debugger/processorTokens/mainProcessor';
-import { createAutocompleteList } from './../debugger/autoComplete'
+import { mergeA } from './../debugger/autoComplete'
 const input = ref(null);
 const output = ref(null);
 const hotbar = ref(null);
@@ -128,13 +128,10 @@ const fetchTooltipData = (type = true) => {
 
 const fetchAutocompleteData = () => {
   const inputDiv = input.value || '';
-  let  data = createAutocompleteList(getCaretPosition(inputDiv));
-  if (!data) return;
-  if (Array.isArray(data)) {
-    autocompleteItems.value = data.join(', ');
-  } else if (typeof data === "object" && data.ranges) {
-    autocompleteItems.value = data.ranges.join(', ');
-  }
+  let  data = mergeA(getCaretPosition(inputDiv));
+  if (!data) return autocompleteItems.value = '';
+  autocompleteItems.value = data.join(', ');
+
 };
 
 const updateData = () => {

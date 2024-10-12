@@ -8,6 +8,7 @@ import { labelGroupMerge } from './labelChecker';
 let codeArea: string[] = [];
 let setLabels: any[] = [];
 let usedLabels: any[] = [];
+let usedVars: any[] = [];
 const commandsList = commands.commands;
 
 // hightlighting colors map
@@ -41,6 +42,8 @@ const IandO = (
   } else {
     type = inputType[word].type;
   }
+  
+  if (type == 'output') usedVars.push(list2D[line][word]);
 
   if (color === "null") {
     addCodeArea(colorMap[type], list2D[line][word]);
@@ -226,6 +229,7 @@ const hightlighting = (outputHtml: any) => {
   codeArea = [];
   setLabels = [];
   usedLabels = [];
+  usedVars = [];
   reload();
 
   for (let line = 0; line < list2D.length; line++) {
@@ -289,4 +293,4 @@ const hightlighting = (outputHtml: any) => {
   labelGroupMerge(setLabels, usedLabels);
 };
 
-export { hightlighting, selectTrueOut };
+export { hightlighting, selectTrueOut, usedVars };
