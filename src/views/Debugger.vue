@@ -45,7 +45,7 @@
   <div id="code-editor" >
     <div id="line-numbers" ref="lineNumbers" ></div>
   </div>
-  <div class="autocompleteMenu">Автокомплит меню</div>
+  <div id="autocompleteMenu">{{ autocompleteItems }}</div>
   <div id="container">
     <div id="input" ref="input" contenteditable="true" spellcheck="false" @scroll="updateScroll" @input="updateData" v-on:input="$root.handleInput(event)" @keyup="moveAutocompleteMenu" @blur="moveAutocompleteMenu">
     </div>
@@ -58,9 +58,10 @@ import { ref, onMounted } from 'vue';
 import { outputData } from './../debugger/parser.ts';
 import { hightlighting } from './../debugger/hightlighting';
 import { updateErrorList } from './../debugger/errorHandler';
-import { merge } from './../debugger/syntaxHelper';
+import { mergeT } from './../debugger/syntaxHelper';
 import { mergedLabel } from './../debugger/labelChecker';
 import { range } from './../debugger/processorTokens/mainProcessor';
+import { createAutocompleteList } from './../debugger/autoComplete'
 const input = ref(null);
 const output = ref(null);
 const hotbar = ref(null);
@@ -72,6 +73,7 @@ const lineNumbers = ref(null);
 const selectDisplay = ref(null);
 const outputHtml = ref('');
 const tooltipItems = ref([]);
+const autocompleteItems = ref([]);
 
 const updateScroll = () => {
   const inputDiv = input.value;
@@ -81,39 +83,57 @@ const updateScroll = () => {
 };
 
 const getCaretPosition = (element) => {
-  var caretOffset = 0;
-    var doc = element.ownerDocument || element.document;
-    var win = doc.defaultView || doc.parentWindow;
-    var sel;
-    if (typeof win.getSelection != "undefined") {
-        sel = win.getSelection();
-        if (sel.rangeCount > 0) {
-            var range2 = win.getSelection().getRangeAt(0);
-            var preCaretRange = range2.cloneRange();
-            preCaretRange.selectNodeContents(element);
-            preCaretRange.setEnd(range2.endContainer, range2.endOffset);
-            caretOffset = preCaretRange.endContainer.data
-        }
-    } else if ( (sel = doc.selection) && sel.type != "Control") {
-        var textRange = sel.createRange();
-        var preCaretTextRange = doc.body.createTextRange();
-        preCaretTextRange.moveToElementText(element);
-        preCaretTextRange.setEndPoint("EndToEnd", textRange);
-        caretOffset = preCaretTextRange.endContainer.data;
+  let caretOffset = 0;
+  let textBeforeWord = '';
+  let currentLine = '';
+
+  const doc = element.ownerDocument || element.document;
+  const win = doc.defaultView || doc.parentWindow;
+  let sel;
+
+  if (typeof win.getSelection !== "undefined") {
+    sel = win.getSelection();
+    if (sel.rangeCount > 0) {
+      const range = sel.getRangeAt(0);
+      const preCaretRange = range.cloneRange();
+      preCaretRange.selectNodeContents(element);
+      preCaretRange.setEnd(range.endContainer, range.endOffset);
+
+      caretOffset = preCaretRange.endOffset;
+
+      currentLine = range.endContainer.textContent || '';
+
+      const beforeCursor = currentLine.slice(0, caretOffset);
+      const words = beforeCursor.split(/\s+/);
+      textBeforeWord = words.join(' ');
     }
-    return caretOffset;
-}
+  }
+
+  return [caretOffset, textBeforeWord, currentLine];
+};
+
 
 const fetchTooltipData = (type = true) => {
   const inputDiv = input.value || '';
   let data;
   if (type) {
-    data = merge(getCaretPosition(inputDiv))
+    data = mergeT(getCaretPosition(inputDiv)[2])
   } else {
-    data = merge(undefined);
+    data = mergeT(undefined);
   }
   if(data){
     tooltipItems.value = data;
+  }
+};
+
+const fetchAutocompleteData = () => {
+  const inputDiv = input.value || '';
+  let  data = createAutocompleteList(getCaretPosition(inputDiv));
+  if (!data) return;
+  if (Array.isArray(data)) {
+    autocompleteItems.value = data.join(', ');
+  } else if (typeof data === "object" && data.ranges) {
+    autocompleteItems.value = data.ranges.join(', ');
   }
 };
 
@@ -128,6 +148,7 @@ const updateData = () => {
   appendErrorMenu();
   appendLabelMenu();
   fetchTooltipData();
+  fetchAutocompleteData();
 
     const lines = textContent.split('</div>').length - 1;
     let lineNumbers2 = [];
@@ -250,7 +271,7 @@ const showList = (element) => {
 
 const moveAutocompleteMenu = (event) => {
       const selection = window.getSelection();
-      const autocomplete = document.getElementsByClassName('autocompleteMenu')[0];
+      const autocomplete = document.getElementById('autocompleteMenu');
       if (selection.rangeCount > 0) {
         const range = selection.getRangeAt(0);
         const rect = range.getBoundingClientRect();
@@ -276,6 +297,7 @@ onMounted(() => {
     appendRangeMenu();
     appendLabelMenu();
     appendErrorMenu();
+    moveAutocompleteMenu();
 });
 </script>
 
@@ -443,16 +465,16 @@ onMounted(() => {
   margin-right: 0.5em !important;
 }
 
-.autocompleteMenu {
+#autocompleteMenu {
   background-color: #BBBBBB;
   color: #333333;
   padding: 4px;
   height: 80px;
   width: 200px;
-  z-index: 1;
+  z-index: 2;
   position: absolute;
-  display: none;
   overflow-y: scroll;
   border-radius: 5px;
+  font-size: 14px;
 }
 </style>
