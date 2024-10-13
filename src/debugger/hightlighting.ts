@@ -43,6 +43,7 @@ const IandO = (
     type = inputType[word].type;
   }
   
+  // saving variables
   if (type == 'output') usedVars.push(list2D[line][word]);
 
   if (color === "null") {

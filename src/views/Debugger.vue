@@ -1,23 +1,32 @@
 <template>
   <div class="main">
     <div class="container-syntax">
-      <span id="syntaxHelper" ref="syntaxHelper" 
-        v-for="(item, index) in tooltipItems" 
-        :key="index" 
-        v-tooltip="{ content: item.tooltipContent, placement: 'bottom', target: ['click', 'hover'], html: true }" 
+      <span
+        id="syntaxHelper"
+        ref="syntaxHelper"
+        v-for="(item, index) in tooltipItems"
+        :key="index"
+        v-tooltip="{
+          content: item.tooltipContent,
+          placement: 'bottom',
+          target: ['click', 'hover'],
+          html: true,
+        }"
         class="tooltip-item"
-      >{{ item.item }}</span>
+        >{{ item.item }}</span
+      >
     </div>
-      <my-button @click="updateMenu">menu</my-button>
+    <my-button @click="updateMenu">menu</my-button>
   </div>
 
   <div class="hotbar" ref="hotbar">
-
     <div class="selectDisplay" ref="selectDisplay">
-      <button @click="showList('container-errors')">Errors</button>
-      <button @click="showList('container-labels')">Labels</button>
-      <button @click="showList('container-settings')">Settings</button>
-      <button @click="showList('container-ranges')">Ranges</button>
+      <button
+        v-for="section in ['errors', 'labels', 'settings', 'ranges']"
+        :key="section"
+        @click="showList(`container-${section}`)">
+        {{ section.charAt(0).toUpperCase() + section.slice(1) }}
+      </button>
     </div>
 
     <div class="container-errors hotbarList">
@@ -39,29 +48,36 @@
       <h2>Ranges</h2>
       <div class="ranges" ref="rangeList"></div>
     </div>
-
   </div>
 
-  <div id="code-editor" >
-    <div id="line-numbers" ref="lineNumbers" ></div>
+  <div id="code-editor">
+    <div id="line-numbers" ref="lineNumbers"></div>
   </div>
   <div id="autocompleteMenu">{{ autocompleteItems }}</div>
   <div id="container">
-    <div id="input" ref="input" contenteditable="true" spellcheck="false" @scroll="updateScroll" @input="updateData" v-on:input="$root.handleInput(event)" @keyup="moveAutocompleteMenu" @blur="moveAutocompleteMenu">
-    </div>
+    <div
+      id="input"
+      ref="input"
+      contenteditable="true"
+      spellcheck="false"
+      @scroll="updateScroll"
+      @input="updateData"
+      v-on:input="$root.handleInput(event)"
+      @keyup="moveAutocompleteMenu"
+      @blur="moveAutocompleteMenu"></div>
     <div id="output" ref="output" v-html="outputHtml"></div>
   </div>
 </template>
 
 <script setup>
-import { ref, onMounted } from 'vue';
-import { outputData } from './../debugger/parser.ts';
-import { hightlighting } from './../debugger/hightlighting';
-import { updateErrorList } from './../debugger/errorHandler';
-import { mergeT } from './../debugger/syntaxHelper';
-import { mergedLabel } from './../debugger/labelChecker';
-import { range } from './../debugger/processorTokens/mainProcessor';
-import { mergeA } from './../debugger/autoComplete'
+import { ref, onMounted } from "vue";
+import { outputData } from "./../debugger/parser.ts";
+import { hightlighting } from "./../debugger/hightlighting";
+import { updateErrorList } from "./../debugger/errorHandler";
+import { mergeT } from "./../debugger/syntaxHelper";
+import { mergedLabel } from "./../debugger/labelChecker";
+import { range } from "./../debugger/processorTokens/mainProcessor";
+import { mergeA } from "./../debugger/autoComplete";
 const input = ref(null);
 const output = ref(null);
 const hotbar = ref(null);
@@ -71,7 +87,7 @@ const rangeList = ref(null);
 const syntaxHelper = ref(null);
 const lineNumbers = ref(null);
 const selectDisplay = ref(null);
-const outputHtml = ref('');
+const outputHtml = ref("");
 const tooltipItems = ref([]);
 const autocompleteItems = ref([]);
 
@@ -84,8 +100,8 @@ const updateScroll = () => {
 
 const getCaretPosition = (element) => {
   let caretOffset = 0;
-  let textBeforeWord = '';
-  let currentLine = '';
+  let textBeforeWord = "";
+  let currentLine = "";
 
   const doc = element.ownerDocument || element.document;
   const win = doc.defaultView || doc.parentWindow;
@@ -101,205 +117,187 @@ const getCaretPosition = (element) => {
 
       caretOffset = preCaretRange.endOffset;
 
-      currentLine = range.endContainer.textContent || '';
+      currentLine = range.endContainer.textContent || "";
 
       const beforeCursor = currentLine.slice(0, caretOffset);
       const words = beforeCursor.split(/\s+/);
-      textBeforeWord = words.join(' ');
+      textBeforeWord = words.join(" ");
     }
   }
 
   return [caretOffset, textBeforeWord, currentLine];
 };
 
-
 const fetchTooltipData = (type = true) => {
-  const inputDiv = input.value || '';
-  let data;
-  if (type) {
-    data = mergeT(getCaretPosition(inputDiv)[2])
-  } else {
-    data = mergeT(undefined);
-  }
-  if(data){
-    tooltipItems.value = data;
-  }
+  const data = mergeT(
+    type ? getCaretPosition(input.value || "")[2] : undefined
+  );
+  if (data) tooltipItems.value = data;
 };
 
 const fetchAutocompleteData = () => {
-  const inputDiv = input.value || '';
-  let  data = mergeA(getCaretPosition(inputDiv));
-  if (!data) return autocompleteItems.value = '';
-  autocompleteItems.value = data.join(', ');
-
+  const data = mergeA(getCaretPosition(input.value || ""));
+  autocompleteItems.value = data ? data.join(", ") : "";
 };
 
 const updateData = () => {
-  const inputDiv = input.value.innerText || '';
-  const textContent = input.value.innerHTML || '';
-  const outputDiv = output.value || '';
+  const inputDiv = input.value.innerText || "";
+  const textContent = input.value.innerHTML || "";
+  const outputDiv = output.value || "";
 
   outputData(inputDiv, outputDiv, textContent);
   hightlighting(outputHtml);
-
   appendErrorMenu();
   appendLabelMenu();
   fetchTooltipData();
   fetchAutocompleteData();
 
-    const lines = textContent.split('</div>').length - 1;
-    let lineNumbers2 = [];
-    for (let i = 0; i < lines; i++) {
-        lineNumbers2.push(`${i + 1}`);
-    }
-    lineNumbers.value.innerText = lineNumbers2.join('\n');
+  const lines = textContent.split("</div>").length - 1;
+  lineNumbers.value.innerText = Array.from(
+    { length: lines },
+    (_, i) => i + 1
+  ).join("\n");
+};
 
+const appendMenu = (container, obj, noErrorsText) => {
+  container.innerHTML = "";
+
+  if (!Object.keys(obj).length) {
+    const main = document.createElement("h3");
+    main.textContent = noErrorsText;
+    container.appendChild(main);
+  } else {
+    Object.entries(obj).forEach(([key, array]) => {
+      const details = document.createElement("details");
+      const summary = document.createElement("summary");
+      summary.textContent = noErrorsText.includes("errors")
+        ? `Line ${key}`
+        : `label ' ${key} ''`;
+      details.appendChild(summary);
+
+      array.forEach((item) => {
+        const itemElement = document.createElement("span");
+        itemElement.innerHTML = noErrorsText.includes("errors")
+          ? `${item}<br>`
+          : `label ' ${item[0]} ' used at line ${item[1]}<br>`;
+        details.appendChild(itemElement);
+      });
+
+      container.appendChild(details);
+    });
+  }
 };
 
 const appendErrorMenu = () => {
-  const container = errorList.value || '';
-  container.innerHTML = '';
-
-  const obj = updateErrorList();
-
-  if (Object.keys(obj).length == 0) {
-    const main = document.createElement('h3');
-    main.textContent = 'No errors yet!';
-    container.appendChild(main);
-  } else {
-    Object.keys(obj).forEach(key => {
-      const array = obj[key];
-
-      const details = document.createElement('details');
-      const summary = document.createElement('summary');
-      summary.textContent = `Line ${key}`; 
-
-      details.appendChild(summary);
-
-      array.forEach(item => {
-        const itemElement = document.createElement('span');
-        itemElement.innerHTML = `${item}<br>`;
-        details.appendChild(itemElement);
-      });
-
-      container.appendChild(details);
-    });
-  }
-}
+  const container = errorList.value || "";
+  appendMenu(container, updateErrorList(), "No errors yet!");
+};
 
 const appendLabelMenu = () => {
-  const container = labelList.value || '';
-  container.innerHTML = '';
-
-  if (Object.keys(mergedLabel).length == 0) {
-    const main = document.createElement('h3');
-    main.textContent = 'No labels yet!';
-    container.appendChild(main);
-  } else {
-    Object.keys(mergedLabel).forEach(key => {
-      const array = mergedLabel[key];
-
-      const details = document.createElement('details');
-      const summary = document.createElement('summary');
-
-      summary.textContent = `label  ' ${key} ''`;
-
-      details.appendChild(summary);
-
-      array.forEach(item => {
-        const itemElement = document.createElement('span');
-        itemElement.innerHTML = `label ' ${item[0]} ' used at line ${item[1]}<br>`;
-        details.appendChild(itemElement);
-      });
-
-      container.appendChild(details);
-    });
-  }
-}
+  const container = labelList.value || "";
+  appendMenu(container, mergedLabel, "No labels yet!");
+};
 
 const appendRangeMenu = () => {
-  const container = rangeList.value || '';
-  let output = '';
-  Object.keys(range).forEach(key => {
+  const container = rangeList.value || "";
+  let output = "";
+  Object.keys(range).forEach((key) => {
     if (Array.isArray(range[key])) {
       if (range[key][0] == "$#$default" || range[key][0] == "$#$at") {
-      output += `<details><summary class = "yellow">${key}</summary>${range[key].join(' ')}</details><hr>`;
-      }  else if (range[key][0] == "$#$obj") {
-        output += `<h3>${key}</h3>`
+        output += `<details><summary class = "yellow">${key}</summary>${range[
+          key
+        ].join(" ")}</details><hr>`;
+      } else if (range[key][0] == "$#$obj") {
+        output += `<h3>${key}</h3>`;
         for (let i = 1; range[key].length > i; i++) {
           const index = range[key][i];
           const entries = Object.entries(index);
-          output += `<span class = "yellow">${entries[0][0]}</span><span> : ${entries[0][1].join(' ')}</span><br>`;
-          output += `<span class = "yellow">${entries[1][0]}</span><span> : ${entries[1][1].join(' ')}</span><br class = "brDown">`;
+          output += `<span class = "yellow">${
+            entries[0][0]
+          }</span><span> : ${entries[0][1].join(" ")}</span><br>`;
+          output += `<span class = "yellow">${
+            entries[1][0]
+          }</span><span> : ${entries[1][1].join(
+            " "
+          )}</span><br class = "brDown">`;
         }
-        output += '<hr>';
+        output += "<hr>";
       }
     } else {
       output += `<h3 class = "yellow">${key}</h3><span>${range[key].rangeS}</span><hr>`;
     }
   });
   container.innerHTML = output;
-}
+};
 
 const updateMenu = () => {
-  const syntaxDiv = document.getElementsByClassName('container-syntax')[0];
-  const selectedDisplay = selectDisplay.value || '';
+  const syntaxDiv = document.getElementsByClassName("container-syntax")[0];
+  const selectedDisplay = selectDisplay.value || "";
 
-  const autocomplete = document.getElementsByClassName('autocompleteMenu')[0];
-  autocomplete.style.display = 'none';
+  const autocomplete = document.getElementById("autocompleteMenu");
+  autocomplete.style.display = "none";
 
-  hotbar.value.style.zIndex == 0 ? hotbar.value.style.zIndex = 2 : hotbar.value.style.zIndex = 0;
+  hotbar.value.style.zIndex == 0
+    ? (hotbar.value.style.zIndex = 2)
+    : (hotbar.value.style.zIndex = 0);
 
-  if (syntaxDiv.style.opacity == '') {syntaxDiv.style.opacity = 0.7};
-  syntaxDiv.style.opacity == 0.7 ? syntaxDiv.style.opacity = 0 : syntaxDiv.style.opacity = 0.7;
+  if (syntaxDiv.style.opacity == "") {
+    syntaxDiv.style.opacity = 0.7;
+  }
+  syntaxDiv.style.opacity == 0.7
+    ? (syntaxDiv.style.opacity = 0)
+    : (syntaxDiv.style.opacity = 0.7);
 
-  if (selectedDisplay.style.display == '') {selectedDisplay.style.display = 'none'};
-  selectedDisplay.style.display == 'block' ? selectedDisplay.style.display = 'none' : selectedDisplay.style.display = 'block';
-}
+  if (selectedDisplay.style.display == "") {
+    selectedDisplay.style.display = "none";
+  }
+  selectedDisplay.style.display == "block"
+    ? (selectedDisplay.style.display = "none")
+    : (selectedDisplay.style.display = "block");
+};
 
 const showList = (element) => {
-  Array.from(document.getElementsByClassName('hotbarList'))
-    .forEach((list) => {
-        list.style.display = 'none';
-    });
+  Array.from(document.getElementsByClassName("hotbarList")).forEach((list) => {
+    list.style.display = "none";
+  });
 
-  document.getElementsByClassName(element)[0].style.display = 'block';
-}
+  document.getElementsByClassName(element)[0].style.display = "block";
+};
 
 const moveAutocompleteMenu = (event) => {
-      const selection = window.getSelection();
-      const autocomplete = document.getElementById('autocompleteMenu');
-      if (selection.rangeCount > 0) {
-        const range = selection.getRangeAt(0);
-        const rect = range.getBoundingClientRect();
-        if (rect.bottom == 0 && rect.left == 0) {
-          autocomplete.style.display = 'none';
-        } else {
-          autocomplete.style.display = 'flex';
-          autocomplete.style.top = rect.bottom + window.scrollY + 'px';
-          autocomplete.style.left = rect.left + window.scrollX + 'px';
-        }
-      } else {
-        autocomplete.style.display = 'none';
-      }
+  const selection = window.getSelection();
+  const autocomplete = document.getElementById("autocompleteMenu");
+  if (autocomplete.innerHTML == "")
+    return (autocomplete.style.display = "none");
+  if (selection.rangeCount > 0) {
+    const range = selection.getRangeAt(0);
+    const rect = range.getBoundingClientRect();
+    if (rect.bottom == 0 && rect.left == 0) {
+      autocomplete.style.display = "none";
+    } else {
+      autocomplete.style.display = "flex";
+      autocomplete.style.top = rect.bottom + window.scrollY + "px";
+      autocomplete.style.left = rect.left + window.scrollX + "px";
     }
+  } else {
+    autocomplete.style.display = "none";
+  }
+};
 
 onMounted(() => {
-  Array.from(document.getElementsByClassName('hotbarList'))
-    .forEach((list) => {
-        list.style.display = 'none';
-    });
+  Array.from(document.getElementsByClassName("hotbarList")).forEach((list) => {
+    list.style.display = "none";
+  });
 
-    fetchTooltipData(false);
-    appendRangeMenu();
-    appendLabelMenu();
-    appendErrorMenu();
-    moveAutocompleteMenu();
+  fetchTooltipData(false);
+  appendRangeMenu();
+  appendLabelMenu();
+  appendErrorMenu();
+  moveAutocompleteMenu();
 });
 </script>
 
 <style scoped lang="scss">
-
 #container {
   position: absolute;
   top: 0;
@@ -337,7 +335,7 @@ onMounted(() => {
   overflow-y: scroll;
   overflow-x: scroll;
   overflow-wrap: normal;
-  color: #CCCCCC;
+  color: #cccccc;
   border: none;
   height: 85vh;
   width: 97vw;
@@ -346,7 +344,6 @@ onMounted(() => {
   font-size: 11.5px;
   line-height: normal;
 }
-
 
 .main {
   display: flex;
@@ -357,30 +354,30 @@ onMounted(() => {
   align-items: flex-end;
   z-index: 3;
 }
-  .mainBtn {
+.mainBtn {
+  margin: 0;
+  height: 28px;
+  border: 1px solid #cccccc;
+  border-radius: 3.5px;
+  padding: 3.5px 8px 3.5px 8px;
+  opacity: 0.7;
+}
+div.container-syntax {
+  width: auto;
+  height: 28px;
+  margin-bottom: 3px;
+  padding: 0px 5px 0px 5px;
+  border: 1px solid #cccccc;
+  border-radius: 3.5px;
+  opacity: 0.7;
+  color: #cccccc;
+  span {
+    display: inline-block;
+    height: 28px;
     margin: 0;
-    height: 28px;
-    border: 1px solid #CCCCCC;
-    border-radius: 3.5px;
-    padding: 3.5px 8px 3.5px 8px;
-    opacity: 0.7;
+    padding: 0;
   }
-  div.container-syntax {
-    width: auto;
-    height: 28px;
-    margin-bottom: 3px;
-    padding: 0px 5px 0px 5px;
-    border: 1px solid #CCCCCC;
-    border-radius: 3.5px;
-    opacity: 0.7;
-    color: #CCCCCC;
-    span {
-      display: inline-block;
-      height: 28px;
-      margin: 0;
-      padding: 0;
-    }
-  }
+}
 .hotbar {
   overflow-y: scroll;
   transition: 0.3s;
@@ -390,7 +387,7 @@ onMounted(() => {
   margin-top: 7.5vh;
   z-index: 0;
   background-color: rgb(45, 44, 53);
-  color: #CCCCCC;
+  color: #cccccc;
   opacity: 0.8;
   position: absolute;
   display: flex;
@@ -405,7 +402,7 @@ onMounted(() => {
   }
   .container-errors {
     .errors {
-      color: #CCCCCC;
+      color: #cccccc;
       display: flex;
       flex-direction: column;
       span {
@@ -417,7 +414,7 @@ onMounted(() => {
 
   .selectDisplay {
     display: none;
-    position:fixed;
+    position: fixed;
     width: 20%;
     height: 85vh;
     background-color: rgb(37, 37, 37);
@@ -425,22 +422,22 @@ onMounted(() => {
       font-size: 14px;
       width: 100%;
       height: 30px;
-      color: #CCCCCC;
+      color: #cccccc;
       border: none;
       background-color: transparent;
       transition: 0.3s;
       &:hover {
         cursor: pointer;
         color: rgb(12, 150, 150);
-        border: 1px solid #CCCCCC;
+        border: 1px solid #cccccc;
       }
     }
   }
 }
 
 #code-editor {
-  border-right: 1px solid #CCCCCC;
-  color: #CCCCCC;
+  border-right: 1px solid #cccccc;
+  color: #cccccc;
   background-color: transparent;
   display: flex;
   position: absolute;
@@ -453,7 +450,7 @@ onMounted(() => {
     font-size: 11.5px;
     line-height: normal;
     br {
-      margin-bottom: 0; 
+      margin-bottom: 0;
     }
   }
 }
@@ -463,7 +460,7 @@ onMounted(() => {
 }
 
 #autocompleteMenu {
-  background-color: #BBBBBB;
+  background-color: #bbbbbb;
   color: #333333;
   padding: 4px;
   height: 80px;

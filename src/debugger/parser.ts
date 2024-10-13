@@ -1,4 +1,4 @@
-import { consoleOutput } from './../main';
+import { consoleOutput } from "./../main";
 
 let lines: string[];
 let words: string[];
@@ -10,16 +10,15 @@ const outputData = (text: string, outputDiv: any, divText: any) => {
     lines = [];
     words = [];
     list2D = [];
-
   } else {
     lines = [];
-    let chapters = divText.split('</div>');
+    let chapters = divText.split("</div>");
     chapters.forEach((chapter: any) => {
-      lines.push(chapter.replace(/<\/?div>|<br>/g, ''))
+      lines.push(chapter.replace(/<\/?div>|<br>/g, ""));
     });
     output = outputDiv;
     words = text.split(/\s+/);
-    list2D = lines.map(line => line.split(/\s+/));
+    list2D = lines.map((line) => line.split(/\s+/));
   }
 };
 

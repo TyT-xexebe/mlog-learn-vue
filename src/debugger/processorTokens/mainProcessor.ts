@@ -204,8 +204,8 @@ const range: RangeMap = {
     }
   ],
   drawImage: [],
-  special: ["@e","@pi","@time","@tick","@minute","@waveNumber","@waveTime","@degToRad","@radToDeg","@links","@ctrlProcessor","@ctrlPlayer","@ctrlCommand","@unitCount","@blockCount","@liquidCount","@itemCuont","@this","@thisx","@thisy","@unit","@counter","@maph","@mapw","@air","@ipt","@server",],
-  teams: ["@crux","@sharded","@derelict","@malis","@blue","@green"],
+  special: ["$#$default","@e","@pi","@time","@tick","@minute","@waveNumber","@waveTime","@degToRad","@radToDeg","@links","@ctrlProcessor","@ctrlPlayer","@ctrlCommand","@unitCount","@blockCount","@liquidCount","@itemCuont","@this","@thisx","@thisy","@unit","@counter","@maph","@mapw","@air","@ipt","@server",],
+  teams: ["$#$default","@crux","@sharded","@derelict","@malis","@blue","@green"],
 };
 
 const palleteCreator = (name: string, background: string, border: string) => {
